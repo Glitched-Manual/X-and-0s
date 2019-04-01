@@ -2,30 +2,75 @@
 #include <vector>
 #include <string>
 
-typedef class{
+class Position{
 public:
 int x;
 int y;
-}Position;
+};
+
+class Win_Case{
+Position combination[3];
+std::string win_case_id;
+public:
+void SetPositionCombination();
+Position GetCombination(){ return combination; }
+std::string GetWinCaseID(){ return win_case_id; }
+};
+
+void Win_Case::SetPositionCombination(int passed_arr[3][2])
+{
+}
 
 class Tile{
 Position tile_position;
 bool tile_marked;
 std::string tile_mark;
 public:
+void SetTilePosition(int passed_x, int passed_y);
 Position GetTilePosition(){return tile_position;}
 };
+void Tile ::SetTilePosition(int passed_x, int passed_y)
+{
+tile_position.x = passed_x;
+tile_position.y = passed_y;
+}
+
 
 class Grid{
 Tile game_tiles[3][3];
 public:
-Tile GetGameTile(int passed_x,int passed_y){return game_tiles[passed_x][passed_y];}
+//what?
+void SetGameTile(int passed_x, int passed_y);
+Tile GetGameTiles(){return game_tiles;}
 };
-class GameLoop{
+class Game{
+bool gameover;
 Grid game_grid;
+Win_Case win_cases[8];
 public:
 Grid GetGameGrid(){ return game_grid;}
+void PlayerWin(Position passed_position);
+void LoadWinCases();
 };
+void LoadWinCases()
+{
+win_cases[0].
+}
+
+void Game::PlayerWin(Position passed_position)
+{
+//get play position -> passed_position
+
+//check win cases if position is included
+
+//check win case if all three positions are marked by player
+
+//if all three marked by player
+}
+/*
+int arr[3][1];
+*/
+
 int main()
 {
 
