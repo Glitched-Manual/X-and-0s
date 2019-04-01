@@ -13,11 +13,11 @@ Position combination[3];
 std::string win_case_id;
 public:
 void SetPositionCombination();
-Position GetCombination(){ return combination; }
+Position* GetCombination(){ return combination; }
 std::string GetWinCaseID(){ return win_case_id; }
 };
 
-void Win_Case::SetPositionCombination(int passed_arr[3][2])
+void Win_Case::SetPositionCombination()
 {
 }
 
@@ -41,8 +41,17 @@ Tile game_tiles[3][3];
 public:
 //what?
 void SetGameTile(int passed_x, int passed_y);
-Tile GetGameTiles(){return game_tiles;}
+Tile GetGameTiles(int passed_x, int passed_y){return game_tiles[passed_x][passed_y];}
 };
+
+void Grid::SetGameTile(int passed_x, int passed_y)
+{
+   if((passed_x < 3)&(passed_y < 3))
+   {
+    game_tiles[passed_x][passed_y].SetTilePosition(passed_x,passed_y);
+   }
+}
+
 class Game{
 bool gameover;
 Grid game_grid;
@@ -54,7 +63,7 @@ void LoadWinCases();
 };
 void LoadWinCases()
 {
-win_cases[0].
+//win_cases[0].
 }
 
 void Game::PlayerWin(Position passed_position)
@@ -73,7 +82,9 @@ int arr[3][1];
 
 int main()
 {
-
+Game game;
+ 
+game.GetGameGrid().SetGameTile(0,0);
 std::cout << "it works" << std::endl;
 return 0;
 }
