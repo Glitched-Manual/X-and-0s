@@ -80,7 +80,7 @@ void DisplayGrid();
 
 void SetGameTiles();
 
-Tile GetGameTiles(int passed_x, int passed_y){return game_tiles[passed_x][passed_y];}
+Tile GetGameTile(int passed_x, int passed_y){return game_tiles[passed_x][passed_y];}
 
 };
 
@@ -117,7 +117,7 @@ for(unsigned int yi = 0; yi < 3; yi++)
         for(unsigned int xi = 0; xi < 3; xi++)
         {
             // game_tiles[xi][yi].SetTilePosition(xi,yi);
-           std::cout << " " << game_tiles[xi][yi].GetTileMark() << " |";
+           std::cout << " " << GetGameTile(xi,yi).GetTileMark() << " |";
           //if x == 2 add "\n" and "-----\n"  
           if(xi==2)
 	  {
@@ -125,7 +125,7 @@ for(unsigned int yi = 0; yi < 3; yi++)
 	  }
         }
     }
-
+  std::cout<< "\n";
 }
 
 class Player{
@@ -212,6 +212,14 @@ Game game;
 //game.GetGameGrid().SetGameTile(0,0);
 
 game.GetGameGrid().DisplayGrid();
+
+//set tile mark
+game.GetGameGrid().GetGameTile(1,1).SetTileMark("!");
+
+//display changed grid
+
+game.GetGameGrid().DisplayGrid();
+
 std::cout << "it works" << std::endl;
 
 return 0;

@@ -19,3 +19,7 @@ OBJ_NAME = X_O
 #This is the target that compiles our executable. for sdl2 ->$(LINKER_FLAGS)
 all : $(OBJS)
 	$(CC) $(OBJS) $(COMPILER_FLAGS) -o $(OBJ_NAME)
+
+clean : $(OBJ_NAME)
+	rm -f $(OBJ_NAME) echo "clean done"
+	
