@@ -1,7 +1,7 @@
 #tic tac toe makefile
 
 #OBJS specifies which files to compile as part of the project
-OBJS = x_o.cpp
+OBJS = x_o.cpp Position.h
 
 #CC specifies which compiler we're using
 CC = g++

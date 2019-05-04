@@ -4,17 +4,7 @@
 
 #include <string>
 
-
-class Position{
-
-public:
-
-int x;
-
-int y;
-
-};
-
+#include "Position.h"
 
 class Win_Case{
 
@@ -52,6 +42,7 @@ public:
 
 Tile();
 void SetTileMark(std::string passed_mark){ tile_mark = passed_mark;}
+
 std::string GetTileMark(){ return tile_mark; }
 
 void SetTilePosition(int passed_x, int passed_y);
@@ -137,26 +128,53 @@ for(unsigned int yi = 0; yi < 3; yi++)
 
 }
 
+class Player{
+
+};
+
+class AI{
+
+};
+
 class Game{
 
-bool gameover;
+bool Game_Over;
 
 Grid game_grid;
 
 Win_Case win_cases[8];
-
+unsigned int turn_phase;
 public:
+Game();
 
 Grid GetGameGrid(){ return game_grid;}
-
+int GetTurnPhase(){ return turn_phase; }
 void PlayerWin(Position passed_position);
 
 void LoadWinCases();
 
+void GameLoop();
+
 };
+Game::Game()
+{
+Game_Over = false;
+}
 
-void LoadWinCases()
+void Game::GameLoop()
+{
 
+
+  while((Game_Over == false))
+  {
+	//turn 1
+
+        //turn 2
+  }
+
+}
+
+void Game::LoadWinCases()
 {
 
 //win_cases[0].
