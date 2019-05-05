@@ -1,9 +1,9 @@
-#include "iostream"
-#include "string"
+#include <iostream>
+#include <string>
 #include "Tile.h"
 
-#ifndef "GRID_H"
-#define "GRID_H"
+#ifndef GRID_H
+#define GRID_H
 class Tile;
 
 class Grid{

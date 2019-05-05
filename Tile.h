@@ -1,9 +1,9 @@
-#include "iostream.h"
-#include "string.h"
+#include <iostream>
+#include <string>
 #include "Position.h"
 
-#ifndef "TILE_H"
-#define "TILE_H"
+#ifndef TILE_H
+#define TILE_H
 class Position;
 
 class Tile{

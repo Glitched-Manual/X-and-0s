@@ -1,8 +1,8 @@
-#include "iostream.h"
-#include "string.h"
+#include <iostream>
+#include <string>
 
-#ifndef "AI_H"
-#define "AI_h"
+#ifndef AI_H
+#define AI_H
 class AI{
 
 };

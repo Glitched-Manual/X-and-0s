@@ -1,8 +1,8 @@
-#include "iostream.h"
-#include "string.h"
+#include <iostream>
+#include <string>
 
-#ifndef "PLAYER_H"
-#define "PLAYER_H"
+#ifndef PLAYER_H
+#define PLAYER_H
 class Player{
 
 };

@@ -1,9 +1,9 @@
-#include "iostream.h"
-#include "string.h"
+#include <iostream>
+#include <string>
 #include "Position.h"
 
-#ifndef "WIN_CASE_H"
-#define "WIN_CASE_H"
+#ifndef WIN_CASE_H
+#define WIN_CASE_H
 class Position;
 class Win_Case{
 

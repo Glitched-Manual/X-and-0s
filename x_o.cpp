@@ -10,6 +10,7 @@
 #include "Grid.h"
 #include "Player.h"
 #include "AI.h"
+#include "Game.h"
 
 
 int main()
