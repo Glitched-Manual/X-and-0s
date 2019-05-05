@@ -1,3 +1,6 @@
+#include "iostream"
+#include "string"
+
 #ifndef POSITION_H
 #define POSITION_H
 

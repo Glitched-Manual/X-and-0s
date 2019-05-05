@@ -1,3 +1,10 @@
+#include "iostream"
+#include "string"
+#include "Position.h"
+
+#ifndef "TILE_H"
+#define "TILE_H"
+class Position;
 
 class Tile{
 
@@ -19,3 +26,4 @@ void SetTilePosition(int passed_x, int passed_y);
 Position GetTilePosition(){return tile_position;}
 
 };
+#endif //TILE_H

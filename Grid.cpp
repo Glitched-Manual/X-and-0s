@@ -1,6 +1,6 @@
 #include "Grid.h"
 
-Grid ::Grid()
+Grid::Grid()
 {
     SetGameTiles();
     std::cout << "Tiles set" << std::endl;

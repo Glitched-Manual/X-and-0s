@@ -1,5 +1,13 @@
+#include "iostream"
+#include "string"
+#include "Grid.h"
+#include "Win_Case.h"
+
 #ifndef "GAME_H"
 #define "GAME_H"
+
+class Win_case;
+class Grid;
 
 class Game{
 
