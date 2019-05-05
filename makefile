@@ -1,7 +1,7 @@
 #tic tac toe makefile
 
 #OBJS specifies which files to compile as part of the project
-OBJS = x_o.cpp Position.h
+OBJS = x_o.cpp Position.h AI.h AI.cpp Player.h Player.cpp Game.h Game.cpp Grid.h Grid.cpp Tile.cpp Tile.h Win_Case.cpp Win_Case.h
 
 #CC specifies which compiler we're using
 CC = g++
