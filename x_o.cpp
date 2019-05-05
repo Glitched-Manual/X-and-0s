@@ -70,7 +70,7 @@ tile_position.y = passed_y;
 
 class Grid{
 
-Tile game_tiles[3][3];
+Tile* game_tiles[3][3];
 
 public:
 
@@ -80,13 +80,14 @@ void DisplayGrid();
 
 void SetGameTiles();
 
-Tile GetGameTile(int passed_x, int passed_y){return game_tiles[passed_x][passed_y];}
+Tile* GetGameTile(int passed_x, int passed_y){return game_tiles[passed_x][passed_y];}
 
 };
 
 Grid ::Grid()
 {
     SetGameTiles();
+    std::cout << "Tiles set" << std::endl;
 }
 
 void Grid::SetGameTiles()
@@ -95,7 +96,7 @@ void Grid::SetGameTiles()
     {
         for(unsigned int xi = 0; xi < 3; xi++)
         {
-             game_tiles[xi][yi].SetTilePosition(xi,yi);
+             GetGameTile(xi,yi)->SetTilePosition(xi,yi);
         }
     }
 }
@@ -117,7 +118,7 @@ for(unsigned int yi = 0; yi < 3; yi++)
         for(unsigned int xi = 0; xi < 3; xi++)
         {
             // game_tiles[xi][yi].SetTilePosition(xi,yi);
-           std::cout << " " << GetGameTile(xi,yi).GetTileMark() << " |";
+           std::cout << " " << GetGameTile(xi,yi)->GetTileMark() << " |";
           //if x == 2 add "\n" and "-----\n"  
           if(xi==2)
 	  {
@@ -140,14 +141,14 @@ class Game{
 
 bool Game_Over;
 
-Grid game_grid;
+Grid* game_grid;
 
 Win_Case win_cases[8];
 unsigned int turn_phase;
 public:
 Game();
 
-Grid GetGameGrid(){ return game_grid;}
+Grid* GetGameGrid(){ return game_grid;}
 int GetTurnPhase(){ return turn_phase; }
 void PlayerWin(Position passed_position);
 
@@ -211,19 +212,19 @@ int main()
 Game game;
 //game.GetGameGrid().SetGameTile(0,0);
 
-game.GetGameGrid().DisplayGrid();
+game.GetGameGrid()->DisplayGrid();
 
 //set tile mark
-game.GetGameGrid().GetGameTile(1,1).SetTileMark("!");
+game.GetGameGrid()->GetGameTile(1,1)->SetTileMark("!");
 
-//display changed grid
+std::cout << "\nGet mark test result : " << game.GetGameGrid()->GetGameTile(1,1)->GetTileMark()<< "\n" << std::endl;
+// did not change as expected. Changing to objects to pointers caused a segmentation fault
 
-game.GetGameGrid().DisplayGrid();
+game.GetGameGrid()->DisplayGrid();
 
-std::cout << "it works" << std::endl;
+//std::cout << "it works" << std::endl;
 
 return 0;
 
 }
-
 
