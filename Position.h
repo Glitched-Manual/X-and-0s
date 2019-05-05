@@ -1,5 +1,5 @@
-#include "iostream"
-#include "string"
+#include "iostream.h"
+#include "string.h"
 
 #ifndef POSITION_H
 #define POSITION_H

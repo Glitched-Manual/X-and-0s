@@ -1,5 +1,5 @@
-#include "iostream"
-#include "string"
+#include "iostream.h"
+#include "string.h"
 #include "Grid.h"
 #include "Win_Case.h"
 

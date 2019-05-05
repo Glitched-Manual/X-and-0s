@@ -1,5 +1,5 @@
-#include "iostream"
-#include "string"
+#include "iostream.h"
+#include "string.h"
 #include "Position.h"
 
 #ifndef "TILE_H"
