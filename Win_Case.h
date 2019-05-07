@@ -15,7 +15,7 @@ public:
 
 void SetPositionCombination();
 
-Position* GetCombination(){ return combination; }
+Position GetCombination(int passed_index);
 
 std::string GetWinCaseID(){ return win_case_id; }
 

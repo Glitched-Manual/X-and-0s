@@ -2,6 +2,7 @@
 
 Game::Game()
 {
+game_grid = new Grid;
 Game_Over = false;
 }
 

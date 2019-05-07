@@ -12,7 +12,7 @@ void Grid::SetGameTiles()
     {
         for(unsigned int xi = 0; xi < 3; xi++)
         {
-             GetGameTile(xi,yi)->SetTilePosition(xi,yi);
+             GetGameTile(xi,yi).SetTilePosition(xi,yi);
         }
     }
 }
@@ -34,7 +34,7 @@ for(unsigned int yi = 0; yi < 3; yi++)
         for(unsigned int xi = 0; xi < 3; xi++)
         {
             // game_tiles[xi][yi].SetTilePosition(xi,yi);
-           std::cout << " " << GetGameTile(xi,yi)->GetTileMark() << " |";
+           std::cout << " " << *GetGameTile(xi,yi).GetTileMark() << " |";
           //if x == 2 add "\n" and "-----\n"  
           if(xi==2)
 	  {
