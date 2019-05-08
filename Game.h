@@ -1,16 +1,23 @@
 #include "Grid.h"
 #include "Win_Case.h"
+#include "Player.h"
+#include "AI.h"
 
 #ifndef GAME_H
 #define GAME_H
 
 class Win_case;
 class Grid;
+class Player;
+class AI;
 
 class Game{
+//Player* pos_1
 
+//Player pos_2;
+unsigned int total_turns;
 bool Game_Over;
-
+bool quit;
 Grid* game_grid;
 
 Win_Case win_cases[8];
@@ -20,7 +27,7 @@ Game();
 
 Grid* GetGameGrid(){ return game_grid;}
 int GetTurnPhase(){ return turn_phase; }
-void PlayerWin(Position passed_position);
+bool PlayerWin();
 
 void LoadWinCases();
 

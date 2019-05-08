@@ -2,21 +2,39 @@
 
 Game::Game()
 {
+total_turns = 0;
 game_grid = new Grid;
 Game_Over = false;
+quit = false;
 }
 
 void Game::GameLoop()
 {
 
-
-  while((Game_Over == false))
+//Game.turn non sdl2 redendering version use events to not delay rendering
+  while((Game_Over == false)&&(quit == false))
   {
-	//turn 1
+    GetGameGrid()->DisplayGrid();
+	//turn 1 Player* pos1
+    if (total_turns % 2 == 0)
+     {
+	//get input, check, mark if tile is available
+     }
+        //turn 2 Player* pos or AI - ai inherits player class
+    else
+     {
 
-        //turn 2
-  }
+     }
+   //check for win if total_turns > 4
+   total_turns++;
+    if(total_turns > 4)
+     {
+       //scan through list of win cases for match. trigger Game_Over if match is found
 
+     }  
+}
+
+  
 }
 
 void Game::LoadWinCases()
@@ -27,20 +45,16 @@ void Game::LoadWinCases()
 }
 
 
-void Game::PlayerWin(Position passed_position)
+bool Game::PlayerWin()
 
 {
 
-//get play position -> passed_position
+
+//check win cases if a player has won
 
 
-//check win cases if position is included
-
-
-//check win case if all three positions are marked by player
-
-
-//if all three marked by player
+//if true fink out which player won by the marks
+ // make sure both payers do not have the same mark
 
 }
 
