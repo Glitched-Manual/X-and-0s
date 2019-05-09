@@ -10,7 +10,7 @@ class Win_case;
 class Grid;
 class Player;
 class AI;
-
+class Position;
 class Game{
 //Player* pos_1
 
@@ -24,7 +24,8 @@ Win_Case win_cases[8];
 unsigned int turn_phase;
 public:
 Game();
-
+//filter check then mark
+bool FilterUserInput(std::string raw_input_string,Position& passed_position);
 Grid* GetGameGrid(){ return game_grid;}
 int GetTurnPhase(){ return turn_phase; }
 bool PlayerWin();
