@@ -20,6 +20,9 @@ int main()
 Game* game;
 
 game = new Game;
+
+game->GameLoop();
+/*
 game->GetGameGrid()->SetGameTiles();
 
 game->GetGameGrid()->DisplayGrid();
@@ -35,7 +38,7 @@ game->GetGameGrid()->DisplayGrid();
 //std::cout << "it works" << std::endl;
 
 // did not change as expected. Changing to objects to pointers caused a segmentation fault
-
+*/
 return 0;
 
 }

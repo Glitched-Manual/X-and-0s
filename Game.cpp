@@ -32,19 +32,24 @@ void Game::GameLoop()
 	Position position_to_mark_obj;
     
 	//input Player.GetInput # non sdl version
-          FilterUserInput(player_pos_1->GetPlayerInput(),position_to_mark_obj);
+
+std::string p1_input = player_pos_1->GetPlayerInput(&quit);
+ if(quit) break;
+      if(FilterUserInput(p1_input,position_to_mark_obj))
+       {
         //check if player can mark square
         if(CheckIfTileIsAvailable(position_to_mark_obj))
 	{
         //mark square if available
 	  SetTileMark(position_to_mark_obj);
-	total_turns++;
+	//total_turns++; caused endless loop other comment stuck on other players turn
 	}
+       }
      }
         //turn 2 Player* pos or AI - ai inherits player class
     else
      {
-      total_turns++;
+      //total_turns++;
      }
    //check for win if total_turns > 4
    //total_turns++; add to true case of if square available case
@@ -110,7 +115,7 @@ for(unsigned int ind=0; ind < raw_input_string.length(); ind++)
         }
     }  
 }
-std::cout << x_pos <<"," << y_pos <<std::endl;
+//std::cout << x_pos <<"," << y_pos <<std::endl;
 
 if((mode == y_cord)&(filter_successful))
 {

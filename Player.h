@@ -11,6 +11,6 @@ Player();
 ~Player();
 
 //optional use by player maybe needed by ai
-std::string GetPlayerInput();
+std::string GetPlayerInput(bool* quit);
 };
 #endif //PLAYER_H
