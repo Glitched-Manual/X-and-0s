@@ -10,6 +10,14 @@ Game_Over = false;
 quit = false;
 }
 
+Game::~Game()
+{
+delete Player* player_pos_1;
+delete Player* player_pos_2;
+delete game_grid;
+
+}
+
 void Game::GameLoop()
 {
 
@@ -24,15 +32,19 @@ void Game::GameLoop()
 	Position position_to_mark_obj;
     
 	//input Player.GetInput # non sdl version
-          FilterUserInput();
+          FilterUserInput(player_pos_1->GetUserInput(),position_to_mark_obj);
         //check if player can mark square
-       
+        if(CheckIfTileIsAvailable(Position passed_position_to_check))
+	{
         //mark square if available
+	  SetTileMark(Position passed_position_to_check);
+	total_turns++;
+	}
      }
         //turn 2 Player* pos or AI - ai inherits player class
     else
      {
-
+      total_turns++;
      }
    //check for win if total_turns > 4
    //total_turns++; add to true case of if square available case
@@ -46,8 +58,25 @@ void Game::GameLoop()
   
 }
 
+bool Game::SetTileMark(Position position_to_mark)
+{
+game->GetGameGrid()->GetGameTile(position_to_mark.x,position_to_mark.y).SetTileMark("$");
 
-bool FilterUserInput(std::string raw_input_string,Position& passed_position)
+
+}
+bool Game::CheckIfTileIsAvailable(Position passed_position_to_check)
+{
+
+if((GetGameGrid()->GetGameTile(passed_position_to_check.x,passed_position_to_check.y).GetTIleIsMarkedStatus()) == true)
+{
+std::cout << "Game::CheckIfTileIsAvailable error tile is already marked" << std::endl;
+return false;
+}
+
+return true;
+}
+
+bool Game:: FilterUserInput(std::string raw_input_string,Position& passed_position)
 {
 
 

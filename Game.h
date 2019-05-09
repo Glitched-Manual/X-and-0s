@@ -2,6 +2,7 @@
 #include "Win_Case.h"
 #include "Player.h"
 #include "AI.h"
+#include <memory>
 
 #ifndef GAME_H
 #define GAME_H
@@ -13,8 +14,9 @@ class AI;
 class Position;
 class Game{
 //Player* pos_1
-
+Player* player_pos_1
 //Player pos_2;
+Player* player_pos_2
 unsigned int total_turns;
 bool Game_Over;
 bool quit;
@@ -26,6 +28,7 @@ public:
 Game();
 //filter check then mark
 bool FilterUserInput(std::string raw_input_string,Position& passed_position);
+bool CheckIfTileIsAvailable(Position passed_position_to_check);
 Grid* GetGameGrid(){ return game_grid;}
 int GetTurnPhase(){ return turn_phase; }
 bool PlayerWin();
