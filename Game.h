@@ -14,9 +14,9 @@ class AI;
 class Position;
 class Game{
 //Player* pos_1
-Player* player_pos_1
+Player* player_pos_1;
 //Player pos_2;
-Player* player_pos_2
+Player* player_pos_2;
 unsigned int total_turns;
 bool Game_Over;
 bool quit;
@@ -26,6 +26,7 @@ Win_Case win_cases[8];
 unsigned int turn_phase;
 public:
 Game();
+~Game();
 //filter check then mark
 bool FilterUserInput(std::string raw_input_string,Position& passed_position);
 bool CheckIfTileIsAvailable(Position passed_position_to_check);
@@ -36,6 +37,6 @@ bool PlayerWin();
 void LoadWinCases();
 
 void GameLoop();
-
+void SetTileMark(Position position_to_mark);
 };
 #endif //GAME_H

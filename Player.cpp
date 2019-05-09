@@ -15,7 +15,7 @@ std::string Player::GetPlayerInput()
 
 std::string player_string_input;
 
-std::cin.getline(cin,player_string_input);
+std::getline(std::cin,player_string_input);
 std::cin.ignore(1000,'\n');
 std::cin.clear();
 

@@ -12,8 +12,8 @@ quit = false;
 
 Game::~Game()
 {
-delete Player* player_pos_1;
-delete Player* player_pos_2;
+delete player_pos_1;
+delete player_pos_2;
 delete game_grid;
 
 }
@@ -32,12 +32,12 @@ void Game::GameLoop()
 	Position position_to_mark_obj;
     
 	//input Player.GetInput # non sdl version
-          FilterUserInput(player_pos_1->GetUserInput(),position_to_mark_obj);
+          FilterUserInput(player_pos_1->GetPlayerInput(),position_to_mark_obj);
         //check if player can mark square
-        if(CheckIfTileIsAvailable(Position passed_position_to_check))
+        if(CheckIfTileIsAvailable(position_to_mark_obj))
 	{
         //mark square if available
-	  SetTileMark(Position passed_position_to_check);
+	  SetTileMark(position_to_mark_obj);
 	total_turns++;
 	}
      }
@@ -57,13 +57,14 @@ void Game::GameLoop()
 
   
 }
-
-bool Game::SetTileMark(Position position_to_mark)
+//lol forgot to chach from bool to void
+void Game::SetTileMark(Position position_to_mark)
 {
-game->GetGameGrid()->GetGameTile(position_to_mark.x,position_to_mark.y).SetTileMark("$");
+GetGameGrid()->GetGameTile(position_to_mark.x,position_to_mark.y).SetTileMark("$");
 
 
 }
+
 bool Game::CheckIfTileIsAvailable(Position passed_position_to_check)
 {
 
@@ -116,8 +117,8 @@ if((mode == y_cord)&(filter_successful))
 
  if((x_pos < 3)&(y_pos < 3))
    {
-    *passed_position.x = x_pos;
-    *passed_position.y = y_pos;
+    passed_position.x = x_pos;
+    passed_position.y = y_pos;
    }
  else
    { 
