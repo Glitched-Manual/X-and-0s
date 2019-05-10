@@ -37,6 +37,7 @@ bool PlayerWin();
 void LoadWinCases();
 
 void GameLoop();
-void SetTileMark(Position position_to_mark);
+void SetTileMark(Position position_to_mark,Player* current_player);
+int PlayerTurn(Player* current_player);
 };
 #endif //GAME_H

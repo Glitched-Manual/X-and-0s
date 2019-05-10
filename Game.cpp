@@ -8,6 +8,9 @@ Player* player_pos_2 = new Player;
 game_grid = new Grid;
 Game_Over = false;
 quit = false;
+
+player_pos_1->SetPlayerMark("!");
+player_pos_2->SetPlayerMark("#");
 }
 
 Game::~Game()
@@ -33,15 +36,15 @@ void Game::GameLoop()
     
 	//input Player.GetInput # non sdl version
 
-std::string p1_input = player_pos_1->GetPlayerInput(&quit);
- if(quit) break;
+     std::string p1_input = player_pos_1->GetPlayerInput(&quit);
+     if(quit) break;
       if(FilterUserInput(p1_input,position_to_mark_obj))
        {
         //check if player can mark square
         if(CheckIfTileIsAvailable(position_to_mark_obj))
 	{
         //mark square if available
-	  SetTileMark(position_to_mark_obj);
+	  SetTileMark(position_to_mark_obj,player_pos_1);
 	//total_turns++; caused endless loop other comment stuck on other players turn
 	}
        }
@@ -62,10 +65,22 @@ std::string p1_input = player_pos_1->GetPlayerInput(&quit);
 
   
 }
-//lol forgot to chach from bool to void
-void Game::SetTileMark(Position position_to_mark)
+//returns status codes 
+/*
+0 - quit
+1 - success
+2 - value failure
+3 - already marked
+*/
+int PlayerTurn(Player* current_player)
 {
-GetGameGrid()->GetGameTile(position_to_mark.x,position_to_mark.y).SetTileMark("$");
+}
+
+//lol forgot to change the type from bool to void
+//add player_obj to get players mark
+void Game::SetTileMark(Position position_to_mark,Player* current_player)
+{
+GetGameGrid()->GetGameTile(position_to_mark.x,position_to_mark.y).SetTileMark(current_player->GetPlayerMark());
 
 
 }
