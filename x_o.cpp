@@ -20,7 +20,9 @@ int main()
 Game* game;
 
 game = new Game;
-
+//Player p1;
+//p1.SetPlayerMark("N");
+//std::cout << p1.GetPlayerMark() << std::endl;
 game->GameLoop();
 /*
 game->GetGameGrid()->SetGameTiles();

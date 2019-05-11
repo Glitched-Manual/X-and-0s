@@ -4,7 +4,8 @@ Tile::Tile()
 {
 tile_mark = new std::string;
 tile_position = new Position;
-tile_is_marked = false;
+tile_is_marked = new bool;
+*tile_is_marked = false;
 *tile_mark = "?";
 }
 

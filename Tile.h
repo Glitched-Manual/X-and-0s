@@ -10,18 +10,18 @@ class Tile{
 
 Position* tile_position;
 
-bool tile_is_marked;
+bool* tile_is_marked;
 
 std::string* tile_mark;
 
 public:
 
 Tile();
-void SetTileMark(std::string passed_mark){ *tile_mark = passed_mark; tile_is_marked = true;}
+void SetTileMark(std::string passed_mark){ *tile_mark = passed_mark; *tile_is_marked = true;}
 
 std::string* GetTileMark(){ return tile_mark; }
 
-bool GetTIleIsMarkedStatus(){ return tile_is_marked;}
+bool* GetTIleIsMarkedStatus(){ return tile_is_marked;}
 
 void SetTilePosition(int passed_x, int passed_y);
 

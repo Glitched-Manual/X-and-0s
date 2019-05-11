@@ -37,7 +37,7 @@ bool PlayerWin();
 void LoadWinCases();
 
 void GameLoop();
-void SetTileMark(Position position_to_mark,Player* current_player);
+void SetTileMark(Position position_to_mark,std::string player_mark);
 int PlayerTurn(Player* current_player);
 };
 #endif //GAME_H

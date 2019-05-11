@@ -3,8 +3,8 @@
 Game::Game()
 {
 total_turns = 0;
-Player* player_pos_1 = new Player;
-Player* player_pos_2 = new Player;
+player_pos_1 = new Player; //lol fully redeclared before going out out scope or passing value into args cause segmentation errors
+player_pos_2 = new Player;
 game_grid = new Grid;
 Game_Over = false;
 quit = false;
@@ -31,28 +31,16 @@ void Game::GameLoop()
 	//turn 1 Player* pos1
     if (total_turns % 2 == 0)
      {
-	//get input, check, mark if tile is available
-	Position position_to_mark_obj;
-    
-	//input Player.GetInput # non sdl version
+	int p1_turn = PlayerTurn(player_pos_1);
 
-     std::string p1_input = player_pos_1->GetPlayerInput(&quit);
-     if(quit) break;
-      if(FilterUserInput(p1_input,position_to_mark_obj))
-       {
-        //check if player can mark square
-        if(CheckIfTileIsAvailable(position_to_mark_obj))
-	{
-        //mark square if available
-	  SetTileMark(position_to_mark_obj,player_pos_1);
-	//total_turns++; caused endless loop other comment stuck on other players turn
-	}
-       }
+       if(p1_turn == 0) break;
      }
         //turn 2 Player* pos or AI - ai inherits player class
     else
      {
-      //total_turns++;
+      int p2_turn = PlayerTurn(player_pos_2);
+
+       if(p2_turn == 0) break;
      }
    //check for win if total_turns > 4
    //total_turns++; add to true case of if square available case
@@ -72,23 +60,45 @@ void Game::GameLoop()
 2 - value failure
 3 - already marked
 */
-int PlayerTurn(Player* current_player)
+int Game::PlayerTurn(Player* current_player)
 {
+        //get input, check, mark if tile is available
+  Position position_to_mark_obj;    
+
+	//input Player.GetInput # non sdl version
+
+     std::string p1ayer_input = current_player->GetPlayerInput(&quit);
+  if(quit)
+    {
+	return 0;
+    }
+      if(FilterUserInput(p1ayer_input,position_to_mark_obj))
+       {
+        //check if player can mark square
+          if(CheckIfTileIsAvailable(position_to_mark_obj))
+	  {
+           //mark square if available
+           SetTileMark(position_to_mark_obj,*current_player->GetPlayerMark());//triggers segmentation error
+	   total_turns++; //caused endless loop other comment stuck on other players turn
+          }
+        }
+ return 1;
 }
 
 //lol forgot to change the type from bool to void
 //add player_obj to get players mark
-void Game::SetTileMark(Position position_to_mark,Player* current_player)
+void Game::SetTileMark(Position position_to_mark,std::string player_mark)
 {
-GetGameGrid()->GetGameTile(position_to_mark.x,position_to_mark.y).SetTileMark(current_player->GetPlayerMark());
 
+GetGameGrid()->GetGameTile(position_to_mark.x,position_to_mark.y).SetTileMark(player_mark);
 
+//current_player.GetPlayerMark(); causes segmentation error
 }
 
 bool Game::CheckIfTileIsAvailable(Position passed_position_to_check)
 {
 
-if((GetGameGrid()->GetGameTile(passed_position_to_check.x,passed_position_to_check.y).GetTIleIsMarkedStatus()) == true)
+if((*GetGameGrid()->GetGameTile(passed_position_to_check.x,passed_position_to_check.y).GetTIleIsMarkedStatus()) == true)
 {
 std::cout << "Game::CheckIfTileIsAvailable error tile is already marked" << std::endl;
 return false;
