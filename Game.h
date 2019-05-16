@@ -36,7 +36,7 @@ int GetTurnPhase(){ return turn_phase; }
 bool PlayerWin(Player* passed_player);
 
 void LoadWinCases();
-Win_Case GetWincase(int win_case_index);
+Win_Case* GetWincase(int win_case_index);
 void GameLoop();
 void SetTileMark(Position position_to_mark,std::string player_mark);
 int PlayerTurn(Player* current_player);

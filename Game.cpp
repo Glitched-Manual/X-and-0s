@@ -6,11 +6,17 @@ total_turns = 0;
 player_pos_1 = new Player; //lol fully redeclared before going out out scope or passing value into args cause segmentation errors
 player_pos_2 = new Player;
 game_grid = new Grid;
+
+for(int wc=0;wc<8;wc++)
+{
+ win_cases[wc] = new Win_Case;
+}
 Game_Over = false;
 quit = false;
 win_cases_loaded = false;
 player_pos_1->SetPlayerMark("!");
 player_pos_2->SetPlayerMark("#");
+LoadWinCases();
 }
 
 Game::~Game()
@@ -197,19 +203,20 @@ return true;
 
 void Game::LoadWinCases()
 {
-win_cases[0].SetWinCaseCombination(Position(0,0),Position(1,0),Position(2,0));
-win_cases[1].SetWinCaseCombination(Position(0,1),Position(1,1),Position(2,1));
-win_cases[2].SetWinCaseCombination(Position(0,2),Position(1,2),Position(2,2));
-win_cases[3].SetWinCaseCombination(Position(0,0),Position(0,1),Position(0,2));
-win_cases[4].SetWinCaseCombination(Position(1,0),Position(1,1),Position(1,2));
-win_cases[5].SetWinCaseCombination(Position(2,0),Position(2,1),Position(2,2));
-win_cases[6].SetWinCaseCombination(Position(0,0),Position(1,1),Position(2,2));
-win_cases[7].SetWinCaseCombination(Position(2,0),Position(1,1),Position(0,2));
+win_cases[0]->SetWinCaseCombination(Position(0,0),Position(1,0),Position(2,0));
+win_cases[1]->SetWinCaseCombination(Position(0,1),Position(1,1),Position(2,1));
+win_cases[2]->SetWinCaseCombination(Position(0,2),Position(1,2),Position(2,2));
+win_cases[3]->SetWinCaseCombination(Position(0,0),Position(0,1),Position(0,2));
+win_cases[4]->SetWinCaseCombination(Position(1,0),Position(1,1),Position(1,2));
+win_cases[5]->SetWinCaseCombination(Position(2,0),Position(2,1),Position(2,2));
+win_cases[6]->SetWinCaseCombination(Position(0,0),Position(1,1),Position(2,2));
+win_cases[7]->SetWinCaseCombination(Position(2,0),Position(1,1),Position(0,2));
 
 win_cases_loaded = true;
+
 }
 
-Win_Case Game::GetWincase(int win_case_index)
+Win_Case* Game::GetWincase(int win_case_index)
 {
 
 if(win_case_index > 7)
@@ -236,7 +243,7 @@ int mark_true_case = 0;
 
     for(int wincase_combination_index = 0; wincase_combination_index <3; wincase_combination_index++)
      {
-       if(*passed_player->GetPlayerMark() == *GetGameGrid()->GetGameTile(GetWincase(wincase_index).GetCombination(wincase_combination_index).x,GetWincase(wincase_index).GetCombination(wincase_combination_index).y).GetTileMark())  
+       if(*passed_player->GetPlayerMark() == *GetGameGrid()->GetGameTile(GetWincase(wincase_index)->GetCombination(wincase_combination_index).x,GetWincase(wincase_index)->GetCombination(wincase_combination_index).y).GetTileMark())  
         {
            mark_true_case++;
         }
