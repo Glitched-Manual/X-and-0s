@@ -7,13 +7,13 @@
 class Position;
 class Win_Case{
 
-Position combination[3];
+Position* combination[3];
 
 std::string win_case_id;
 
 public:
 
-void SetPositionCombination();
+void SetWinCaseCombination(Position first_position, Position second_position,Position third_position);
 
 Position GetCombination(int passed_index);
 

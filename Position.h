@@ -6,7 +6,9 @@
 
 class Position{
 public:
-int x;
-int y;
+Position(){}
+Position(int passed_x,int passed_y){ *x = passed_x; *y = passed_y;}
+int* x;
+int* y;
 };
 #endif //POSITION_H

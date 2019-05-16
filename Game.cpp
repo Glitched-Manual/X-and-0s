@@ -8,7 +8,7 @@ player_pos_2 = new Player;
 game_grid = new Grid;
 Game_Over = false;
 quit = false;
-
+win_cases_loaded = false;
 player_pos_1->SetPlayerMark("!");
 player_pos_2->SetPlayerMark("#");
 }
@@ -47,8 +47,30 @@ void Game::GameLoop()
     if(total_turns > 4)
      {
        //scan through list of win cases for match. trigger Game_Over if match is found
-
+       // if player 2 turn is next
+      if(total_turns % 2 == 0)
+        {
+           // bool check if player1 won
+        if(PlayerWin(player_pos_1))
+           {
+            Game_Over = true;
+          }
+        }
+      else if(total_turns % 2 == 1)
+        {
+          // bool check if player2 won
+	   if(PlayerWin(player_pos_2))
+           {
+            Game_Over = true;
+          }
+        }                 
      }  
+    if((total_turns > 8)&&(Game_Over == false)){
+      //Draw case
+
+      Game_Over = true;
+     std::cout << "Draw!" << std::endl;
+     }
 }
 
   
@@ -59,6 +81,7 @@ void Game::GameLoop()
 1 - success
 2 - value failure
 3 - already marked
+4 - blank input
 */
 int Game::PlayerTurn(Player* current_player)
 {
@@ -71,6 +94,12 @@ int Game::PlayerTurn(Player* current_player)
   if(quit)
     {
 	return 0;
+    }
+  else if(p1ayer_input == "")
+    {
+   std::cout << "No input found. Please enter a position example \"1x1\"" << std::endl;
+   
+        return 4;
     }
       if(FilterUserInput(p1ayer_input,position_to_mark_obj))
        {
@@ -168,14 +197,29 @@ return true;
 
 void Game::LoadWinCases()
 {
+win_cases[0].SetWinCaseCombination(Position(0,0),Position(1,0),Position(2,0));
+win_cases[1].SetWinCaseCombination(Position(0,1),Position(1,1),Position(2,1));
+win_cases[2].SetWinCaseCombination(Position(0,2),Position(1,2),Position(2,2));
+win_cases[3].SetWinCaseCombination(Position(0,0),Position(0,1),Position(0,2));
+win_cases[4].SetWinCaseCombination(Position(1,0),Position(1,1),Position(1,2));
+win_cases[5].SetWinCaseCombination(Position(2,0),Position(2,1),Position(2,2));
+win_cases[6].SetWinCaseCombination(Position(0,0),Position(1,1),Position(2,2));
+win_cases[7].SetWinCaseCombination(Position(2,0),Position(1,1),Position(0,2));
 
-//win_cases[0].
+win_cases_loaded = true;
+}
+
+Win_Case Game::GetWincase(int win_case_index)
+{
+
+if(win_case_index > 7)
+{
+ win_case_index = win_case_index % 8;
+}
 
 }
 
-
-bool Game::PlayerWin()
-
+bool Game::PlayerWin(Player* passed_player)
 {
 
 
@@ -184,6 +228,28 @@ bool Game::PlayerWin()
 
 //if true fink out which player won by the marks
  // make sure both payers do not have the same mark
+int mark_true_case = 0;
 
+  for(int wincase_index = 0; wincase_index <8; wincase_index++)
+  {
+   mark_true_case = 0;
+
+    for(int wincase_combination_index = 0; wincase_combination_index <3; wincase_combination_index++)
+     {
+       if(*passed_player->GetPlayerMark() == *GetGameGrid()->GetGameTile(GetWincase(wincase_index).GetCombination(wincase_combination_index).x,GetWincase(wincase_index).GetCombination(wincase_combination_index).y).GetTileMark())  
+        {
+           mark_true_case++;
+        }
+
+     }	
+      // check if three matches were found
+    if(mark_true_case == 3)
+      {
+      // trigger wincase
+       std::cout<< "Player "<< passed_player->GetPlayerMark() << " Wins!!"<< std::endl;
+       return true;
+      }
+  } 
+return false;
 }
 
