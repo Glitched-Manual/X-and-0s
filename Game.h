@@ -29,16 +29,17 @@ public:
 Game();
 ~Game();
 //filter check then mark
-bool FilterUserInput(std::string raw_input_string,Position& passed_position);
-bool CheckIfTileIsAvailable(Position passed_position_to_check);
+bool FilterUserInput(std::string raw_input_string,Position* passed_position);
+bool CheckIfTileIsAvailable(Position* passed_position_to_check);
 Grid* GetGameGrid(){ return game_grid;}
 int GetTurnPhase(){ return turn_phase; }
 bool PlayerWin(Player* passed_player);
 
 void LoadWinCases();
 Win_Case* GetWincase(int win_case_index);
+Win_Case** GetWincases(){return win_cases;}
 void GameLoop();
-void SetTileMark(Position position_to_mark,std::string player_mark);
+void SetGameTileMark(Position* position_to_mark,std::string player_mark);
 int PlayerTurn(Player* current_player);
 };
 #endif //GAME_H

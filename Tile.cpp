@@ -13,9 +13,9 @@ void Tile ::SetTilePosition(int passed_x, int passed_y)
 
 {
 
-tile_position->x = passed_x;
+tile_position->SetX(passed_x);
 
-tile_position->y = passed_y;
+tile_position->SetY(passed_y);
 
 }
 

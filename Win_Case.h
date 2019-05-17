@@ -7,7 +7,7 @@
 class Position;
 class Win_Case{
 
-Position combination[3];
+Position* combination[3];
 
 std::string win_case_id;
 
@@ -16,7 +16,7 @@ Win_Case();
 ~Win_Case();
 void SetWinCaseCombination(Position first_position, Position second_position,Position third_position);
 
-Position GetCombination(int passed_index);
+Position* GetCombination(int passed_index);
 
 std::string GetWinCaseID(){ return win_case_id; }
 

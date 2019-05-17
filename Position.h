@@ -9,8 +9,14 @@ public:
 Position();
 Position(int passed_x,int passed_y);
 ~Position();
-int x;
-int y;
+int* GetX(){ return x;}
+int* GetY(){ return y;}
+
+void SetX(int passed_x){ *x = passed_x;}
+void SetY(int passed_y){ *y = passed_y;}
+private:
+int* x;
+int* y;
 };
 #endif //POSITION_H
 
