@@ -26,7 +26,7 @@ delete player_pos_2;
 delete game_grid;
 
 }
-
+//create version where ai is passed as arg
 void Game::GameLoop()
 {
 

@@ -15,32 +15,40 @@
 
 int main()
 {
-
+//create method that calls everything - create obj by after declaration
 
 Game* game;
 
 game = new Game;
-//Player p1;
-//p1.SetPlayerMark("N");
-//std::cout << p1.GetPlayerMark() << std::endl;
-game->GameLoop();
+
 /*
-game->GetGameGrid()->SetGameTiles();
+1.Call start game method 
 
-game->GetGameGrid()->DisplayGrid();
+2.Select game mode - within startGame
 
-//set tile mark
-game->GetGameGrid()->GetGameTile(1,0).SetTileMark("$");
+char gameModeSector;
+while( (gameModeSector != '0')||(gameModeSector != '1')||(gameModeSector != 'q'))
+{
 
-std::cout << "\nGet mark test result : " << game->GetGameGrid()->GetGameTile(1,0).GetTilePosition()->x <<", " << game->GetGameGrid()->GetGameTile(1,0).GetTilePosition()->y <<"\n" << std::endl;
-//display changed grid - did not work
+std::cin >> gameModeSector;
 
-game->GetGameGrid()->DisplayGrid();
+// 
 
-//std::cout << "it works" << std::endl;
+std::cin.ingnore()  
+std::cin.clear();
+}
 
-// did not change as expected. Changing to objects to pointers caused a segmentation fault
+3.Start using desired game loop
+
+game->GameLoop();
+
+4.End game ask if user wnts to play again - if yes clear required data start from 1
+       
+
 */
+
+
+
 return 0;
 
 }
