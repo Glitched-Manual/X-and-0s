@@ -270,3 +270,44 @@ std::cout <<"Marked case = "<<mark_true_case<<std::endl;
 return false;
 }
 
+void Game :: SelectGameMode()
+{
+
+ std::cout << "\tPlease select a Game mode" <<std::endl;
+
+ std::cout << "\t\nPlayer VS Player - Press 0" <<std::endl;
+
+ std::cout << "\t\nPlayer VS Computer - Press 1" <<std::endl;
+
+ std::cout << "\t\nTo quit - Press q" <<std::endl;
+
+char gameModeSector;
+        
+        // loop asks for value gameModeSector char , stops when desired value found
+	while ((gameModeSector != '0') && (gameModeSector != '1') && (gameModeSector != 'q'))
+	{           
+		std::cin >> gameModeSector;
+                std::cout << "gameModeSector = " << gameModeSector << std::endl;
+		 std::cin.ignore();
+	         std::cin.clear();
+	
+	}
+         // Default game loop Player vs Player
+        if(gameModeSector != '0')
+         {
+  	   GameLoop();
+         }
+         // Player vs AI
+        else if(gameModeSector != '1')
+         {
+	 }
+	 // End the game go back to start menu
+         else if(gameModeSector != 'q')
+	 {
+	 }    
+         else
+	 {
+              std:: cerr << "error Undefined option" << std::endl;
+	 }         
+
+}

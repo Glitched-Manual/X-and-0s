@@ -41,5 +41,6 @@ Win_Case** GetWincases(){return win_cases;}
 void GameLoop();
 void SetGameTileMark(Position* position_to_mark,std::string player_mark);
 int PlayerTurn(Player* current_player);
+void SelectGameMode();
 };
 #endif //GAME_H
