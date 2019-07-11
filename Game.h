@@ -27,6 +27,7 @@ Win_Case* win_cases[8];
 unsigned int turn_phase;
 public:
 Game();
+Game(const Game& passed_game_obj);
 ~Game();
 //filter check then mark
 bool FilterUserInput(std::string raw_input_string,Position* passed_position);

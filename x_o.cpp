@@ -3,7 +3,7 @@
 #include <vector>
 
 #include <string>
-
+#include <memory>
 #include "Position.h"
 #include "Win_Case.h"
 #include "Tile.h"
@@ -16,27 +16,21 @@
 int main()
 {
 //create method that calls everything - create obj by after declaration
+Game* game = new Game;
+//std::unique_ptr<Game> game;
+ 
+//game = = std::make_unique<Game>(new Game);
 
-Game* game;
+//StartGame Method
 
-game = new Game;
 
+
+game->SelectGameMode();
 /*
 1.Call start game method 
 
 2.Select game mode - within startGame
 
-char gameModeSector;
-while( (gameModeSector != '0')||(gameModeSector != '1')||(gameModeSector != 'q'))
-{
-
-std::cin >> gameModeSector;
-
-// 
-
-std::cin.ingnore()  
-std::cin.clear();
-}
 
 3.Start using desired game loop
 

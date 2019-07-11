@@ -19,6 +19,11 @@ player_pos_2->SetPlayerMark("#");
 LoadWinCases();
 }
 
+Game::Game(const Game& passed_game_obj)
+{
+
+}
+
 Game::~Game()
 {
 delete player_pos_1;
