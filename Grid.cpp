@@ -6,6 +6,11 @@ Grid::Grid()
     std::cout << "Tiles set" << std::endl;
 }
 
+Grid::~Grid()
+{
+	std::cout << "Grid Destructor called" << std::endl;
+}
+
 void Grid::SetGameTiles()
 { 
     for(unsigned int yi = 0; yi < 3; yi++)

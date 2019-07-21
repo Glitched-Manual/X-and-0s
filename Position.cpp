@@ -21,6 +21,7 @@ y = new int;
 
 Position::~Position()
 {
+	std::cout << "Postion Destroyed" << std::endl;
 delete x;
 delete y;
 }

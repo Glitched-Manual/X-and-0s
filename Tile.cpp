@@ -9,6 +9,11 @@ tile_is_marked = new bool;
 *tile_mark = "?";
 }
 
+Tile::~Tile()
+{
+	std::cout << "Tile Destructor called" << std::endl;
+}
+
 void Tile ::SetTilePosition(int passed_x, int passed_y)
 
 {

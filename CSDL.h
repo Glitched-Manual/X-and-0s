@@ -1,5 +1,5 @@
 #include "cross_sdl.h"
-//Standard Includes
+
 
 #include <iostream>
 #include <cstdio>

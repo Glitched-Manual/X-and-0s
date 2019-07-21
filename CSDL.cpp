@@ -28,7 +28,7 @@ bool CSDL::Init()
 
 		//Create window
 
-		if (!this->createSDLWindow())
+		if (!this->createSDLWindow(960, 720))
 		{
 			return false;
 		}

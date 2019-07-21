@@ -38,6 +38,7 @@ bool PlayerWin(Player* passed_player);
 void LoadWinCases();
 Win_Case* GetWincase(int win_case_index);
 Win_Case** GetWincases(){return win_cases;}
+void MainGameMenu();
 void GameLoop();
 void SetGameTileMark(Position* position_to_mark,std::string player_mark);
 int PlayerTurn(Player* current_player);

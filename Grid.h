@@ -13,6 +13,7 @@ Tile game_tiles[3][3];
 public:
 
 Grid();
+~Grid();
 
 void DisplayGrid();
 

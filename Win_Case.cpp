@@ -25,11 +25,13 @@ return combination[passed_index];
 
 Win_Case:: Win_Case()
 {
+	*combination = new Position[3];
 for(int combinations_ind = 0; combinations_ind < 3; combinations_ind++ )
 combination[combinations_ind] = new Position;
 }
 
 Win_Case:: ~Win_Case()
 {
+//errors deleting combination
 delete[] combination;
 }

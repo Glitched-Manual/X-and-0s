@@ -6,17 +6,18 @@ total_turns = 0;
 player_pos_1 = new Player; //lol fully redeclared before going out out scope or passing value into args cause segmentation errors
 player_pos_2 = new Player;
 game_grid = new Grid;
+std::cout << "initialize WinCases" << std::endl;
 
-for(int wc=0;wc<8;wc++)
-{
- GetWincases()[wc] = new Win_Case;
-}
+*win_cases = new Win_Case[8];
+std::cout << "initialized WinCases" << std::endl;
+
 Game_Over = false;
 quit = false;
 win_cases_loaded = false;
 player_pos_1->SetPlayerMark("!");
 player_pos_2->SetPlayerMark("#");
 LoadWinCases();
+std::cout << "loaded WinCases" << std::endl;
 }
 
 Game::~Game()
@@ -211,28 +212,29 @@ return true;
 
 void Game::LoadWinCases()
 {
-GetWincases()[0]->SetWinCaseCombination(Position(0,0),Position(1,0),Position(2,0));
-GetWincases()[1]->SetWinCaseCombination(Position(0,1),Position(1,1),Position(2,1));
-GetWincases()[2]->SetWinCaseCombination(Position(0,2),Position(1,2),Position(2,2));
-GetWincases()[3]->SetWinCaseCombination(Position(0,0),Position(0,1),Position(0,2));
-GetWincases()[4]->SetWinCaseCombination(Position(1,0),Position(1,1),Position(1,2));
-GetWincases()[5]->SetWinCaseCombination(Position(2,0),Position(2,1),Position(2,2));
-GetWincases()[6]->SetWinCaseCombination(Position(0,0),Position(1,1),Position(2,2));
-GetWincases()[7]->SetWinCaseCombination(Position(2,0),Position(1,1),Position(0,2));
+	std::cout << "Load Win case start" << std::endl;
+GetWincase(0)->SetWinCaseCombination(Position(0,0),Position(1,0),Position(2,0));
+GetWincase(1)->SetWinCaseCombination(Position(0,1),Position(1,1),Position(2,1));
+GetWincase(2)->SetWinCaseCombination(Position(0,2),Position(1,2),Position(2,2));
+GetWincase(3)->SetWinCaseCombination(Position(0,0),Position(0,1),Position(0,2));
+GetWincase(4)->SetWinCaseCombination(Position(1,0),Position(1,1),Position(1,2));
+GetWincase(5)->SetWinCaseCombination(Position(2,0),Position(2,1),Position(2,2));
+GetWincase(6)->SetWinCaseCombination(Position(0,0),Position(1,1),Position(2,2));
+GetWincase(7)->SetWinCaseCombination(Position(2,0),Position(1,1),Position(0,2));
 //GetWincase(0)->GetCombination(0)->SetX(0);
- std::cout << *GetWincases()[0]->GetCombination(0)->GetX() <<  std::endl;
+// std::cout << *GetWincase(0)->GetCombination(0)->GetX() <<  std::endl;
 win_cases_loaded = true;
 
 }
 
-Win_Case* Game::GetWincase(int win_case_index)
+ Win_Case* Game::GetWincase(int win_case_index)
 {
 
 if(win_case_index > 7)
 {
  win_case_index = win_case_index % 8;
 }
-
+return win_cases[win_case_index];
 }
 
 bool Game::PlayerWin(Player* passed_player)
@@ -252,7 +254,7 @@ int mark_true_case = 0;
 
     for(int wincase_combination_index = 0; wincase_combination_index <3; wincase_combination_index++)
      {
-       if(*passed_player->GetPlayerMark() == *GetGameGrid()->GetGameTile(*GetWincases()[wincase_index]->GetCombination(wincase_combination_index)->GetX(),*GetWincases()[wincase_index]->GetCombination(wincase_combination_index)->GetY()).GetTileMark())  
+       if(*passed_player->GetPlayerMark() == *GetGameGrid()->GetGameTile(*GetWincase(wincase_index)->GetCombination(wincase_combination_index)->GetX(),*GetWincase(wincase_index)->GetCombination(wincase_combination_index)->GetY()).GetTileMark())
         {
            ++mark_true_case;
 std::cout <<"Marked case = "<<mark_true_case<<std::endl;
@@ -270,3 +272,17 @@ std::cout <<"Marked case = "<<mark_true_case<<std::endl;
 return false;
 }
 
+void Game::MainGameMenu()
+{
+	/*
+	load 
+	
+	images audio
+	*/
+
+	//run
+
+	//close and clean
+
+
+}
