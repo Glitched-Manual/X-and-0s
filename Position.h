@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
-
+#include <memory>
+#include "Developer.h"
 #ifndef POSITION_H
 #define POSITION_H
 

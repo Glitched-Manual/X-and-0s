@@ -104,13 +104,13 @@ int Game::PlayerTurn(Player* current_player)
      std::string p1ayer_input = current_player->GetPlayerInput(&quit);
   if(quit)
     {
-delete position_to_mark_obj;
+         delete position_to_mark_obj;
 	return 0;
     }
   else if(p1ayer_input == "")
     {
    std::cout << "No input found. Please enter a position example \"1x1\"" << std::endl;
-  delete position_to_mark_obj;
+         delete position_to_mark_obj;
         return 4;
     }
       if(FilterUserInput(p1ayer_input,position_to_mark_obj))
@@ -125,7 +125,7 @@ delete position_to_mark_obj;
 	   total_turns++; //caused endless loop other comment stuck on other players turn
           }
         }
-delete position_to_mark_obj;
+      delete position_to_mark_obj;
  return 1;
 }
 

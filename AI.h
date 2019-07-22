@@ -9,5 +9,6 @@ public:
 
 	AI();
 	AI(const AI& obj);
+	~AI();
 };
 #endif //AI_H

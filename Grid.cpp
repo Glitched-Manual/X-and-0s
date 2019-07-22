@@ -12,8 +12,10 @@ Grid::~Grid()
 }
 
 void Grid::SetGameTiles()
-{ 
-    for(unsigned int yi = 0; yi < 3; yi++)
+{
+
+
+for(unsigned int yi = 0; yi < 3; yi++)
     {
         for(unsigned int xi = 0; xi < 3; xi++)
         {
