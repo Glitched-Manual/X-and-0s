@@ -13,7 +13,7 @@
 #include "Game.h"
 
 
-int main()
+int main(int argc, char* args[])
 {
 
 
@@ -41,6 +41,7 @@ game->GetGameGrid()->DisplayGrid();
 
 // did not change as expected. Changing to objects to pointers caused a segmentation fault
 */
+std::cin.get();
 return 0;
 
 }

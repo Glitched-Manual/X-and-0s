@@ -6,18 +6,21 @@ total_turns = 0;
 player_pos_1 = new Player; //lol fully redeclared before going out out scope or passing value into args cause segmentation errors
 player_pos_2 = new Player;
 game_grid = new Grid;
-std::cout << "initialize WinCases" << std::endl;
-
-*win_cases = new Win_Case[8];
-std::cout << "initialized WinCases" << std::endl;
 
 Game_Over = false;
 quit = false;
 win_cases_loaded = false;
+
 player_pos_1->SetPlayerMark("!");
 player_pos_2->SetPlayerMark("#");
 LoadWinCases();
-std::cout << "loaded WinCases" << std::endl;
+  
+  if(debug.is_debug_mode())
+  {
+	  std::cout << "WinCases Loaded" << std::endl;
+  }
+
+
 }
 
 Game::~Game()
@@ -212,29 +215,46 @@ return true;
 
 void Game::LoadWinCases()
 {
-	std::cout << "Load Win case start" << std::endl;
-GetWincase(0)->SetWinCaseCombination(Position(0,0),Position(1,0),Position(2,0));
-GetWincase(1)->SetWinCaseCombination(Position(0,1),Position(1,1),Position(2,1));
-GetWincase(2)->SetWinCaseCombination(Position(0,2),Position(1,2),Position(2,2));
-GetWincase(3)->SetWinCaseCombination(Position(0,0),Position(0,1),Position(0,2));
-GetWincase(4)->SetWinCaseCombination(Position(1,0),Position(1,1),Position(1,2));
-GetWincase(5)->SetWinCaseCombination(Position(2,0),Position(2,1),Position(2,2));
-GetWincase(6)->SetWinCaseCombination(Position(0,0),Position(1,1),Position(2,2));
-GetWincase(7)->SetWinCaseCombination(Position(2,0),Position(1,1),Position(0,2));
-//GetWincase(0)->GetCombination(0)->SetX(0);
-// std::cout << *GetWincase(0)->GetCombination(0)->GetX() <<  std::endl;
-win_cases_loaded = true;
+	if (debug.is_debug_mode())
+	{
+		std::cout << "LoadWinCase start" << std::endl;
+	}
+	int x = 0;
+
+	    win_cases[x].SetWinCaseCombination(Position(0,0),Position(1,0),Position(2,0));
+		++x;
+		win_cases[x].SetWinCaseCombination(Position(0,1),Position(1,1),Position(2,1));
+		++x;
+		win_cases[x].SetWinCaseCombination(Position(0,2),Position(1,2),Position(2,2));
+		++x;
+		win_cases[x].SetWinCaseCombination(Position(0,0),Position(0,1),Position(0,2));
+		++x;
+		win_cases[x].SetWinCaseCombination(Position(1,0),Position(1,1),Position(1,2));
+		++x;
+		win_cases[x].SetWinCaseCombination(Position(2,0),Position(2,1),Position(2,2));
+		++x;
+		win_cases[x].SetWinCaseCombination(Position(0,0),Position(1,1),Position(2,2));
+		++x;
+		win_cases[x].SetWinCaseCombination(Position(2,0),Position(1,1),Position(0,2));
+
+		if (debug.is_debug_mode())
+		{
+			std::cout << "LoadWinCase End" << std::endl;
+		}
+
+      win_cases_loaded = true;
 
 }
 
- Win_Case* Game::GetWincase(int win_case_index)
+Win_Case Game::GetWinCase(int passed_win_case_index)
 {
 
-if(win_case_index > 7)
-{
- win_case_index = win_case_index % 8;
-}
-return win_cases[win_case_index];
+  if(passed_win_case_index > 7)
+  {
+	  passed_win_case_index = passed_win_case_index % 8;
+  }
+
+return win_cases[passed_win_case_index];
 }
 
 bool Game::PlayerWin(Player* passed_player)
@@ -242,22 +262,29 @@ bool Game::PlayerWin(Player* passed_player)
 
 
 //check win cases if a player has won
-
- std::cout << "check if player wins start" << std::endl;
+	if (debug.is_debug_mode())
+	{
+		std::cout << "check if player wins start" << std::endl;
+    }
+ 
 //if true fink out which player won by the marks
  // make sure both payers do not have the same mark
-int mark_true_case = 0;
+
 
   for(int wincase_index = 0; wincase_index <8; wincase_index++)
   {
-   mark_true_case = 0;
+       int mark_true_case = 0;
 
     for(int wincase_combination_index = 0; wincase_combination_index <3; wincase_combination_index++)
      {
-       if(*passed_player->GetPlayerMark() == *GetGameGrid()->GetGameTile(*GetWincase(wincase_index)->GetCombination(wincase_combination_index)->GetX(),*GetWincase(wincase_index)->GetCombination(wincase_combination_index)->GetY()).GetTileMark())
+       if(*passed_player->GetPlayerMark() == *GetGameGrid()->GetGameTile(*GetWinCase(wincase_index).GetCombination(wincase_combination_index)->GetX(), *GetWinCase(wincase_index).GetCombination(wincase_combination_index)->GetY()).GetTileMark())
         {
            ++mark_true_case;
-std::cout <<"Marked case = "<<mark_true_case<<std::endl;
+		   if (debug.is_debug_mode())
+		   {
+			   std::cout << "Marked case = " << mark_true_case << std::endl;
+		   }
+         
         }
 
      }	
@@ -265,7 +292,11 @@ std::cout <<"Marked case = "<<mark_true_case<<std::endl;
     if(mark_true_case == 3)
       {
       // trigger wincase
-       std::cout<< "Player "<< *passed_player->GetPlayerMark() << " Wins!!"<< std::endl;
+		if (debug.is_debug_mode())
+		{
+			std::cout << "Player " << *passed_player->GetPlayerMark() << " Wins!!" << std::endl;
+		}
+     
        return true;
       }
   } 

@@ -1,12 +1,15 @@
-#include <iostream>
+#pragma once
 
 #ifndef DEVELOPER_H
 #define DEVELOPER_H
 
-bool developer_mode = true;
+struct Developer {
 
-bool is_development_mode()
-{
-	return developer_mode;
-}
+	const bool is_debug_mode();
+	
+private:
+ 	static const bool debug_mode = false;
+};
+
 #endif //DEVELOPER_H
+

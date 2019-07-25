@@ -18,6 +18,7 @@ public:
 
 Tile();
 ~Tile();
+Developer debug;
 void SetTileMark(std::string passed_mark){ *tile_mark = passed_mark; *tile_is_marked = true;}
 
 std::string* GetTileMark(){ return tile_mark; }

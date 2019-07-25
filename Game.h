@@ -3,10 +3,10 @@
 #include "Player.h"
 #include "AI.h"
 #include <memory>
-
+#include <vector>
 #ifndef GAME_H
 #define GAME_H
-
+struct Developer;
 class Win_case;
 class Grid;
 class Player;
@@ -23,11 +23,14 @@ bool Game_Over;
 bool quit;
 Grid* game_grid;
 
-Win_Case* win_cases[8];
+
+Win_Case win_cases[8];
 unsigned int turn_phase;
 public:
 Game();
 ~Game();
+
+Developer debug;
 //filter check then mark
 bool FilterUserInput(std::string raw_input_string,Position* passed_position);
 bool CheckIfTileIsAvailable(Position* passed_position_to_check);
@@ -36,8 +39,8 @@ int GetTurnPhase(){ return turn_phase; }
 bool PlayerWin(Player* passed_player);
 
 void LoadWinCases();
-Win_Case* GetWincase(int win_case_index);
-Win_Case** GetWincases(){return win_cases;}
+Win_Case GetWinCase(int win_case_index);
+
 void MainGameMenu();
 void GameLoop();
 void SetGameTileMark(Position* position_to_mark,std::string player_mark);

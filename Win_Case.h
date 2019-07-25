@@ -8,7 +8,7 @@ class Position;
 class Win_Case{
 
 Position* combination[3];
-
+//std::shared_ptr<Position[]> combination = std::make_shared<Position[]>(3);;
 std::string win_case_id;
 
 public:
