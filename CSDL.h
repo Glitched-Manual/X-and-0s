@@ -7,8 +7,10 @@
 #pragma once
 class CSDL
 {
-	SDL_Window* primeSDLGameWindow;
-	SDL_Renderer* primeSDLGameRenderer;
+	SDL_Window* sdl2_GameWindow;
+	SDL_Renderer* sdl2_GameRenderer;
+	SDL_Event* sdl2_Game_Event;
+	SDL_GameController* sdl2_GameController;
 
 public:
 	CSDL();
@@ -16,7 +18,9 @@ public:
 	bool createSDLWindow(unsigned int SCREEN_WIDTH, unsigned int SCREEN_HEIGHT);
 	bool createSDLRenderer();
 
-	const SDL_Window* getSDLWindow() { return primeSDLGameWindow; }
-	const SDL_Renderer* getSDLRenderer() { return primeSDLGameRenderer; }
+	const SDL_Window* GetSDLWindow() { return sdl2_GameWindow; }
+	const SDL_Renderer* GetSDLRenderer() { return sdl2_GameRenderer; }
+	const SDL_Event* GetSDLGameEvent() { return sdl2_Game_Event;  }
+	SDL_GameController* GetGameController() { return sdl2_GameController; }
 };
 

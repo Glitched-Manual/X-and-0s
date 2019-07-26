@@ -35,57 +35,24 @@ void Game::GameLoop()
 {
 
 //Game.turn non sdl2 redendering version use events to not delay rendering
-  while((Game_Over == false)&&(quit == false))
-  {
-    GetGameGrid()->DisplayGrid();
-	//turn 1 Player* pos1
-    if (total_turns % 2 == 0)
-     {
-	int p1_turn = PlayerTurn(player_pos_1);
+	while ((Game_Over == false) && (quit == false))
+	{
+		if (debug.is_text_based_game())
+		{
+			GetGameGrid()->DisplayGrid();
+		}
 
-       if(p1_turn == 0) break;
-     }
-        //turn 2 Player* pos or AI - ai inherits player class
-    else
-     {
-      int p2_turn = PlayerTurn(player_pos_2);
+		//render
 
-       if(p2_turn == 0) break;
-     }
-   //check for win if total_turns > 4
-   //total_turns++; add to true case of if square available case
-    if(total_turns > 4)
-     {
-       //scan through list of win cases for match. trigger Game_Over if match is found
-       // if player 2 turn is next
-       //check numbr matches other playrs turn messup earlier
-      if(total_turns % 2 == 1)
-        {
-           // bool check if player1 won
-        if(PlayerWin(player_pos_1))
-           {
- 	   std::cout << "Player 1 Wins!" << std::endl;
-            Game_Over = true;
-          }
-        }
-      else if(total_turns % 2 == 0)
-        {
-          // bool check if player2 won
-	   if(PlayerWin(player_pos_2))
-           {
-            std::cout << "Player 2 Wins!!" << std::endl;
-            Game_Over = true;
-          }
-        }                 
-     }  
-    if((total_turns > 8)&&(Game_Over == false)){
-      //Draw case
+	    //handle events
 
-      Game_Over = true;
-     std::cout << "Draw!" << std::endl;
-     }
-}
+		//update
 
+
+		//clean
+		
+
+	}
   
 }
 //returns status codes 
@@ -147,18 +114,24 @@ bool Game::CheckIfTileIsAvailable(Position* passed_position_to_check)
 std::cout << "Game::CheckIfTileIsAvailable  get position" << std::endl;
 if((*GetGameGrid()->GetGameTile(*passed_position_to_check->GetX(),*passed_position_to_check->GetY()).GetTIleIsMarkedStatus()) == true)
 {
-std::cout << "Game::CheckIfTileIsAvailable error tile is already marked" << std::endl;
-return false;
+	if (debug.is_debug_mode())
+	{
+		std::cout << "Game::CheckIfTileIsAvailable error tile is already marked" << std::endl;
+	}
+
+    return false;
 }
-std::cout << "Game::CheckIfTileIsAvailable  get position success" << std::endl;
+if (debug.is_debug_mode())
+{
+	std::cout << "Game::CheckIfTileIsAvailable  get position success" << std::endl;
+}
+
 return true;
 }
 
 bool Game:: FilterUserInput(std::string raw_input_string,Position* passed_position)
 {
-
-
-
+	   
 int x_pos = 0;
 int y_pos = 0;
 unsigned int mode = 0;
@@ -187,7 +160,12 @@ for(unsigned int ind=0; ind < raw_input_string.length(); ind++)
         }
     }  
 }
-//std::cout << x_pos <<"," << y_pos <<std::endl;
+/*
+if (debug.is_debug_mode())
+{
+	std::cout << x_pos << "," << y_pos << std::endl;
+}
+*/
 
 if((mode == y_cord)&(filter_successful))
 {
@@ -199,13 +177,21 @@ if((mode == y_cord)&(filter_successful))
    }
  else
    { 
-    std::cout << "Game.cpp FilterUserInput error: (x_pos < 3)&(y_pos < 3) found false" << std::endl;
+	 if (debug.is_debug_mode())
+	 {
+		 std::cout << "Game.cpp FilterUserInput error: (x_pos < 3)&(y_pos < 3) found false" << std::endl;
+	 }
+	     
     return false;
    }
 }
 else
 {
-std::cout << "Game.cpp FilterUserInput error: (mode == y_cord)&(filter_successful) found false" << std::endl;
+	if (debug.is_debug_mode())
+	{
+		std::cout << "Game.cpp FilterUserInput error: (mode == y_cord)&(filter_successful) found false" << std::endl;
+	}
+
 return false;
 }
 
@@ -316,4 +302,54 @@ void Game::MainGameMenu()
 	//close and clean
 
 
+}
+//fix after events and graphics
+void Game::TurnPhaseEvent()
+{
+
+	if (total_turns % 2 == 0)
+	{
+		int p1_turn = PlayerTurn(player_pos_1);
+
+		//if (p1_turn == 0) break;
+	}
+	//turn 2 Player* pos or AI - ai inherits player class
+	else
+	{
+		int p2_turn = PlayerTurn(player_pos_2);
+
+		//if (p2_turn == 0) break;
+	}
+	//check for win if total_turns > 4
+	//total_turns++; add to true case of if square available case
+	if (total_turns > 4)
+	{
+		//scan through list of win cases for match. trigger Game_Over if match is found
+		// if player 2 turn is next
+		//check numbr matches other playrs turn messup earlier
+		if (total_turns % 2 == 1)
+		{
+			// bool check if player1 won
+			if (PlayerWin(player_pos_1))
+			{
+				std::cout << "Player 1 Wins!" << std::endl;
+				Game_Over = true;
+			}
+		}
+		else if (total_turns % 2 == 0)
+		{
+			// bool check if player2 won
+			if (PlayerWin(player_pos_2))
+			{
+				std::cout << "Player 2 Wins!!" << std::endl;
+				Game_Over = true;
+			}
+		}
+	}
+	if ((total_turns > 8) && (Game_Over == false)) {
+		//Draw case
+
+		Game_Over = true;
+		std::cout << "Draw!" << std::endl;
+	}
 }

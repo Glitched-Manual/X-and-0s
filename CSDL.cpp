@@ -10,7 +10,7 @@ CSDL::CSDL()
 bool CSDL::Init()
 {
 
-	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0)
+	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_GAMECONTROLLER ) < 0)
 	{
 		printf("SDL could not initialize! SDL Error: %s\n", SDL_GetError());
 		return false;
@@ -65,6 +65,38 @@ bool CSDL::Init()
 					return false;
 				}
 
+				//Initialize GameController
+
+				if (SDL_NumJoysticks() < 1)
+				{
+					printf("Warning: No joysticks connected! error %s\n", SDL_GetError());
+				}
+				else
+				{
+
+					for (int i = 0; i < SDL_NumJoysticks(); ++i)
+					{
+						if (SDL_IsGameController(i))
+						{
+							sdl2_GameController = SDL_GameControllerOpen(i);
+							if (sdl2_GameController)
+							{
+								sdl2_GameControllerButton = new SDL_GameControllerButton;
+
+								std::cout << "The controller was reconized" << std::endl;
+								gameControllerMapping = SDL_GameControllerMapping(sdl2_GameController);
+								std::cout << "Controller mapping is " << gameControllerMapping << std::endl;
+
+								break;
+							}
+							else
+							{
+								fprintf(stderr, "Could not open gamecontroller %i: %s\n", i, SDL_GetError());
+							}
+						}
+					}
+
+				}
 			}
 		}
 	}
