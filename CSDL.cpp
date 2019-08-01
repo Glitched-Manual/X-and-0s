@@ -81,8 +81,8 @@ bool CSDL::Init()
 							sdl2_GameController = SDL_GameControllerOpen(i);
 							if (sdl2_GameController)
 							{
-								sdl2_GameControllerButton = new SDL_GameControllerButton;
-
+								
+								char* gameControllerMapping;
 								std::cout << "The controller was reconized" << std::endl;
 								gameControllerMapping = SDL_GameControllerMapping(sdl2_GameController);
 								std::cout << "Controller mapping is " << gameControllerMapping << std::endl;
@@ -106,10 +106,10 @@ bool CSDL::Init()
 bool CSDL::createSDLWindow(unsigned int passed_SCREEN_WIDTH, unsigned int passed_SCREEN_HEIGHT)
 {
 
-	primeSDLGameWindow = NULL;
-	primeSDLGameWindow = SDL_CreateWindow("Launch Pad", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, passed_SCREEN_WIDTH, passed_SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+	sdl2_GameWindow = NULL;
+	sdl2_GameWindow = SDL_CreateWindow("Launch Pad", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, passed_SCREEN_WIDTH, passed_SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
 
-	if (getSDLWindow() == NULL)
+	if (sdl2_GameWindow == NULL)
 	{
 		printf("Window could not be created! SDL Error: %s\n", SDL_GetError());
 		return false;

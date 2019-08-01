@@ -5,8 +5,8 @@ Game::Game()
 total_turns = 0;
 player_pos_1 = new Player; //lol fully redeclared before going out out scope or passing value into args cause segmentation errors
 player_pos_2 = new Player;
-game_grid = new Grid;
-
+game_grid = new Grid; //add params
+csdl_obj = new CSDL;
 Game_Over = false;
 quit = false;
 win_cases_loaded = false;
@@ -39,19 +39,24 @@ void Game::GameLoop()
 	{
 		if (debug.is_text_based_game())
 		{
-			GetGameGrid()->DisplayGrid();
+			game_grid->DisplayGrid();
 		}
 
 		//render
+		SDL_RenderClear(csdl_obj->GetSDLRenderer());
+	    /*
+		handle events
 
-	    //handle events
+		key board and controller
+		*/
+
 
 		//update
 
 
 		//clean
 		
-
+		SDL_RenderPresent(csdl_obj->GetSDLRenderer());
 	}
   
 }

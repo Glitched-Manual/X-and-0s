@@ -4,6 +4,8 @@
 #include "AI.h"
 #include <memory>
 #include <vector>
+#include "CSDL.h"
+
 #ifndef GAME_H
 #define GAME_H
 struct Developer;
@@ -23,9 +25,17 @@ bool Game_Over;
 bool quit;
 Grid* game_grid;
 
-
 Win_Case win_cases[8];
+CSDL* csdl_obj;
 unsigned int turn_phase;
+
+//gameobjects
+std::vector<GameObject*> allGameObjects;
+GameObject* gameObjectGrid;
+GameObject* gameObjectMark_A;
+GameObject* gameObjectMark_B;
+
+
 public:
 Game();
 ~Game();

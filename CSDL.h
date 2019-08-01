@@ -18,9 +18,9 @@ public:
 	bool createSDLWindow(unsigned int SCREEN_WIDTH, unsigned int SCREEN_HEIGHT);
 	bool createSDLRenderer();
 
-	const SDL_Window* GetSDLWindow() { return sdl2_GameWindow; }
-	const SDL_Renderer* GetSDLRenderer() { return sdl2_GameRenderer; }
-	const SDL_Event* GetSDLGameEvent() { return sdl2_Game_Event;  }
+	 SDL_Window* GetSDLWindow() { return sdl2_GameWindow; }
+    SDL_Renderer* GetSDLRenderer()  { return sdl2_GameRenderer; }
+	 SDL_Event* GetSDLGameEvent() { return sdl2_Game_Event;  }
 	SDL_GameController* GetGameController() { return sdl2_GameController; }
 };
 
