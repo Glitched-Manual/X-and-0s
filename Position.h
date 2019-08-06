@@ -5,6 +5,7 @@
 #include <memory>
 #ifndef POSITION_H
 #define POSITION_H
+struct Developer;
 
 class Position{
 public:

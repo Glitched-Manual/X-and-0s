@@ -9,7 +9,7 @@ struct Developer {
 	const bool is_text_based_game();
 
 private:
- 	static const bool debug_mode = false;
+ 	static const bool debug_mode = true;
 	static const bool text_based_game_mode = true;
 };
 

@@ -21,9 +21,9 @@ public:
 
 	unsigned int GetX() const { return obj_x; }
 	unsigned int GetY() const { return obj_y; }
-	unsigned int getWidth() const { return obj_width; }
-	unsigned int getHeight() const { return obj_height; }
-	std::string getTextureID() const { return obj_textureID; }
+	unsigned int GetWidth() const { return obj_width; }
+	unsigned int GetHeight() const { return obj_height; }
+	std::string GetTextureID() const { return obj_textureID; }
 };
 
 #endif // LOADERPARAMS_H

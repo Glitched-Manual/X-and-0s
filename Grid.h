@@ -34,7 +34,7 @@ Tile GetGameTile(int passed_x, int passed_y);
 
 //load image
 
-bool LoadGameObjectContent();
+
 
 //render
 void Draw(SDL_Renderer* passed_Renderer);

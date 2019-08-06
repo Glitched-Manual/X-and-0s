@@ -8,7 +8,7 @@ player_pos_2 = new Player;
 game_grid = new Grid; //add params
 csdl_obj = new CSDL;
 Game_Over = false;
-quit = false;
+quit_game_from_input = false;
 win_cases_loaded = false;
 
 player_pos_1->SetPlayerMark("!");
@@ -19,7 +19,8 @@ LoadWinCases();
   {
 	  std::cout << "WinCases Loaded" << std::endl;
   }
-
+  
+  LoadTextureContent();
 
 }
 
@@ -33,24 +34,37 @@ delete game_grid;
 
 void Game::GameLoop()
 {
+	//init sdl
+	csdl_obj->Init();
 
 //Game.turn non sdl2 redendering version use events to not delay rendering
-	while ((Game_Over == false) && (quit == false))
-	{
-		if (debug.is_text_based_game())
-		{
-			game_grid->DisplayGrid();
-		}
 
+	if (debug.is_debug_mode()) 
+	{
+		std::cout << "CSDL::init() call finished! Starting GameLoop!" << std::endl;
+
+	}
+	
+	while ((csdl_obj->GetSDLGameEvent()->type != SDL_QUIT) && (quit_game_from_input == false))
+	{
+		/*if (debug.is_text_based_game())
+		{
+			//game_grid->DisplayGrid(); loops infinitly is a problem
+		}
+		*/
+		if (SDL_PollEvent(csdl_obj->GetSDLGameEvent()) > 0)
+		{
+
+			GameEventManager();
+		}
 		//render
 		SDL_RenderClear(csdl_obj->GetSDLRenderer());
 	    /*
 		handle events
 
 		key board and controller
-		*/
-
-
+		*/		
+		
 		//update
 
 
@@ -75,14 +89,14 @@ int Game::PlayerTurn(Player* current_player)
   position_to_mark_obj = new Position;    
 
 	//input Player.GetInput # non sdl version
-
-     std::string p1ayer_input = current_player->GetPlayerInput(&quit);
-  if(quit)
+    // get keyboard input from sdl2 convert numbers and char values
+     std::string p1ayer_input = current_player->GetPlayerInput(&quit_game_from_input);
+  if(quit_game_from_input)
     {
          delete position_to_mark_obj;
 	return 0;
     }
-  else if(p1ayer_input == "")
+  else if(p1ayer_input == "")//remove this
     {
    std::cout << "No input found. Please enter a position example \"1x1\"" << std::endl;
          delete position_to_mark_obj;
@@ -211,7 +225,12 @@ void Game::LoadWinCases()
 		std::cout << "LoadWinCase start" << std::endl;
 	}
 	int x = 0;
+//fix win_cases
+	//Win_Case* temp;
 
+//temp = new Win_Case(new Position(0, 0), new Position(1, 0), new Position(2, 0)));
+	//win_cases.push_back(temp);
+	
 	    win_cases[x].SetWinCaseCombination(Position(0,0),Position(1,0),Position(2,0));
 		++x;
 		win_cases[x].SetWinCaseCombination(Position(0,1),Position(1,1),Position(2,1));
@@ -227,12 +246,14 @@ void Game::LoadWinCases()
 		win_cases[x].SetWinCaseCombination(Position(0,0),Position(1,1),Position(2,2));
 		++x;
 		win_cases[x].SetWinCaseCombination(Position(2,0),Position(1,1),Position(0,2));
-
+		
 		if (debug.is_debug_mode())
 		{
 			std::cout << "LoadWinCase End" << std::endl;
-		}
 
+			std::cout << *win_cases[0].GetCombination(1)->GetX() << " , " << *win_cases[0].GetCombination(1)->GetY() << std::endl;
+		}
+		
       win_cases_loaded = true;
 
 }
@@ -309,6 +330,8 @@ void Game::MainGameMenu()
 
 }
 //fix after events and graphics
+
+//call on click of keyboard input conditions met
 void Game::TurnPhaseEvent()
 {
 
@@ -357,4 +380,114 @@ void Game::TurnPhaseEvent()
 		Game_Over = true;
 		std::cout << "Draw!" << std::endl;
 	}
+}
+
+bool Game::LoadTextureContent()
+{
+	GameObject* gameObjectHashTable = new HashTable(new LoaderParams(100,100,100,100,"HashTable"));
+	allGameObjects.push_back(gameObjectHashTable);
+
+
+	//loop through allGameObjects vector to call the proper loading method
+
+	return true;
+}
+
+
+void Game::GameEventManager()
+{
+	
+
+		if (csdl_obj->GetSDLGameEvent()->type == SDL_KEYUP)
+		{
+			std::cout << csdl_obj->GetSDLGameEvent()->key.keysym.sym << std::endl;
+		}
+
+		if(csdl_obj->GetSDLGameEvent()->type == SDL_CONTROLLERBUTTONDOWN )
+		{
+			if (csdl_obj->GetSDLGameEvent()->cbutton.button == SDL_CONTROLLER_BUTTON_A)
+			{
+				std::cout << " \"A\" was pressed!" << std::endl;
+			}
+			else if (csdl_obj->GetSDLGameEvent()->cbutton.button == SDL_CONTROLLER_BUTTON_B)
+			{
+				std::cout << " \"B\" was pressed!" << std::endl;
+			}
+			else if (csdl_obj->GetSDLGameEvent()->cbutton.button == SDL_CONTROLLER_BUTTON_X)
+			{
+				std::cout << " \"X\" was pressed!" << std::endl;
+			}
+			else if (csdl_obj->GetSDLGameEvent()->cbutton.button == SDL_CONTROLLER_BUTTON_Y)
+			{
+				std::cout << " \"Y\" was pressed!" << std::endl;
+			}
+			else if (csdl_obj->GetSDLGameEvent()->cbutton.button == SDL_CONTROLLER_AXIS_LEFTX)
+			{
+				std::cout << " \"AXIS_LEFTX\" was pressed!" << std::endl;
+			}
+			else if (csdl_obj->GetSDLGameEvent()->cbutton.button == SDL_CONTROLLER_AXIS_LEFTY)
+			{
+				std::cout << " \"AXIS_LEFTX\" was pressed!" << std::endl;
+			}
+			else if (csdl_obj->GetSDLGameEvent()->cbutton.button == SDL_CONTROLLER_AXIS_RIGHTX)
+			{
+				std::cout << " \"AXIS_LEFTX\" was pressed!" << std::endl;
+			}
+			else if (csdl_obj->GetSDLGameEvent()->cbutton.button == SDL_CONTROLLER_AXIS_RIGHTY)
+			{
+				std::cout << " \"AXIS_LEFTX\" was pressed!" << std::endl;
+			}
+			else if (csdl_obj->GetSDLGameEvent()->cbutton.button == SDL_CONTROLLER_BUTTON_DPAD_UP)
+			{
+				std::cout << " \"DPAD_UP\" was pressed!" << std::endl;
+			}
+			else if (csdl_obj->GetSDLGameEvent()->cbutton.button == SDL_CONTROLLER_BUTTON_DPAD_DOWN)
+			{
+				std::cout << " \"DPAD_DOW\" was pressed!" << std::endl;
+			}
+			else if (csdl_obj->GetSDLGameEvent()->cbutton.button == SDL_CONTROLLER_BUTTON_DPAD_LEFT)
+			{
+				std::cout << " \"DPAD_LEFT\" was pressed!" << std::endl;
+			}
+			else if (csdl_obj->GetSDLGameEvent()->cbutton.button == SDL_CONTROLLER_BUTTON_DPAD_RIGHT)
+			{
+				std::cout << " \"DPAD_RIGHT\" was pressed!" << std::endl;
+			}
+			else if (csdl_obj->GetSDLGameEvent()->cbutton.button == SDL_CONTROLLER_BUTTON_GUIDE)
+			{
+				std::cout << " \"GUIDE\" was pressed!" << std::endl;
+			}
+			else if (csdl_obj->GetSDLGameEvent()->cbutton.button == SDL_CONTROLLER_BUTTON_START)
+			{
+				std::cout << " \"START\" was pressed!" << std::endl;
+			}
+			else if (csdl_obj->GetSDLGameEvent()->cbutton.button == SDL_CONTROLLER_BUTTON_LEFTSHOULDER)
+			{
+				std::cout << " \"LEFTSHOULDER\" was pressed!" << std::endl;
+			}
+			else if (csdl_obj->GetSDLGameEvent()->cbutton.button == SDL_CONTROLLER_BUTTON_RIGHTSHOULDER)
+			{
+				std::cout << " \"RIGHTSHOULDER\" was pressed!" << std::endl;
+			}
+			else if (csdl_obj->GetSDLGameEvent()->cbutton.button == SDL_CONTROLLER_BUTTON_BACK)
+			{
+				std::cout << " \"BUTTON_BACK\" was pressed!" << std::endl;
+			}
+			else if (csdl_obj->GetSDLGameEvent()->cbutton.button == SDL_CONTROLLER_BUTTON_LEFTSTICK)
+			{
+				std::cout << " \"LEFTSTICK\" was pressed!" << std::endl;
+			}
+			else if (csdl_obj->GetSDLGameEvent()->cbutton.button == SDL_CONTROLLER_BUTTON_RIGHTSTICK)
+			{
+				std::cout << " \"RIGHTSTICK\" was pressed!" << std::endl;
+			}
+			else 
+			{
+				std::cout << csdl_obj->GetSDLGameEvent()->cbutton.button << std::endl;
+			}
+			
+			
+		}
+
+	
 }

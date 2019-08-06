@@ -9,8 +9,8 @@ CSDL::CSDL()
 
 bool CSDL::Init()
 {
-
-	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_GAMECONTROLLER ) < 0)
+	//audio not working
+	if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
 	{
 		printf("SDL could not initialize! SDL Error: %s\n", SDL_GetError());
 		return false;
@@ -34,6 +34,10 @@ bool CSDL::Init()
 		}
 		else
 		{
+			//initialize event
+
+			sdl2_Game_Event = new SDL_Event();
+
 			// create renderer
 			if (!this->createSDLRenderer())
 			{
@@ -50,48 +54,87 @@ bool CSDL::Init()
 					return false;
 				}
 
-
-				//Initialize SDL_mixer
-				if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
+				if (SDL_WasInit(SDL_INIT_AUDIO) != 0)
 				{
-					printf("SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError());
-					return false;
-				}
+					if (debug.is_debug_mode())
+					{
+						printf("Audio has been initialized.\n");
+					}
+					   //Initialize SDL_mixer - uncomment return later
+					if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
+					{
+						if (debug.is_debug_mode()) 
+						{
+							printf("SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError());
+						}
 
+						
+						return false;
+					}
+				}
+				else 
+				{
+					if (debug.is_debug_mode())
+					{
+						printf("Audio was not initialized! SDL_mixer Error: %s\n", Mix_GetError());
+					}
+					
+
+					return false;
+				}				
+				
+				
 				//Initialize SDL_ttf
 				if (TTF_Init() == -1)
 				{
-					printf("SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError());
+					if (debug.is_debug_mode())
+					{
+						printf("SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError());
+					}
+				
+
 					return false;
 				}
 
-				//Initialize GameController
+				//Check for a GameController
 
 				if (SDL_NumJoysticks() < 1)
 				{
-					printf("Warning: No joysticks connected! error %s\n", SDL_GetError());
+					if (debug.is_debug_mode())
+					{
+						printf("Warning: No joysticks connected! error %s\n", SDL_GetError());
+					}
+					
 				}
 				else
 				{
 
 					for (int i = 0; i < SDL_NumJoysticks(); ++i)
 					{
+						//if index found is a controller open it
 						if (SDL_IsGameController(i))
 						{
 							sdl2_GameController = SDL_GameControllerOpen(i);
 							if (sdl2_GameController)
 							{
-								
-								char* gameControllerMapping;
-								std::cout << "The controller was reconized" << std::endl;
-								gameControllerMapping = SDL_GameControllerMapping(sdl2_GameController);
-								std::cout << "Controller mapping is " << gameControllerMapping << std::endl;
-
+								if (debug.is_debug_mode())
+								{
+									char* gameControllerMapping;
+									std::cout << "The controller was reconized" << std::endl;
+									gameControllerMapping = SDL_GameControllerMapping(sdl2_GameController);
+									std::cout << "Controller mapping is " << gameControllerMapping << std::endl;
+									
+								}
+																
 								break;
 							}
 							else
 							{
-								fprintf(stderr, "Could not open gamecontroller %i: %s\n", i, SDL_GetError());
+								if (debug.is_debug_mode())
+								{
+									fprintf(stderr, "Could not open gamecontroller %i: %s\n", i, SDL_GetError());
+								}
+								
 							}
 						}
 					}
@@ -111,7 +154,11 @@ bool CSDL::createSDLWindow(unsigned int passed_SCREEN_WIDTH, unsigned int passed
 
 	if (sdl2_GameWindow == NULL)
 	{
-		printf("Window could not be created! SDL Error: %s\n", SDL_GetError());
+		if (debug.is_debug_mode())
+		{
+			printf("CSDL::createSDLWindow error: SDL2_Window could not be created! SDL Error: %s\n", SDL_GetError());
+		}
+				
 		return false;
 	}
 
@@ -121,6 +168,17 @@ bool CSDL::createSDLWindow(unsigned int passed_SCREEN_WIDTH, unsigned int passed
 
 bool CSDL::createSDLRenderer()
 {
+	sdl2_GameRenderer = SDL_CreateRenderer(sdl2_GameWindow, -1, SDL_RENDERER_ACCELERATED);
+
+	if (sdl2_GameRenderer == NULL)
+	{
+		if(debug.is_debug_mode()) 
+		{
+			printf("CSDL::createSDLRenderer() error: Renderer could not be created! SDL Error: %s\n", SDL_GetError());
+		}
+				
+		return false;
+	}
 
 	return true;
 }

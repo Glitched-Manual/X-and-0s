@@ -1,17 +1,20 @@
 #include "cross_sdl.h"
-
+#include "Developer.h"
 
 #include <iostream>
 #include <cstdio>
 
-#pragma once
+#ifndef CSDL_H
+#define CSDL_H
+
+struct Developer;
 class CSDL
 {
 	SDL_Window* sdl2_GameWindow;
 	SDL_Renderer* sdl2_GameRenderer;
 	SDL_Event* sdl2_Game_Event;
 	SDL_GameController* sdl2_GameController;
-
+	Developer debug;
 public:
 	CSDL();
 	bool Init();
@@ -24,3 +27,4 @@ public:
 	SDL_GameController* GetGameController() { return sdl2_GameController; }
 };
 
+#endif //CSDL_H

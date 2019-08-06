@@ -41,7 +41,7 @@ game->GetGameGrid()->DisplayGrid();
 
 // did not change as expected. Changing to objects to pointers caused a segmentation fault
 */
-std::cin.get();
+//std::cin.get();
 return 0;
 
 }

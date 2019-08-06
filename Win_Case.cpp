@@ -13,21 +13,33 @@ Win_Case:: Win_Case()
 
 }
 
+Win_Case::Win_Case(Position* first_position, Position* second_position, Position* third_position)
+{
+	unsigned int combination_index = 0;
+
+	combination[combination_index] = first_position;
+	combination_index++;
+	combination[combination_index] = second_position;
+	combination_index++;
+	combination[combination_index] = third_position;
+}
+
 Win_Case:: ~Win_Case()
 {
 
 
 }
 
- Position* Win_Case::GetCombination(int passed_index) {
-	if (passed_index > 2) {
+ Position* Win_Case::GetCombination(int passed_index) 
+ {
+	if (passed_index > 2) 
+	{
 		passed_index = passed_index % 3;
 
 	}
 
 	return combination[passed_index];
-
-
+	
 }
 
 void Win_Case::SetWinCaseCombination(Position first_position, Position second_position, Position third_position)

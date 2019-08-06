@@ -76,14 +76,6 @@ for(unsigned int yi = 0; yi < 3; yi++)
   std::cout<< "\n";
 }
 
-bool Grid::LoadGameObjectContent()
-{
-	//load texture
-	game_grid_texture = NULL;
-
-	//open grid image
-
-}
 
 
 void Grid::Draw(SDL_Renderer* passed_Renderer)
