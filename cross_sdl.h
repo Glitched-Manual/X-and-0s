@@ -9,6 +9,7 @@ Platform Specific SDL2 includes
 #include <SDL_mixer.h>
 #include <SDL_ttf.h>
 
+#pragma warning(disable : 4996)
 #elif __APPLE__
 
 #include<SDL2/SDL.h>

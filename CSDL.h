@@ -15,8 +15,12 @@ class CSDL
 	SDL_Event* sdl2_Game_Event;
 	SDL_GameController* sdl2_GameController;
 	Developer debug;
+
+	unsigned int SCREEN_WIDTH;
+		
+	unsigned int SCREEN_HEIGHT;
 public:
-	CSDL();
+	CSDL(unsigned int passed_screen_width, unsigned int passed_screen_height);
 	bool Init();
 	bool createSDLWindow(unsigned int SCREEN_WIDTH, unsigned int SCREEN_HEIGHT);
 	bool createSDLRenderer();

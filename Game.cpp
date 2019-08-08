@@ -1,12 +1,16 @@
 #include "Game.h"
 
-Game::Game()
+Game::Game(unsigned int passed_screen_width, unsigned int passed_screen_height)
 {
+
+SCREEN_WIDTH = passed_screen_width;
+SCREEN_HEIGHT = passed_screen_height;
+
 total_turns = 0;
 player_pos_1 = new Player; //lol fully redeclared before going out out scope or passing value into args cause segmentation errors
 player_pos_2 = new Player;
 game_grid = new Grid; //add params
-csdl_obj = new CSDL;
+csdl_obj = new CSDL(SCREEN_WIDTH, SCREEN_HEIGHT);
 Game_Over = false;
 quit_game_from_input = false;
 win_cases_loaded = false;
@@ -19,8 +23,12 @@ LoadWinCases();
   {
 	  std::cout << "WinCases Loaded" << std::endl;
   }
-  
-  LoadTextureContent();
+
+  //init sdl
+  csdl_obj->Init();
+  x_o_game_state = main_menu;
+  LoadGameOpeningMenu();
+  LoadGameObjectContent();
 
 }
 
@@ -34,8 +42,7 @@ delete game_grid;
 
 void Game::GameLoop()
 {
-	//init sdl
-	csdl_obj->Init();
+	
 
 //Game.turn non sdl2 redendering version use events to not delay rendering
 
@@ -52,13 +59,15 @@ void Game::GameLoop()
 			//game_grid->DisplayGrid(); loops infinitly is a problem
 		}
 		*/
+		SDL_RenderClear(csdl_obj->GetSDLRenderer());
+
 		if (SDL_PollEvent(csdl_obj->GetSDLGameEvent()) > 0)
 		{
 
 			GameEventManager();
 		}
 		//render
-		SDL_RenderClear(csdl_obj->GetSDLRenderer());
+		RenderGameTextures();
 	    /*
 		handle events
 
@@ -382,17 +391,97 @@ void Game::TurnPhaseEvent()
 	}
 }
 
-bool Game::LoadTextureContent()
+bool Game::LoadGameObjectContent()
 {
-	GameObject* gameObjectHashTable = new HashTable(new LoaderParams(100,100,100,100,"HashTable"));
-	allGameObjects.push_back(gameObjectHashTable);
+	//GameObject* gameObjectHashTable = new HashTable(new LoaderParams(100,100,100,100,"HashTable"));
+	//allGameObjects.push_back(gameObjectHashTable);
 
 
 	//loop through allGameObjects vector to call the proper loading method
+	if (!(allGameObjects.empty()))
+	{
+
+		for (std::vector<GameObject*>::iterator game_object_index = allGameObjects.begin(); game_object_index != allGameObjects.end(); game_object_index++)
+		{
+			(*game_object_index)->LoadGameObjectContent(csdl_obj->GetSDLRenderer());
+		}
+		if (debug.is_debug_mode())
+		{
+			std::cout << "Game::LoadGameObjectContent() Objects loaded" << std::endl;
+		}
+
+	}
+	else
+	{
+		if (debug.is_debug_mode())
+		{
+			std::cout << "Game::LoadGameObjectContent() Error - allGameObjects found empty!" << std::endl;
+		}
+		
+
+		return false;
+	}
+	return true;
+}
+
+
+bool Game::LoadGameOpeningMenu()
+{
+
+	GameObject* start_menu_text = NULL;
+	//x, y, width, height, std::string passed_textureID
+
+	//center text pass center x and y
+	start_menu_text = new GameText(new LoaderParams(SCREEN_WIDTH/2, SCREEN_HEIGHT/2,100,100,"Start Game"));
+
+	if(start_menu_text == NULL)
+	{
+		if (debug.is_debug_mode())
+		{
+			printf("Game::LoadGameOpeningMenu() SDL Error: %s\n", SDL_GetError());
+			return false;
+		}
+
+	}
+	
+	allGameObjects.push_back(start_menu_text);
+
+	if (debug.is_debug_mode())
+	{
+		std::cout << "Game::LoadGameOpeningMenu() was pushed to the allGameObjects vector" << std::endl;
+	}
 
 	return true;
 }
 
+void Game::RenderGameTextures()
+{
+	if (!(allGameObjects.empty()))
+	{
+		
+		if (x_o_game_state == main_menu)
+		{
+			for (std::vector<GameObject*>::iterator game_object_index = allGameObjects.begin(); game_object_index != allGameObjects.end(); game_object_index++)
+			{
+				if ((*game_object_index)->GetGameObjectID() =="Start Game")
+				{
+					(*game_object_index)->Draw(csdl_obj->GetSDLRenderer());
+				}
+
+				
+			}
+		}
+		else //render everything! probably bad :P
+		{
+			for (std::vector<GameObject*>::iterator game_object_index = allGameObjects.begin(); game_object_index != allGameObjects.end(); game_object_index++)
+			{
+				(*game_object_index)->Draw(csdl_obj->GetSDLRenderer());
+			}
+
+		}
+		
+	}
+}
 
 void Game::GameEventManager()
 {
@@ -443,7 +532,7 @@ void Game::GameEventManager()
 			}
 			else if (csdl_obj->GetSDLGameEvent()->cbutton.button == SDL_CONTROLLER_BUTTON_DPAD_DOWN)
 			{
-				std::cout << " \"DPAD_DOW\" was pressed!" << std::endl;
+				std::cout << " \"DPAD_DOWN\" was pressed!" << std::endl;
 			}
 			else if (csdl_obj->GetSDLGameEvent()->cbutton.button == SDL_CONTROLLER_BUTTON_DPAD_LEFT)
 			{

@@ -6,6 +6,7 @@
 #include <vector>
 #include "CSDL.h"
 #include "HashTable.h"
+#include "GameText.h"
 
 #ifndef GAME_H
 #define GAME_H
@@ -17,6 +18,7 @@ class AI;
 class Position;
 class CSDL;
 class Game{
+
 //Player* pos_1
 Player* player_pos_1;
 //Player pos_2;
@@ -41,9 +43,19 @@ GameObject* gameObjectGridMarker_B = NULL;
 
 // game mode enum
 
-enum current_game_state{menu,gameplay,credits,pause,quit};
+enum current_game_state {main_menu,game_options,gameplay,credits,pause,quit};
+enum current_gameplay_mode {human_vs_human,human_vs_computer};
+
+current_game_state x_o_game_state;
+current_gameplay_mode x_o_gameplay_mode;
+
+//screen dimensions
+unsigned int SCREEN_WIDTH;
+
+unsigned int SCREEN_HEIGHT;
+
 public:
-Game();
+Game(unsigned int passed_screen_width, unsigned int passed_screen_height);
 ~Game();
 
 Developer debug;
@@ -63,8 +75,12 @@ void SetGameTileMark(Position* position_to_mark,std::string player_mark);
 int PlayerTurn(Player* current_player);
 void TurnPhaseEvent();
 
-bool LoadTextureContent();
+bool LoadGameObjectContent();
+
+bool LoadGameOpeningMenu();
 //switch method calls other methods depending on scene
 void GameEventManager();
+
+void RenderGameTextures();
 };
 #endif //GAME_H

@@ -2,9 +2,11 @@
 
 
 
-CSDL::CSDL()
+CSDL::CSDL(unsigned int passed_screen_width, unsigned int passed_screen_height)
 {
+	SCREEN_WIDTH  = passed_screen_width;
 
+	SCREEN_HEIGHT = passed_screen_height;
 }
 
 bool CSDL::Init()
@@ -28,7 +30,7 @@ bool CSDL::Init()
 
 		//Create window
 
-		if (!this->createSDLWindow(960, 720))
+		if (!this->createSDLWindow(SCREEN_WIDTH, SCREEN_HEIGHT))
 		{
 			return false;
 		}

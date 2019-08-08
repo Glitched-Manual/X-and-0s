@@ -11,8 +11,8 @@ Player();
 ~Player();
 
 //optional use by player maybe needed by ai
-std::string GetPlayerInput(bool* quit);
-void SetPlayerMark(std::string passed_string_mark);
-std::string* GetPlayerMark(){ return player_mark;}
+virtual std::string GetPlayerInput(bool* quit);
+virtual void SetPlayerMark(std::string passed_string_mark);
+virtual std::string* GetPlayerMark(){ return player_mark;}
 };
 #endif //PLAYER_H

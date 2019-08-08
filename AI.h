@@ -1,9 +1,13 @@
 #include <iostream>
 #include <string>
+#include "Player.h"
 
 #ifndef AI_H
 #define AI_H
-class AI{
+class Player;
+
+class AI:public Player
+{
 
 public:
 
@@ -11,4 +15,5 @@ public:
 	AI(const AI& obj);
 	~AI();
 };
+
 #endif //AI_H
