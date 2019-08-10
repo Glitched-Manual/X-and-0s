@@ -10,7 +10,7 @@ public:
 Player();
 ~Player();
 
-//optional use by player maybe needed by ai
+
 virtual std::string GetPlayerInput(bool* quit);
 virtual void SetPlayerMark(std::string passed_string_mark);
 virtual std::string* GetPlayerMark(){ return player_mark;}

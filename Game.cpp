@@ -26,7 +26,10 @@ LoadWinCases();
 
   //init sdl
   csdl_obj->Init();
+
+
   x_o_game_state = main_menu;
+
   LoadGameOpeningMenu();
   LoadGameObjectContent();
 
@@ -140,7 +143,7 @@ GetGameGrid()->GetGameTile(*position_to_mark->GetX(),*position_to_mark->GetY()).
 bool Game::CheckIfTileIsAvailable(Position* passed_position_to_check)
 {
 std::cout << "Game::CheckIfTileIsAvailable  get position" << std::endl;
-if((*GetGameGrid()->GetGameTile(*passed_position_to_check->GetX(),*passed_position_to_check->GetY()).GetTIleIsMarkedStatus()) == true)
+if((*GetGameGrid()->GetGameTile(*passed_position_to_check->GetX(),*passed_position_to_check->GetY()).GetTileIsMarkedStatus()) == true)
 {
 	if (debug.is_debug_mode())
 	{
@@ -486,6 +489,22 @@ void Game::RenderGameTextures()
 void Game::GameEventManager()
 {
 	
+	    //if at main menu
+	if (x_o_game_state == main_menu)
+	{
+		//if start button or enter key pressed
+        if( (csdl_obj->GetSDLGameEvent()->cbutton.button == SDL_CONTROLLER_BUTTON_START) || (csdl_obj->GetSDLGameEvent()->key.keysym.sym == SDLK_RETURN ) )
+		{
+			if (debug.is_debug_mode())
+			{
+				std::cout << "\nYou Started the game!\n" << std::endl;
+			}
+
+		}
+
+
+	}
+
 
 		if (csdl_obj->GetSDLGameEvent()->type == SDL_KEYUP)
 		{

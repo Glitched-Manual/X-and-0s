@@ -71,7 +71,7 @@ bool CSDL::Init()
 						}
 
 						
-						return false;
+					  //	return false;
 					}
 				}
 				else 

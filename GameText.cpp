@@ -22,8 +22,22 @@ bool GameText::LoadGameObjectContent(SDL_Renderer* passed_Renderer)
 	{
 		game_text_id = "Start Game";
 	}
+
 	SetGameTextMessage(game_text_id);
-	SDL_Surface* textSurface = TTF_RenderText_Solid(font, game_text_message, color);
+
+	SDL_Surface* textSurface = NULL;
+
+	textSurface = TTF_RenderText_Solid(font, game_text_message, color);
+
+	if (textSurface == NULL)
+	{
+		if (debug.is_debug_mode())
+		{
+			printf("GameText::LoadGameObjectContent failed to create surface error: %s\n", SDL_GetError());
+		}
+		return false;
+	}
+
 	//SDL_Surface* textSurface = TTF_RenderText_Solid(font, "Hello Manual", color);
 	game_text_box_width = textSurface->w;
     game_text_box_height = textSurface->h;
