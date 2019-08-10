@@ -501,11 +501,10 @@ void Game::GameEventManager()
 			}
 
 		}
-
-
+		
 	}
 
-
+	
 		if (csdl_obj->GetSDLGameEvent()->type == SDL_KEYUP)
 		{
 			std::cout << csdl_obj->GetSDLGameEvent()->key.keysym.sym << std::endl;
