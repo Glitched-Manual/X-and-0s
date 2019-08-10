@@ -20,6 +20,8 @@ std::string Player::GetPlayerInput(bool* quit_case)
 
 std::string player_string_input;
 
+
+//sdl input based on key presses
 std::getline(std::cin,player_string_input);
 std::cin.ignore(1000,'\n');
 std::cin.clear();

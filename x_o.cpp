@@ -13,13 +13,13 @@
 #include "Game.h"
 
 
-int main()
+int main(int argc, char* args[])
 {
 
 
 Game* game;
 
-game = new Game;
+game = new Game(960,720);
 //Player p1;
 //p1.SetPlayerMark("N");
 //std::cout << p1.GetPlayerMark() << std::endl;
@@ -41,6 +41,7 @@ game->GetGameGrid()->DisplayGrid();
 
 // did not change as expected. Changing to objects to pointers caused a segmentation fault
 */
+//std::cin.get();
 return 0;
 
 }

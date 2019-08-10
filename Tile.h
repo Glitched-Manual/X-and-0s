@@ -17,11 +17,14 @@ std::string* tile_mark;
 public:
 
 Tile();
+~Tile();
+Developer debug;
+// sets mark on tile , sets marked status to true
 void SetTileMark(std::string passed_mark){ *tile_mark = passed_mark; *tile_is_marked = true;}
 
 std::string* GetTileMark(){ return tile_mark; }
 
-bool* GetTIleIsMarkedStatus(){ return tile_is_marked;}
+bool* GetTileIsMarkedStatus(){ return tile_is_marked;}
 
 void SetTilePosition(int passed_x, int passed_y);
 
