@@ -1,9 +1,11 @@
+#include <memory>
+#include <vector>
+#include <map>
+
 #include "Grid.h"
 #include "Win_Case.h"
 #include "Player.h"
 #include "AI.h"
-#include <memory>
-#include <vector>
 #include "CSDL.h"
 #include "HashTable.h"
 #include "GameText.h"
@@ -38,8 +40,10 @@ unsigned int turn_phase;
 std::vector<GameObject*> allGameObjects;
 GameObject* gameObjectHashTable = NULL;
 GameObject* gameObjectTileSelector = NULL;
-GameObject* gameObjectGridMarker_A = NULL;
-GameObject* gameObjectGridMarker_B = NULL;
+GameObject* gameObjectGridMarker = NULL;
+
+
+std::map<std::string, GameObject* > game_object_map;
 
 // game mode enum
 

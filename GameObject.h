@@ -1,6 +1,8 @@
 #include "cross_sdl.h"
 #include "LoaderParams.h"
 #include "Developer.h"
+#include "Color.h"
+
 #include <string>
 
 #ifndef GAMEOBJECT_H
@@ -18,6 +20,12 @@ public:
 	virtual void CleanGameObjectContent() = 0;
 
 	virtual bool GetContentLoadedStatus() = 0;
+	virtual SDL_Texture* GetGameTexture() = 0;
+	virtual void AlterTextureColor(Uint8 passed_r_value, Uint8 passed_g_value, Uint8 passed_b_value) = 0;
+	virtual void RevertAlteredTextureColor() = 0;
+	virtual void SetOriginalColors() = 0;
+	virtual Color GetOringinalColors() = 0;
+
 	GameObject(){}
 protected:
 

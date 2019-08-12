@@ -14,12 +14,15 @@ class GameText:public GameObject
 	char* game_text_message;
 	bool set_text_used = false;
 	bool game_text_content_loaded = false;
+	bool game_text_message_highlighted = false;
 
+	unsigned int game_text_size = 20; //default
 	unsigned int game_text_box_width;
 	unsigned int game_text_box_height;
 
 public:
 	GameText(LoaderParams* pParams);
+	GameText(LoaderParams* pParams, unsigned int text_size);
 	~GameText();
 	//load
 	bool LoadGameObjectContent(SDL_Renderer* passed_Renderer);
@@ -33,7 +36,13 @@ public:
 	 std::string GetGameObjectID() { return game_text_id; }
 	 bool GetContentLoadedStatus();
 	 void SetGameTextMessage(std::string passed_message);
-	
+	 SDL_Texture* GetGameTexture() { return game_text_texture; }
+
+	 void AlterTextureColor(Uint8 passed_r_value, Uint8 passed_g_value, Uint8 passed_b_value);
+	 void RevertAlteredTextureColor();
+
+	  void SetOriginalColors() = 0;
+	  Color GetOringinalColors() = 0;
 };
 
 

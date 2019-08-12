@@ -406,6 +406,7 @@ bool Game::LoadGameObjectContent()
 
 		for (std::vector<GameObject*>::iterator game_object_index = allGameObjects.begin(); game_object_index != allGameObjects.end(); game_object_index++)
 		{
+			//loades textures and such
 			(*game_object_index)->LoadGameObjectContent(csdl_obj->GetSDLRenderer());
 		}
 		if (debug.is_debug_mode())
@@ -435,7 +436,7 @@ bool Game::LoadGameOpeningMenu()
 	//x, y, width, height, std::string passed_textureID
 
 	//center text pass center x and y
-	start_menu_text = new GameText(new LoaderParams(SCREEN_WIDTH/2, SCREEN_HEIGHT/2,100,100,"Start Game"));
+	start_menu_text = new GameText(new LoaderParams(SCREEN_WIDTH/2, SCREEN_HEIGHT/2,100,100,"Start Game"),60);
 
 	if(start_menu_text == NULL)
 	{
@@ -447,6 +448,7 @@ bool Game::LoadGameOpeningMenu()
 
 	}
 	
+	game_object_map["Start Game"] = start_menu_text;
 	allGameObjects.push_back(start_menu_text);
 
 	if (debug.is_debug_mode())
@@ -464,16 +466,36 @@ void Game::RenderGameTextures()
 		
 		if (x_o_game_state == main_menu)
 		{
-			for (std::vector<GameObject*>::iterator game_object_index = allGameObjects.begin(); game_object_index != allGameObjects.end(); game_object_index++)
+			//use map istead of for loop
+			/*for (std::vector<GameObject*>::iterator game_object_index = allGameObjects.begin(); game_object_index != allGameObjects.end(); game_object_index++)
 			{
 				if ((*game_object_index)->GetGameObjectID() =="Start Game")
 				{
 					(*game_object_index)->Draw(csdl_obj->GetSDLRenderer());
 				}
-
 				
 			}
+			*/
+			
+			game_object_map["Start Game"]->Draw(csdl_obj->GetSDLRenderer()); 
 		}
+		//Game options
+		else if (x_o_game_state == game_options)
+		{
+			//
+
+
+		}
+
+		else if (x_o_game_state == gameplay)
+		{
+
+			//render grid
+
+			//loop through marked tiles , render marks to proper spots
+
+		}
+
 		else //render everything! probably bad :P
 		{
 			for (std::vector<GameObject*>::iterator game_object_index = allGameObjects.begin(); game_object_index != allGameObjects.end(); game_object_index++)
@@ -499,11 +521,24 @@ void Game::GameEventManager()
 			{
 				std::cout << "\nYou Started the game!\n" << std::endl;
 			}
-
+			//rgb(38, 64, 139)
+			game_object_map["Start Game"]->AlterTextureColor( 38, 64, 139);
 		}
 		
 	}
 
+
+	else if(x_o_game_state == game_options )
+	{
+
+
+	}
+
+	/*
+	SDL2 Button input Feedback 
+
+	- not needed for release
+	*/
 	
 		if (csdl_obj->GetSDLGameEvent()->type == SDL_KEYUP)
 		{

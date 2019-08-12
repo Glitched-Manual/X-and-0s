@@ -12,10 +12,35 @@ GameText::GameText(LoaderParams* pParams)
 	
 }
 
+GameText::GameText(LoaderParams* pParams, unsigned int passed_text_size)
+{
+	game_text_rect = new SDL_Rect;
+	game_text_rect->x = pParams->GetX();
+	game_text_rect->y = pParams->GetY();
+	game_text_rect->w = pParams->GetWidth();
+	game_text_rect->h = pParams->GetHeight();
+	game_text_id = pParams->GetTextureID();
+
+	game_text_size = passed_text_size;
+}
+
+void GameText::AlterTextureColor(Uint8 passed_r_value, Uint8 passed_g_value, Uint8 passed_b_value)
+{
+	SDL_SetTextureColorMod(game_text_texture, passed_r_value, passed_g_value, passed_b_value);
+
+	game_text_message_highlighted = true;
+}
+
+
+voif GameText::RevertAlteredTextureColor()
+{
+	SDL_GetTextureColorMod(SDL_Texture * texture,Uint8 * r,	Uint8 * g,Uint8 * b)
+}
+
 //load
 bool GameText::LoadGameObjectContent(SDL_Renderer* passed_Renderer)
 {
-	TTF_Font* font = TTF_OpenFont("PressStart2P.ttf", 60);
+	TTF_Font* font = TTF_OpenFont("PressStart2P.ttf", game_text_size);
 	SDL_Color color = { 255,255,255 };
 
 	if (game_text_id.empty())
@@ -75,6 +100,8 @@ void  GameText::Draw(SDL_Renderer* passed_Renderer)
 //update? change text?
 void GameText::Update()
 {
+	
+
 
 }
 //clean
