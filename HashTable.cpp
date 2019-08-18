@@ -6,8 +6,8 @@ HashTable::HashTable(const LoaderParams* pParams)
 	//set everything from params
 	hash_table_rect = new SDL_Rect;
 
-	hash_table_rect->x = pParams->GetX();
-	hash_table_rect->y = pParams->GetY();
+	hash_table_rect->x = pParams->GetX() - ( pParams->GetWidth() /2 );
+	hash_table_rect->y = pParams->GetY() - ( pParams->GetHeight() / 2 );
 	hash_table_rect->w = pParams->GetWidth();
 	hash_table_rect->h = pParams->GetHeight();
 
@@ -31,7 +31,7 @@ bool HashTable::LoadGameObjectContent(SDL_Renderer* passed_Renderer)
 	{
 		printf("HashTable was successfully loaded\n");
 	}
-	object_content_loaded = true;
+	hash_table_content_loaded = true;
 	return true;
 }
 
@@ -50,7 +50,24 @@ void HashTable::CleanGameObjectContent()
 
 }
 
-bool HashTable::GetContentLoadedStatus()
+void HashTable::SetOriginalColors()
 {
-	return object_content_loaded;
+
+}
+
+void HashTable::RevertAlteredTextureColor()
+{
+
+
+}
+
+void HashTable::AlterTextureColor(Uint8 passed_r_value, Uint8 passed_g_value, Uint8 passed_b_value)
+{
+
+
+}
+
+void HashTable::ToggleTextureColor(Uint8 passed_r_value, Uint8 passed_g_value, Uint8 passed_b_value)
+{
+
 }

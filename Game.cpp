@@ -30,7 +30,14 @@ LoadWinCases();
 
   x_o_game_state = main_menu;
 
+  //Load Main menu textures
   LoadGameOpeningMenu();
+
+  //Load Options menu textures
+  LoadGameOptionsMenu();
+  // hash table and marks
+  LoadGameplayObjects();
+
   LoadGameObjectContent();
 
 }
@@ -69,6 +76,7 @@ void Game::GameLoop()
 
 			GameEventManager();
 		}
+		
 		//render
 		RenderGameTextures();
 	    /*
@@ -327,7 +335,7 @@ bool Game::PlayerWin(Player* passed_player)
 return false;
 }
 
-void Game::MainGameMenu()
+void Game::MainGameMenu() //not needed
 {
 	/*
 	load 
@@ -392,6 +400,22 @@ void Game::TurnPhaseEvent()
 		Game_Over = true;
 		std::cout << "Draw!" << std::endl;
 	}
+}
+
+bool Game::LoadGameplayObjects()
+{
+	GameObject* hash_table_game_obj = NULL;
+	//load hash table
+	HashTable* hash_table = new HashTable( new LoaderParams( SCREEN_WIDTH /2, SCREEN_HEIGHT /2,400,400,"Hash Table" ) );
+
+	game_object_map["Hash Table"] = hash_table;
+	hash_table_game_obj = hash_table;
+
+	allGameObjects.push_back(hash_table_game_obj);
+
+	//load marks
+
+	return true;
 }
 
 bool Game::LoadGameObjectContent()
@@ -459,6 +483,58 @@ bool Game::LoadGameOpeningMenu()
 	return true;
 }
 
+
+//
+bool Game::LoadGameOptionsMenu()
+{
+	/*
+	
+	Load text 
+
+	Play       Options       Credits
+	x-axis of width
+<---25%----------50%----------75%-->
+
+y axis 50% of height
+	*/
+	//play
+	GameObject* game_options_menu_play_text = NULL;
+
+	GameText* options_menu_play = new GameText(new LoaderParams((SCREEN_WIDTH / 5), SCREEN_HEIGHT / 2, 100, 100, "Play Button"), "Play", 30);
+
+	game_options_menu_play_text = options_menu_play;
+
+	game_object_map["Play Button"] = game_options_menu_play_text;
+	allGameObjects.push_back(game_options_menu_play_text);
+
+	//Options
+
+	GameText* options_menu_options = new GameText(new LoaderParams(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 100, 100, "Options Button"), "Options", 30);
+
+	GameObject* game_options_menu_options_text = NULL;
+
+	game_options_menu_options_text = options_menu_options;
+
+	game_object_map["Options Button"] = game_options_menu_options_text;
+
+	allGameObjects.push_back(game_options_menu_options_text);
+
+	//Credits
+
+	GameObject* game_options_menu_credits_text = NULL;
+
+	GameText* options_menu_credits = new GameText(new LoaderParams((SCREEN_WIDTH / 5) * 4, (SCREEN_HEIGHT / 2) , 100, 100, "Credits Button"), "Credits", 30);
+
+	
+	game_options_menu_credits_text = options_menu_credits;
+
+	game_object_map["Credits Button"] = game_options_menu_credits_text;
+
+	allGameObjects.push_back(game_options_menu_credits_text);
+
+	return true;
+}
+
 void Game::RenderGameTextures()
 {
 	if (!(allGameObjects.empty()))
@@ -482,8 +558,17 @@ void Game::RenderGameTextures()
 		//Game options
 		else if (x_o_game_state == game_options)
 		{
-			//
+			//Play
 
+			game_object_map["Play Button"]->Draw(csdl_obj->GetSDLRenderer());
+
+			//Options
+
+			game_object_map["Options Button"]->Draw(csdl_obj->GetSDLRenderer());
+
+			//Credits
+
+			game_object_map["Credits Button"]->Draw(csdl_obj->GetSDLRenderer());
 
 		}
 
@@ -491,7 +576,7 @@ void Game::RenderGameTextures()
 		{
 
 			//render grid
-
+			game_object_map["Hash Table"]->Draw( csdl_obj->GetSDLRenderer() );
 			//loop through marked tiles , render marks to proper spots
 
 		}
@@ -510,35 +595,328 @@ void Game::RenderGameTextures()
 
 void Game::GameEventManager()
 {
-	
-	    //if at main menu
-	if (x_o_game_state == main_menu)
+	if (csdl_obj->GetSDLGameEvent()->cbutton.state == SDL_PRESSED || csdl_obj->GetSDLGameEvent()->key.state == SDL_PRESSED)
 	{
-		//if start button or enter key pressed
-        if( (csdl_obj->GetSDLGameEvent()->cbutton.button == SDL_CONTROLLER_BUTTON_START) || (csdl_obj->GetSDLGameEvent()->key.keysym.sym == SDLK_RETURN ) )
+
+
+		//if at main menu
+		if (x_o_game_state == main_menu)
 		{
-			if (debug.is_debug_mode())
+			//if keyboard or controller pressed
+
+
+				//if start button or enter key pressed
+			if ((csdl_obj->GetSDLGameEvent()->cbutton.button == SDL_CONTROLLER_BUTTON_START) || ((csdl_obj->GetSDLGameEvent()->key.keysym.sym == SDLK_RETURN && csdl_obj->GetSDLGameEvent()->type == SDL_KEYDOWN)))
 			{
-				std::cout << "\nYou Started the game!\n" << std::endl;
+				if (debug.is_debug_mode())
+				{
+					std::cout << "\nYou Started the game!\n" << std::endl;
+				}
+				//rgb(38, 64, 139)
+				game_object_map["Start Game"]->ToggleTextureColor(38, 64, 139);
+
+
+				//create a change state to put values back to starting position
+				x_o_game_state = game_options;
+				//game_object_map["Start Game"]->AlterTextureColor( 38, 64, 139);
 			}
-			//rgb(38, 64, 139)
-			game_object_map["Start Game"]->AlterTextureColor( 38, 64, 139);
 		}
-		
-	}
 
 
-	else if(x_o_game_state == game_options )
-	{
+		// end of main_menu events
 
 
-	}
+		else if (x_o_game_state == game_options)
+		{
+
+
+
+			// if none of Play Options or Credits Highlighted Highlight Play
+
+			//if left key pressed or left button pressed highlight button left of the last, unless it is the left most button
+
+			//check if any highlighted text present GetAreColorsAltered()
+
+			// make sure not more than one is highlighted
+
+			unsigned int total_text_highlighted = 0;
+
+			std::string highlighed_Text;
+			/*
+			game_text_message = new char[passed_message.length() + 1];
+			strcpy(game_text_message, passed_message.c_str());
+			*/
+			if (game_object_map["Play Button"]->GetAreColorsAltered())
+			{
+				highlighed_Text = game_object_map["Play Button"]->GetGameObjectID();
+				total_text_highlighted++;
+			}
+
+
+			if (game_object_map["Options Button"]->GetAreColorsAltered())
+			{
+				highlighed_Text = game_object_map["Options Button"]->GetGameObjectID();
+				total_text_highlighted++;
+			}
+
+			if (game_object_map["Credits Button"]->GetAreColorsAltered())
+			{
+				highlighed_Text = game_object_map["Credits Button"]->GetGameObjectID();
+				total_text_highlighted++;
+			}
+
+			if (total_text_highlighted > 1)
+			{
+				// unhighlight everthing
+
+				game_object_map["Play Button"]->RevertAlteredTextureColor();
+				game_object_map["Options Button"]->RevertAlteredTextureColor();
+				game_object_map["Credits Button"]->RevertAlteredTextureColor();
+
+				x_o_highlighted_option = none_of_the_options_highlighted;
+
+				if (debug.is_debug_mode())
+				{
+					std::cout << "\n All Buttons Buttons unhighlighted Highlighted \n" << std::endl;
+				}
+			}
+			else if (total_text_highlighted = 0)
+			{
+
+				x_o_highlighted_option = none_of_the_options_highlighted;
+			}
+			else if (total_text_highlighted  < 0) 
+			{
+				total_text_highlighted = 0;
+				x_o_highlighted_option = none_of_the_options_highlighted;
+			}
+			
+			// SDL_CONTROLLER_BUTTON_DPAD_LEFT   or    SDL_CONTROLLER_BUTTON_DPAD_RIGHT
+			// SDLK_LEFT  SDLK_RIGHT
+			//none_of_the_options,play_option,options_option,credits_option
+			switch (x_o_highlighted_option)
+			{
+
+			case  play_option_highlighted:
+				//right command or click in hit box
+				if ((csdl_obj->GetSDLGameEvent()->cbutton.button == SDL_CONTROLLER_BUTTON_RIGHTSTICK) || (csdl_obj->GetSDLGameEvent()->cbutton.button == SDL_CONTROLLER_BUTTON_DPAD_RIGHT && csdl_obj->GetSDLGameEvent()->cbutton.state == SDL_PRESSED) || ((csdl_obj->GetSDLGameEvent()->key.keysym.sym == SDLK_RIGHT) && (csdl_obj->GetSDLGameEvent()->type == SDL_KEYDOWN)))
+				{
+					//change x_o_highlighted_option  play_option_highlighted to options_option_highlighted
+					x_o_highlighted_option = options_option_highlighted;
+					// unhighlight play
+					game_object_map["Play Button"]->RevertAlteredTextureColor();
+					// highlight options 38, 64, 139
+					game_object_map["Options Button"]->AlterTextureColor(38, 64, 139);
+
+					if (debug.is_debug_mode())
+					{
+						std::cout << "\n Options Button Highlighted \n" << std::endl;
+					}
+				}
+				// if b or esc pressed
+				// SDLK_RETURN
+				
+
+				else if (( csdl_obj->GetSDLGameEvent()->cbutton.button == SDL_CONTROLLER_BUTTON_START ) || (csdl_obj->GetSDLGameEvent()->cbutton.button == SDL_CONTROLLER_BUTTON_A ) || (csdl_obj->GetSDLGameEvent()->key.keysym.sym == SDLK_RETURN ) )
+				{
+					x_o_game_state = gameplay;
+
+					game_object_map["Play Button"]->RevertAlteredTextureColor();
+					game_object_map["Options Button"]->RevertAlteredTextureColor();
+					game_object_map["Credits Button"]->RevertAlteredTextureColor();
+
+					if (debug.is_debug_mode())
+					{
+						std::cout << "\n Play Game Selected! \n" << std::endl;
+					}
+
+				}
+
+
+				else if ((csdl_obj->GetSDLGameEvent()->cbutton.button == SDL_CONTROLLER_BUTTON_B && csdl_obj->GetSDLGameEvent()->cbutton.state == SDL_PRESSED) || ( (csdl_obj->GetSDLGameEvent()->key.keysym.sym == SDLK_ESCAPE) && (csdl_obj->GetSDLGameEvent()->type == SDL_KEYDOWN ) ) )
+				{
+					//revert all texture and  go to menu
+					game_object_map["Play Button"]->RevertAlteredTextureColor();
+					game_object_map["Options Button"]->RevertAlteredTextureColor();
+					game_object_map["Credits Button"]->RevertAlteredTextureColor();
+					game_object_map["Start Game"]->RevertAlteredTextureColor();
+
+					x_o_highlighted_option = none_of_the_options_highlighted;
+
+					if (debug.is_debug_mode())
+					{
+						std::cout << "\n options_option_highlighted - Exit condition 1 met \n" << std::endl;
+					}
+
+				}
+				
+
+				break;
+
+			case  options_option_highlighted:
+				//left command or click in hit box
+				if ((csdl_obj->GetSDLGameEvent()->cbutton.button == SDL_CONTROLLER_BUTTON_LEFTSTICK) || (csdl_obj->GetSDLGameEvent()->cbutton.button == SDL_CONTROLLER_BUTTON_DPAD_LEFT && csdl_obj->GetSDLGameEvent()->cbutton.state == SDL_PRESSED ) || (csdl_obj->GetSDLGameEvent()->key.keysym.sym == SDLK_LEFT) && (csdl_obj->GetSDLGameEvent()->type == SDL_KEYDOWN))
+				{
+					x_o_highlighted_option = play_option_highlighted;
+					// unhighlight options
+					game_object_map["Options Button"]->RevertAlteredTextureColor();
+					// highlight play
+					game_object_map["Play Button"]->AlterTextureColor(38, 64, 139);
+
+					if (debug.is_debug_mode())
+					{
+						std::cout << "\n Play Button Highlighted \n" << std::endl;
+					}
+
+				}
+
+
+				//right command or click in hit box
+				else if (csdl_obj->GetSDLGameEvent()->cbutton.button == SDL_CONTROLLER_BUTTON_RIGHTSTICK || (csdl_obj->GetSDLGameEvent()->cbutton.button == SDL_CONTROLLER_BUTTON_DPAD_RIGHT && csdl_obj->GetSDLGameEvent()->cbutton.state == SDL_PRESSED ) || ((csdl_obj->GetSDLGameEvent()->key.keysym.sym == SDLK_RIGHT) && (csdl_obj->GetSDLGameEvent()->type == SDL_KEYDOWN)))
+				{
+					x_o_highlighted_option = credits_option_highlighted;
+					// unhighlight options
+					game_object_map["Options Button"]->RevertAlteredTextureColor();
+					// highlight credits
+					game_object_map["Credits Button"]->AlterTextureColor(38, 64, 139);
+
+					if (debug.is_debug_mode())
+					{
+						std::cout << "\n Credits Button Highlighted \n" << std::endl;
+					}
+				}
+				
+				else if ((csdl_obj->GetSDLGameEvent()->cbutton.button == SDL_CONTROLLER_BUTTON_B && csdl_obj->GetSDLGameEvent()->cbutton.state == SDL_PRESSED ) || ((csdl_obj->GetSDLGameEvent()->key.keysym.sym == SDLK_ESCAPE && csdl_obj->GetSDLGameEvent()->type == SDL_KEYDOWN ) ) )
+				{
+					//revert all texture and  go to menu
+					game_object_map["Play Button"]->RevertAlteredTextureColor();
+					game_object_map["Options Button"]->RevertAlteredTextureColor();
+					game_object_map["Credits Button"]->RevertAlteredTextureColor();
+					game_object_map["Start Game"]->RevertAlteredTextureColor();
+
+					x_o_highlighted_option = none_of_the_options_highlighted;
+
+					if (debug.is_debug_mode())
+					{
+						std::cout << "\n play_option_highlighted - Exit condition 1 met \n" << std::endl;
+					}
+					
+				}
+				else
+				{
+
+				}
+				break;
+
+			case  credits_option_highlighted:
+				//left command or click in hit box
+				if ((csdl_obj->GetSDLGameEvent()->cbutton.button == SDL_CONTROLLER_BUTTON_LEFTSTICK) || (csdl_obj->GetSDLGameEvent()->cbutton.button == SDL_CONTROLLER_BUTTON_DPAD_LEFT && csdl_obj->GetSDLGameEvent()->cbutton.state == SDL_PRESSED ) || ((csdl_obj->GetSDLGameEvent()->key.keysym.sym == SDLK_LEFT) && (csdl_obj->GetSDLGameEvent()->type == SDL_KEYDOWN)))
+				{
+					x_o_highlighted_option = options_option_highlighted;
+					// unhighlight credits
+					game_object_map["Credits Button"]->RevertAlteredTextureColor();
+					// highlight options
+					game_object_map["Options Button"]->AlterTextureColor(38, 64, 139);
+
+					if (debug.is_debug_mode())
+					{
+						std::cout << "\n Options Button Highlighted \n" << std::endl;
+					}
+				}
+				
+				else if ((csdl_obj->GetSDLGameEvent()->cbutton.button == SDL_CONTROLLER_BUTTON_B && csdl_obj->GetSDLGameEvent()->cbutton.state == SDL_PRESSED ) || ((csdl_obj->GetSDLGameEvent()->key.keysym.sym == SDLK_ESCAPE && csdl_obj->GetSDLGameEvent()->type == SDL_KEYDOWN ) ) )
+				{
+					//revert all texture and  go to menu
+					game_object_map["Play Button"]->RevertAlteredTextureColor();
+					game_object_map["Options Button"]->RevertAlteredTextureColor();
+					game_object_map["Credits Button"]->RevertAlteredTextureColor();
+					game_object_map["Start Game"]->RevertAlteredTextureColor();
+
+					x_o_highlighted_option = none_of_the_options_highlighted;
+
+					if (debug.is_debug_mode())
+					{
+						std::cout << "\n credits_option_highlighted - Exit condition 1 met \n" << std::endl;
+					}
+
+				}
+				
+				break;
+
+			case  none_of_the_options_highlighted:
+
+				// highight play if button is not keyboard escape or button B
+
+				if((csdl_obj->GetSDLGameEvent()->cbutton.button == SDL_CONTROLLER_BUTTON_B) && (csdl_obj->GetSDLGameEvent()->type == SDL_CONTROLLERBUTTONDOWN))
+				{
+					//revert all texture and  go to menu
+					game_object_map["Play Button"]->RevertAlteredTextureColor();
+					game_object_map["Options Button"]->RevertAlteredTextureColor();
+					game_object_map["Credits Button"]->RevertAlteredTextureColor();
+					game_object_map["Start Game"]->RevertAlteredTextureColor();
+
+					x_o_game_state = main_menu;
+
+					if (debug.is_debug_mode())
+					{
+						std::cout << "\n none_of_the_options_highlighted - Controller - Exit condition 2 met \n" << std::endl;
+					}
+
+				}				
+				else if ((csdl_obj->GetSDLGameEvent()->key.keysym.sym == SDLK_ESCAPE) && (csdl_obj->GetSDLGameEvent()->type == SDL_KEYDOWN))
+				{
+					//revert all texture and  go to menu
+					game_object_map["Play Button"]->RevertAlteredTextureColor();
+					game_object_map["Options Button"]->RevertAlteredTextureColor();
+					game_object_map["Credits Button"]->RevertAlteredTextureColor();
+					game_object_map["Start Game"]->RevertAlteredTextureColor();
+
+					x_o_game_state = main_menu;
+
+					if (debug.is_debug_mode())
+					{
+						std::cout << "\n none_of_the_options_highlighted - Keyboard - Exit condition 2 met \n" << std::endl;
+					}
+				}
+				else 
+				{
+					//got back one menu
+
+					//opening menu
+
+					game_object_map["Play Button"]->AlterTextureColor(38, 64, 139);
+
+
+					x_o_highlighted_option = play_option_highlighted;
+
+					if (debug.is_debug_mode())
+					{
+						std::cout << "\n Play Button Highlighted \n" << std::endl;
+					}
+					
+					
+
+				}
+
+				break;
+
+			default:
+
+				break;
+			}
+
+			
+
+		} // end of game_options events
+
+	
 
 	/*
 	SDL2 Button input Feedback 
 
 	- not needed for release
 	*/
+
 	
 		if (csdl_obj->GetSDLGameEvent()->type == SDL_KEYUP)
 		{
@@ -631,5 +1009,5 @@ void Game::GameEventManager()
 			
 		}
 
-	
-}
+	}
+} //end of Xs an Os game events

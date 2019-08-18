@@ -49,15 +49,20 @@ std::map<std::string, GameObject* > game_object_map;
 
 enum current_game_state {main_menu,game_options,gameplay,credits,pause,quit};
 enum current_gameplay_mode {human_vs_human,human_vs_computer};
+enum current_highlighted_option_menu_text { none_of_the_options_highlighted,play_option_highlighted,options_option_highlighted,credits_option_highlighted };
+
+// changeable variable 0-2 for options open highlighted option
+
+unsigned int game_option_select_value = 0;
 
 current_game_state x_o_game_state;
 current_gameplay_mode x_o_gameplay_mode;
-
+current_highlighted_option_menu_text x_o_highlighted_option = none_of_the_options_highlighted;
 //screen dimensions
 unsigned int SCREEN_WIDTH;
 
 unsigned int SCREEN_HEIGHT;
-
+bool sdl_button_released;
 public:
 Game(unsigned int passed_screen_width, unsigned int passed_screen_height);
 ~Game();
@@ -83,6 +88,9 @@ bool LoadGameObjectContent();
 
 bool LoadGameOpeningMenu();
 //switch method calls other methods depending on scene
+bool LoadGameOptionsMenu();
+bool LoadGameplayObjects();
+
 void GameEventManager();
 
 void RenderGameTextures();

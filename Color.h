@@ -15,6 +15,8 @@ struct Color
 
 	Uint8 GetColorValueB() { return b; }
 
+	void SetColorValues(Uint8 passed_r, Uint8 passed_g, Uint8 passed_b);
+
 private:
 	//records red value 0-250
 	Uint8 r;

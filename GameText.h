@@ -20,9 +20,12 @@ class GameText:public GameObject
 	unsigned int game_text_box_width;
 	unsigned int game_text_box_height;
 
+	Color game_text_original_color;
+
 public:
 	GameText(LoaderParams* pParams);
 	GameText(LoaderParams* pParams, unsigned int text_size);
+	GameText(LoaderParams* pParams, std::string message, unsigned int text_size);
 	~GameText();
 	//load
 	bool LoadGameObjectContent(SDL_Renderer* passed_Renderer);
@@ -36,13 +39,18 @@ public:
 	 std::string GetGameObjectID() { return game_text_id; }
 	 bool GetContentLoadedStatus();
 	 void SetGameTextMessage(std::string passed_message);
+	 void SetGameTextMessage(char* passed_message);
 	 SDL_Texture* GetGameTexture() { return game_text_texture; }
 
 	 void AlterTextureColor(Uint8 passed_r_value, Uint8 passed_g_value, Uint8 passed_b_value);
 	 void RevertAlteredTextureColor();
 
-	  void SetOriginalColors() = 0;
-	  Color GetOringinalColors() = 0;
+	  void SetOriginalColors();
+	  Color GetOringinalColors();
+
+	  void ToggleTextureColor(Uint8 passed_r_value, Uint8 passed_g_value, Uint8 passed_b_value);
+	  bool GetAreColorsAltered() { return game_text_message_highlighted; } //if hightlighted true 
+	  
 };
 
 
