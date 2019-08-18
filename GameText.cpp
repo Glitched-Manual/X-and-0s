@@ -24,6 +24,20 @@ GameText::GameText(LoaderParams* pParams, unsigned int passed_text_size)
 	game_text_size = passed_text_size;
 }
 
+GameText::GameText(LoaderParams* pParams, std::string passed_message, unsigned int passed_text_size)
+{
+	game_text_rect = new SDL_Rect;
+	game_text_rect->x = pParams->GetX();
+	game_text_rect->y = pParams->GetY();
+	game_text_rect->w = pParams->GetWidth();
+	game_text_rect->h = pParams->GetHeight();
+	game_text_id = pParams->GetTextureID();
+
+	game_text_size = passed_text_size;
+
+	SetGameTextMessage(passed_message);
+}
+
 void GameText::AlterTextureColor(Uint8 passed_r_value, Uint8 passed_g_value, Uint8 passed_b_value)
 {
 	SDL_SetTextureColorMod(game_text_texture, passed_r_value, passed_g_value, passed_b_value);
@@ -31,10 +45,65 @@ void GameText::AlterTextureColor(Uint8 passed_r_value, Uint8 passed_g_value, Uin
 	game_text_message_highlighted = true;
 }
 
-
-voif GameText::RevertAlteredTextureColor()
+void GameText::SetOriginalColors()
 {
-	SDL_GetTextureColorMod(SDL_Texture * texture,Uint8 * r,	Uint8 * g,Uint8 * b)
+		
+    Uint8* temp_r = new Uint8;
+	Uint8* temp_g = new Uint8;
+	Uint8* temp_b = new Uint8;
+
+	if (SDL_GetTextureColorMod(game_text_texture, temp_r, temp_g, temp_b))
+	{
+		game_text_original_color.SetColorValues(*temp_r, *temp_g, *temp_b);
+
+		std::cout << "colors r - "<< *temp_r << ", g - " << *temp_g << ", b - " << *temp_b  << std::endl;
+
+		game_text_message_highlighted = false;
+	}
+	else 
+	{
+		//if failed set original colors
+
+		game_text_original_color.SetColorValues(250, 250, 250);
+
+		game_text_message_highlighted = false;
+	}
+
+	delete temp_r;
+	delete temp_g;
+	delete temp_b;
+
+}
+
+void GameText::ToggleTextureColor(Uint8 passed_r_value, Uint8 passed_g_value, Uint8 passed_b_value)
+{
+	if (game_text_message_highlighted == false)
+	{
+		AlterTextureColor(passed_r_value, passed_g_value, passed_b_value);
+
+		game_text_message_highlighted = true;
+	}
+	else
+	{
+		RevertAlteredTextureColor();
+
+		game_text_message_highlighted = false;
+	}
+
+}
+
+Color GameText::GetOringinalColors()
+{
+	return game_text_original_color;
+}
+
+void GameText::RevertAlteredTextureColor()
+{
+	
+	//SDL_SetTextureColorMod(game_text_texture, game_text_original_color.GetColorValueR(), game_text_original_color.GetColorValueG(), game_text_original_color.GetColorValueB());
+	SDL_SetTextureColorMod(game_text_texture, 255,255,255);
+		
+	game_text_message_highlighted = false;
 }
 
 //load
@@ -46,9 +115,18 @@ bool GameText::LoadGameObjectContent(SDL_Renderer* passed_Renderer)
 	if (game_text_id.empty())
 	{
 		game_text_id = "Start Game";
+		SetGameTextMessage(game_text_id);
+	}
+	else if (game_text_message != NULL) 
+	{
+
+	}
+	else
+	{
+		SetGameTextMessage(game_text_id);
 	}
 
-	SetGameTextMessage(game_text_id);
+	
 
 	SDL_Surface* textSurface = NULL;
 
@@ -82,7 +160,13 @@ bool GameText::LoadGameObjectContent(SDL_Renderer* passed_Renderer)
 		{
 			printf("GameText::LoadGameObjectContent() failed to open font error %s\n", SDL_GetError());
 		}
+		return false;
 	}
+
+	//Get Original texture Colors
+	SetOriginalColors();
+	
+
 
 	if (debug.is_debug_mode())
 	{
@@ -126,6 +210,11 @@ void GameText::SetGameTextMessage( std::string passed_message)
 	}
 
 	
+}
+void GameText::SetGameTextMessage(char* passed_message)
+{
+
+	game_text_message = passed_message;
 }
 
 GameText::~GameText()
