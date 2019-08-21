@@ -9,6 +9,7 @@
 #include "CSDL.h"
 #include "HashTable.h"
 #include "GameText.h"
+#include "TileMarker.h"
 
 #ifndef GAME_H
 #define GAME_H
@@ -38,9 +39,7 @@ unsigned int turn_phase;
 
 //gameobjects
 std::vector<GameObject*> allGameObjects;
-GameObject* gameObjectHashTable = NULL;
-GameObject* gameObjectTileSelector = NULL;
-GameObject* gameObjectGridMarker = NULL;
+
 
 
 std::map<std::string, GameObject* > game_object_map;
@@ -90,6 +89,8 @@ bool LoadGameOpeningMenu();
 //switch method calls other methods depending on scene
 bool LoadGameOptionsMenu();
 bool LoadGameplayObjects();
+
+bool loadPlayerTextureMarks();
 
 void GameEventManager();
 

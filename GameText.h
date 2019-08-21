@@ -50,7 +50,7 @@ public:
 
 	  void ToggleTextureColor(Uint8 passed_r_value, Uint8 passed_g_value, Uint8 passed_b_value);
 	  bool GetAreColorsAltered() { return game_text_message_highlighted; } //if hightlighted true 
-	  
+	  SDL_Rect* GetTextureRect() { return game_text_rect; }
 };
 
 

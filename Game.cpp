@@ -37,9 +37,11 @@ LoadWinCases();
   LoadGameOptionsMenu();
   // hash table and marks
   LoadGameplayObjects();
+  loadPlayerTextureMarks(); // test version
 
-  LoadGameObjectContent();
 
+  LoadGameObjectContent(); // loads all content in allGameObjects. put all game objects before this
+ 
 }
 
 Game::~Game()
@@ -69,6 +71,8 @@ void Game::GameLoop()
 			//game_grid->DisplayGrid(); loops infinitly is a problem
 		}
 		*/
+		//SDL_SetRenderDrawColor(csdl_obj->GetSDLRenderer(), 167, 153, 183, 255 );
+
 		SDL_RenderClear(csdl_obj->GetSDLRenderer());
 
 		if (SDL_PollEvent(csdl_obj->GetSDLGameEvent()) > 0)
@@ -535,6 +539,33 @@ y axis 50% of height
 	return true;
 }
 
+bool Game::loadPlayerTextureMarks()
+{
+
+	GameObject* player_tile_mark_gam_obj = NULL; // will need two one for each player
+
+	//need rect* of hash table , make x and y change depending on maked tiles
+
+	
+	TileMarker* tile_marker_obj = new TileMarker(new LoaderParams((SCREEN_WIDTH /2), (SCREEN_HEIGHT / 2) , 100, 100, "test mark"),game_grid, player_pos_1, game_object_map["Hash Table"]->GetTextureRect()); // may only the player string mark is needed
+
+	player_tile_mark_gam_obj = tile_marker_obj;
+
+	
+
+	game_object_map["test mark"] = tile_marker_obj; // did not use game object here
+
+	allGameObjects.push_back(player_tile_mark_gam_obj); //pushed TileMark instead of game object lol
+
+	if (debug.is_debug_mode())
+	{
+		std::cout << "Player mark loaded" << std::endl;
+	}
+
+	return true;
+}
+
+
 void Game::RenderGameTextures()
 {
 	if (!(allGameObjects.empty()))
@@ -576,8 +607,10 @@ void Game::RenderGameTextures()
 		{
 
 			//render grid
-			game_object_map["Hash Table"]->Draw( csdl_obj->GetSDLRenderer() );
+	    	game_object_map["Hash Table"]->Draw( csdl_obj->GetSDLRenderer() );
+
 			//loop through marked tiles , render marks to proper spots
+			game_object_map["test mark"]->Draw( csdl_obj->GetSDLRenderer() );
 
 		}
 

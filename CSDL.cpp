@@ -152,7 +152,7 @@ bool CSDL::createSDLWindow(unsigned int passed_SCREEN_WIDTH, unsigned int passed
 {
 
 	sdl2_GameWindow = NULL;
-	sdl2_GameWindow = SDL_CreateWindow("Launch Pad", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, passed_SCREEN_WIDTH, passed_SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+	sdl2_GameWindow = SDL_CreateWindow("Tic Tac Toe", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, passed_SCREEN_WIDTH, passed_SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
 
 	if (sdl2_GameWindow == NULL)
 	{
