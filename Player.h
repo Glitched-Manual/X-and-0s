@@ -1,14 +1,23 @@
 #include <iostream>
 #include <string>
 
+#include "CSDL.h"
+
 #ifndef PLAYER_H
 #define PLAYER_H
+
 class Player{
 std::string* player_mark;
+
+std::string* sdl_player_input_string = NULL;
+
+CSDL* csdl_obj = NULL;
 public:
 
 Player();
+Player(std::string* passed_input_string, CSDL* passed_csdl_obj);
 ~Player();
+
 
 
 virtual std::string GetPlayerInput(bool* quit);

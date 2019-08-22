@@ -169,22 +169,28 @@ void TileMarker::Draw(SDL_Renderer* passed_Renderer)
 			tile_marker_rect->y = ((hash_table_rect->y) + ((hash_table_rect->h / 6) + (((hash_table_rect->h / 6) * 2) * cordinate_y))) - (tile_marker_rect->h / 2);
 
 			//if mark == "!" || mark == "#"
+			/*
+			*game_grid_obj->GetGameTile(cordinate_x, cordinate_y).GetTileMark() //old way
 
+			*game_grid_obj->GetGameTilePtr(cordinate_x, cordinate_y)->GetTileMark(); //patch deleted , and reapplied
 
-			if (*game_grid_obj->GetGameTile(cordinate_x, cordinate_y).GetTileMark() == "!")
+			lol my message for getGameTiles() was shown. I thought
+			*/
+			//the grid call - creates and destroys grid objects. Wrong :p. re edit I was right keep patch
+			if (*game_grid_obj->GetGameTilePtr(cordinate_x, cordinate_y)->GetTileMark() == "!")
 			{
 				SDL_RenderCopyEx(passed_Renderer, tile_marker_texture_player2, texture_crop_rect, tile_marker_rect, 0, NULL, SDL_FLIP_NONE);
 
 			}
 
-			if (*game_grid_obj->GetGameTile(cordinate_x, cordinate_y).GetTileMark() == "#")
+			if (*game_grid_obj->GetGameTilePtr(cordinate_x, cordinate_y)->GetTileMark() == "#")
 			{
 				SDL_RenderCopyEx(passed_Renderer, tile_marker_texture, texture_crop_rect, tile_marker_rect, 0, NULL, SDL_FLIP_NONE);
 
 			}
 
-
-
+			
+			
 		}
 
 	}
