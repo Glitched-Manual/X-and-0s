@@ -5,16 +5,19 @@ Game::Game(unsigned int passed_screen_width, unsigned int passed_screen_height)
 
 	SCREEN_WIDTH = passed_screen_width;
 	SCREEN_HEIGHT = passed_screen_height;
+	sdl_player_input_string = new std::string;
 
 	total_turns = 0;
-	player_pos_1 = new Player; //lol fully redeclared before going out out scope or passing value into args cause segmentation errors
-	player_pos_2 = new Player;
+	
 	game_grid = new Grid; //add params
 	csdl_obj = new CSDL(SCREEN_WIDTH, SCREEN_HEIGHT);
+	
+	player_pos_1 = new Player(sdl_player_input_string, csdl_obj); //lol fully redeclared before going out out scope or passing value into args cause segmentation errors
+	player_pos_2 = new Player(sdl_player_input_string, csdl_obj); //if ai use diffent initailizer
 	Game_Over = false;
 	quit_game_from_input = false;
 	win_cases_loaded = false;
-	sdl_player_input_string = new std::string;
+	
 	player_pos_1->SetPlayerMark("!");
 	player_pos_2->SetPlayerMark("#");
 	LoadWinCases();
@@ -355,7 +358,7 @@ void Game::MainGameMenu() //not needed
 }
 //fix after events and graphics
 
-//call on click of keyboard input conditions met
+//call on click of keyboard, button, mouse input conditions met
 void Game::TurnPhaseEvent()
 {
 
@@ -945,15 +948,23 @@ void Game::GameEventManager()
 		else if (x_o_game_state == match_gameplay)
 		{
 
-		if ((csdl_obj->GetSDLGameEvent()->key.keysym.sym == SDLK_SPACE) && (csdl_obj->GetSDLGameEvent()->type == SDL_KEYDOWN))
-		{
+			if ((csdl_obj->GetSDLGameEvent()->key.keysym.sym == SDLK_SPACE) && (csdl_obj->GetSDLGameEvent()->type == SDL_KEYDOWN))
+			{
+				/*
+				call turn phase method
+
+				if the string value of sdl_player_input_string is valid and the selected tile is available the tile should get marked
+
+				clear if invalid or valid
+				*/
+			}
+
 			/*
-			call turn phase method 
+			if A button pressed
 
-			if the string value of sdl_player_input_string is valid and the selected tile is available the tile should get marked
-
+			hit box gives value to sting input ie: 2x2 or 0x1
 			*/
-		}
+			//if mouse click within a tile hit box
 
 		} //end of match_gameplay 
 

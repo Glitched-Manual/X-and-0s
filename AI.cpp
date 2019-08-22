@@ -22,14 +22,17 @@ std::string AI::GetPlayerInput(bool* quit)
 
 	//select one available
 
-	int random_index_select = RandomAIMove();
+	//checks availble tiles selects a random on from the available_tile_positions vector
+	int random_index_select = RandomAIMove(); 
 	//convert selected to string or create new way to select
 
+	
+	// char(num) + '0'  to get number character
 	std::string ai_x_position_input = std::to_string( (*available_tile_positions[random_index_select]->GetX() + '0') );
 	std::string ai_y_position_input = std::to_string((*available_tile_positions[random_index_select]->GetY()) + '0');
 	std::string ai_player_move_input_string = ai_x_position_input + 'x' + ai_y_position_input;
 	
-	return "0x0";
+	return ai_player_move_input_string;
 }
 
 int AI::RandomAIMove() 
