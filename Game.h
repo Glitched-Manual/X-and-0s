@@ -9,6 +9,7 @@
 #include "CSDL.h"
 #include "HashTable.h"
 #include "GameText.h"
+#include "TileMarker.h"
 
 #ifndef GAME_H
 #define GAME_H
@@ -38,16 +39,14 @@ unsigned int turn_phase;
 
 //gameobjects
 std::vector<GameObject*> allGameObjects;
-GameObject* gameObjectHashTable = NULL;
-GameObject* gameObjectTileSelector = NULL;
-GameObject* gameObjectGridMarker = NULL;
+
 
 
 std::map<std::string, GameObject* > game_object_map;
 
 // game mode enum
 
-enum current_game_state {main_menu,game_options,gameplay,credits,pause,quit};
+enum current_game_state {main_menu,game_options, match_gameplay,credits,pause,quit};
 enum current_gameplay_mode {human_vs_human,human_vs_computer};
 enum current_highlighted_option_menu_text { none_of_the_options_highlighted,play_option_highlighted,options_option_highlighted,credits_option_highlighted };
 
@@ -63,6 +62,8 @@ unsigned int SCREEN_WIDTH;
 
 unsigned int SCREEN_HEIGHT;
 bool sdl_button_released;
+
+std::string* sdl_player_input_string;
 public:
 Game(unsigned int passed_screen_width, unsigned int passed_screen_height);
 ~Game();
@@ -90,6 +91,8 @@ bool LoadGameOpeningMenu();
 //switch method calls other methods depending on scene
 bool LoadGameOptionsMenu();
 bool LoadGameplayObjects();
+
+bool loadPlayerTextureMarks();
 
 void GameEventManager();
 

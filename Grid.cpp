@@ -31,12 +31,28 @@ Tile Grid::GetGameTile(int passed_x, int passed_y)
 	return game_tiles[passed_x][passed_y]; 
 }
 
-void Grid::SetGameTiles()
+Tile* Grid::GetGameTilePtr(int passed_x, int passed_y)
 {
+	/*
 	if (debug.is_debug_mode())
 	{
-		std::cout << "SetGameTiles Called" << std::endl;
+		std::cout << "GetGameTiles Called" << std::endl; //suuuppperr annoying when called for rendering every 1/100 seconds
 	}
+	*/
+	return &game_tiles[passed_x][passed_y];
+}
+
+
+void Grid::SetGameTiles()
+{
+	/*
+	if (debug.is_debug_mode())
+	{
+		std::cout << "SetGameTiles Called" << std::endl; //super annoying when called every 1/100 seconds by renderer
+	}
+	*/
+
+
 	//y cordinate iteration
 for(unsigned int yi = 0; yi < 3; yi++)
     {

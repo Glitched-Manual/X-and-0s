@@ -32,6 +32,9 @@ void SetGameTiles();
 
 Tile GetGameTile(int passed_x, int passed_y);
 
+Tile* GetGameTilePtr(int passed_x, int passed_y);
+
+
 //load image
 
 
