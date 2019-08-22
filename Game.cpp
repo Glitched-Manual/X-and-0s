@@ -3,67 +3,67 @@
 Game::Game(unsigned int passed_screen_width, unsigned int passed_screen_height)
 {
 
-SCREEN_WIDTH = passed_screen_width;
-SCREEN_HEIGHT = passed_screen_height;
+	SCREEN_WIDTH = passed_screen_width;
+	SCREEN_HEIGHT = passed_screen_height;
 
-total_turns = 0;
-player_pos_1 = new Player; //lol fully redeclared before going out out scope or passing value into args cause segmentation errors
-player_pos_2 = new Player;
-game_grid = new Grid; //add params
-csdl_obj = new CSDL(SCREEN_WIDTH, SCREEN_HEIGHT);
-Game_Over = false;
-quit_game_from_input = false;
-win_cases_loaded = false;
+	total_turns = 0;
+	player_pos_1 = new Player; //lol fully redeclared before going out out scope or passing value into args cause segmentation errors
+	player_pos_2 = new Player;
+	game_grid = new Grid; //add params
+	csdl_obj = new CSDL(SCREEN_WIDTH, SCREEN_HEIGHT);
+	Game_Over = false;
+	quit_game_from_input = false;
+	win_cases_loaded = false;
+	sdl_player_input_string = new std::string;
+	player_pos_1->SetPlayerMark("!");
+	player_pos_2->SetPlayerMark("#");
+	LoadWinCases();
 
-player_pos_1->SetPlayerMark("!");
-player_pos_2->SetPlayerMark("#");
-LoadWinCases();
-  
-  if(debug.is_debug_mode())
-  {
-	  std::cout << "WinCases Loaded" << std::endl;
-  }
+	if (debug.is_debug_mode())
+	{
+		std::cout << "WinCases Loaded" << std::endl;
+	}
 
-  //init sdl
-  csdl_obj->Init();
-
-
-  x_o_game_state = main_menu;
-
-  //Load Main menu textures
-  LoadGameOpeningMenu();
-
-  //Load Options menu textures
-  LoadGameOptionsMenu();
-  // hash table and marks
-  LoadGameplayObjects();
-  loadPlayerTextureMarks(); // test version
+	//init sdl
+	csdl_obj->Init();
 
 
-  LoadGameObjectContent(); // loads all content in allGameObjects. put all game objects before this
- 
+	x_o_game_state = main_menu;
+
+	//Load Main menu textures
+	LoadGameOpeningMenu();
+
+	//Load Options menu textures
+	LoadGameOptionsMenu();
+	// hash table and marks
+	LoadGameplayObjects();
+	loadPlayerTextureMarks(); // test version
+
+
+	LoadGameObjectContent(); // loads all content in allGameObjects. put all game objects before this
+
 }
 
 Game::~Game()
 {
-delete player_pos_1;
-delete player_pos_2;
-delete game_grid;
+	delete player_pos_1;
+	delete player_pos_2;
+	delete game_grid;
 
 }
 
 void Game::GameLoop()
 {
-	
 
-//Game.turn non sdl2 redendering version use events to not delay rendering
 
-	if (debug.is_debug_mode()) 
+	//Game.turn non sdl2 redendering version use events to not delay rendering
+
+	if (debug.is_debug_mode())
 	{
 		std::cout << "CSDL::init() call finished! Starting GameLoop!" << std::endl;
 
 	}
-	
+
 	while ((csdl_obj->GetSDLGameEvent()->type != SDL_QUIT) && (quit_game_from_input == false))
 	{
 		/*if (debug.is_text_based_game())
@@ -80,23 +80,23 @@ void Game::GameLoop()
 
 			GameEventManager();
 		}
-		
+
 		//render
 		RenderGameTextures();
-	    /*
+		/*
 		handle events
 
 		key board and controller
-		*/		
-		
+		*/
+
 		//update
 
 
 		//clean
-		
+
 		SDL_RenderPresent(csdl_obj->GetSDLRenderer());
 	}
-  
+
 }
 //returns status codes 
 /*
@@ -108,138 +108,138 @@ void Game::GameLoop()
 */
 int Game::PlayerTurn(Player* current_player)
 {
-        //get input, check, mark if tile is available
-  Position* position_to_mark_obj; 
-  position_to_mark_obj = new Position;    
+	//get input, check, mark if tile is available
+	Position* position_to_mark_obj;
+	position_to_mark_obj = new Position;
 
 	//input Player.GetInput # non sdl version
-    // get keyboard input from sdl2 convert numbers and char values
-     std::string p1ayer_input = current_player->GetPlayerInput(&quit_game_from_input);
-  if(quit_game_from_input)
-    {
-         delete position_to_mark_obj;
-	return 0;
-    }
-  else if(p1ayer_input == "")//remove this
-    {
-   std::cout << "No input found. Please enter a position example \"1x1\"" << std::endl;
-         delete position_to_mark_obj;
-        return 4;
-    }
-      if(FilterUserInput(p1ayer_input,position_to_mark_obj))
-       {
-        //check if player can mark square
-          if(CheckIfTileIsAvailable(position_to_mark_obj))
-	  {
-             std::cout << "check if available" << std::endl;
-           //mark square if available
-           SetGameTileMark(position_to_mark_obj,*current_player->GetPlayerMark());//triggers segmentation error
-           std::cout << "Tile marked" << std::endl;
-	   total_turns++; //caused endless loop other comment stuck on other players turn
-          }
-        }
-      delete position_to_mark_obj;
- return 1;
+	// get keyboard input from sdl2 convert numbers and char values
+	std::string p1ayer_input = current_player->GetPlayerInput(&quit_game_from_input);
+	if (quit_game_from_input)
+	{
+		delete position_to_mark_obj;
+		return 0;
+	}
+	else if (p1ayer_input == "")//remove this
+	{
+		std::cout << "No input found. Please enter a position example \"1x1\"" << std::endl;
+		delete position_to_mark_obj;
+		return 4;
+	}
+	if (FilterUserInput(p1ayer_input, position_to_mark_obj))
+	{
+		//check if player can mark square
+		if (CheckIfTileIsAvailable(position_to_mark_obj))
+		{
+			std::cout << "check if available" << std::endl;
+			//mark square if available
+			SetGameTileMark(position_to_mark_obj, *current_player->GetPlayerMark());//triggers segmentation error
+			std::cout << "Tile marked" << std::endl;
+			total_turns++; //caused endless loop other comment stuck on other players turn
+		}
+	}
+	delete position_to_mark_obj;
+	return 1;
 }
 
 //lol forgot to change the type from bool to void
 //add player_obj to get players mark
-void Game::SetGameTileMark(Position* position_to_mark,std::string player_mark)
+void Game::SetGameTileMark(Position* position_to_mark, std::string player_mark)
 {
 
-GetGameGrid()->GetGameTile(*position_to_mark->GetX(),*position_to_mark->GetY()).SetTileMark(player_mark);
+	GetGameGrid()->GetGameTile(*position_to_mark->GetX(), *position_to_mark->GetY()).SetTileMark(player_mark);
 
-//current_player.GetPlayerMark(); causes segmentation error
+	//current_player.GetPlayerMark(); causes segmentation error
 }
 
 bool Game::CheckIfTileIsAvailable(Position* passed_position_to_check)
 {
-std::cout << "Game::CheckIfTileIsAvailable  get position" << std::endl;
-if((*GetGameGrid()->GetGameTile(*passed_position_to_check->GetX(),*passed_position_to_check->GetY()).GetTileIsMarkedStatus()) == true)
-{
+	std::cout << "Game::CheckIfTileIsAvailable  get position" << std::endl;
+	if ((*GetGameGrid()->GetGameTile(*passed_position_to_check->GetX(), *passed_position_to_check->GetY()).GetTileIsMarkedStatus()) == true)
+	{
+		if (debug.is_debug_mode())
+		{
+			std::cout << "Game::CheckIfTileIsAvailable error tile is already marked" << std::endl;
+		}
+
+		return false;
+	}
 	if (debug.is_debug_mode())
 	{
-		std::cout << "Game::CheckIfTileIsAvailable error tile is already marked" << std::endl;
+		std::cout << "Game::CheckIfTileIsAvailable  get position success" << std::endl;
 	}
 
-    return false;
-}
-if (debug.is_debug_mode())
-{
-	std::cout << "Game::CheckIfTileIsAvailable  get position success" << std::endl;
+	return true;
 }
 
-return true;
-}
-
-bool Game:: FilterUserInput(std::string raw_input_string,Position* passed_position)
-{
-	   
-int x_pos = 0;
-int y_pos = 0;
-unsigned int mode = 0;
-bool filter_successful = false;
-enum axis{x_cord,y_cord};
-
-for(unsigned int ind=0; ind < raw_input_string.length(); ind++)
-{      
-    if((raw_input_string[ind] =='x')|(raw_input_string[ind] =='X'))
-    {
-     mode = y_cord;     
-    }
-    if(isdigit(raw_input_string[ind])){
-        
-        if(mode == x_cord)
-        {
-            x_pos = (x_pos*10)+(char(raw_input_string[ind]) - 48);
-        }
-        else
-        {
-           y_pos  = (y_pos*10)+(char(raw_input_string[ind]) - 48);
-           if(!filter_successful)
-	   {
-	   filter_successful = true;
-	   }	
-        }
-    }  
-}
-/*
-if (debug.is_debug_mode())
-{
-	std::cout << x_pos << "," << y_pos << std::endl;
-}
-*/
-
-if((mode == y_cord)&(filter_successful))
+bool Game::FilterUserInput(std::string raw_input_string, Position* passed_position)
 {
 
- if((x_pos < 3)&(y_pos < 3))
-   {
-    passed_position->SetX(x_pos);
-    passed_position->SetY(y_pos);
-   }
- else
-   { 
-	 if (debug.is_debug_mode())
-	 {
-		 std::cout << "Game.cpp FilterUserInput error: (x_pos < 3)&(y_pos < 3) found false" << std::endl;
-	 }
-	     
-    return false;
-   }
-}
-else
-{
+	int x_pos = 0;
+	int y_pos = 0;
+	unsigned int mode = 0;
+	bool filter_successful = false;
+	enum axis { x_cord, y_cord };
+
+	for (unsigned int ind = 0; ind < raw_input_string.length(); ind++)
+	{
+		if ((raw_input_string[ind] == 'x') | (raw_input_string[ind] == 'X'))
+		{
+			mode = y_cord;
+		}
+		if (isdigit(raw_input_string[ind])) {
+
+			if (mode == x_cord)
+			{
+				x_pos = (x_pos * 10) + (char(raw_input_string[ind]) - 48);
+			}
+			else
+			{
+				y_pos = (y_pos * 10) + (char(raw_input_string[ind]) - 48);
+				if (!filter_successful)
+				{
+					filter_successful = true;
+				}
+			}
+		}
+	}
+	/*
 	if (debug.is_debug_mode())
 	{
-		std::cout << "Game.cpp FilterUserInput error: (mode == y_cord)&(filter_successful) found false" << std::endl;
+		std::cout << x_pos << "," << y_pos << std::endl;
+	}
+	*/
+
+	if ((mode == y_cord) & (filter_successful))
+	{
+
+		if ((x_pos < 3) & (y_pos < 3))
+		{
+			passed_position->SetX(x_pos);
+			passed_position->SetY(y_pos);
+		}
+		else
+		{
+			if (debug.is_debug_mode())
+			{
+				std::cout << "Game.cpp FilterUserInput error: (x_pos < 3)&(y_pos < 3) found false" << std::endl;
+			}
+
+			return false;
+		}
+	}
+	else
+	{
+		if (debug.is_debug_mode())
+		{
+			std::cout << "Game.cpp FilterUserInput error: (mode == y_cord)&(filter_successful) found false" << std::endl;
+		}
+
+		return false;
 	}
 
-return false;
-}
 
-
-return true;
+	return true;
 }
 
 void Game::LoadWinCases()
@@ -249,101 +249,101 @@ void Game::LoadWinCases()
 		std::cout << "LoadWinCase start" << std::endl;
 	}
 	int x = 0;
-//fix win_cases
-	//Win_Case* temp;
+	//fix win_cases
+		//Win_Case* temp;
 
-//temp = new Win_Case(new Position(0, 0), new Position(1, 0), new Position(2, 0)));
-	//win_cases.push_back(temp);
-	
-	    win_cases[x].SetWinCaseCombination(Position(0,0),Position(1,0),Position(2,0));
-		++x;
-		win_cases[x].SetWinCaseCombination(Position(0,1),Position(1,1),Position(2,1));
-		++x;
-		win_cases[x].SetWinCaseCombination(Position(0,2),Position(1,2),Position(2,2));
-		++x;
-		win_cases[x].SetWinCaseCombination(Position(0,0),Position(0,1),Position(0,2));
-		++x;
-		win_cases[x].SetWinCaseCombination(Position(1,0),Position(1,1),Position(1,2));
-		++x;
-		win_cases[x].SetWinCaseCombination(Position(2,0),Position(2,1),Position(2,2));
-		++x;
-		win_cases[x].SetWinCaseCombination(Position(0,0),Position(1,1),Position(2,2));
-		++x;
-		win_cases[x].SetWinCaseCombination(Position(2,0),Position(1,1),Position(0,2));
-		
-		if (debug.is_debug_mode())
-		{
-			std::cout << "LoadWinCase End" << std::endl;
+	//temp = new Win_Case(new Position(0, 0), new Position(1, 0), new Position(2, 0)));
+		//win_cases.push_back(temp);
 
-			std::cout << *win_cases[0].GetCombination(1)->GetX() << " , " << *win_cases[0].GetCombination(1)->GetY() << std::endl;
-		}
-		
-      win_cases_loaded = true;
+	win_cases[x].SetWinCaseCombination(Position(0, 0), Position(1, 0), Position(2, 0));
+	++x;
+	win_cases[x].SetWinCaseCombination(Position(0, 1), Position(1, 1), Position(2, 1));
+	++x;
+	win_cases[x].SetWinCaseCombination(Position(0, 2), Position(1, 2), Position(2, 2));
+	++x;
+	win_cases[x].SetWinCaseCombination(Position(0, 0), Position(0, 1), Position(0, 2));
+	++x;
+	win_cases[x].SetWinCaseCombination(Position(1, 0), Position(1, 1), Position(1, 2));
+	++x;
+	win_cases[x].SetWinCaseCombination(Position(2, 0), Position(2, 1), Position(2, 2));
+	++x;
+	win_cases[x].SetWinCaseCombination(Position(0, 0), Position(1, 1), Position(2, 2));
+	++x;
+	win_cases[x].SetWinCaseCombination(Position(2, 0), Position(1, 1), Position(0, 2));
+
+	if (debug.is_debug_mode())
+	{
+		std::cout << "LoadWinCase End" << std::endl;
+
+		std::cout << *win_cases[0].GetCombination(1)->GetX() << " , " << *win_cases[0].GetCombination(1)->GetY() << std::endl;
+	}
+
+	win_cases_loaded = true;
 
 }
 
 Win_Case Game::GetWinCase(int passed_win_case_index)
 {
 
-  if(passed_win_case_index > 7)
-  {
-	  passed_win_case_index = passed_win_case_index % 8;
-  }
+	if (passed_win_case_index > 7)
+	{
+		passed_win_case_index = passed_win_case_index % 8;
+	}
 
-return win_cases[passed_win_case_index];
+	return win_cases[passed_win_case_index];
 }
 
 bool Game::PlayerWin(Player* passed_player)
 {
 
 
-//check win cases if a player has won
+	//check win cases if a player has won
 	if (debug.is_debug_mode())
 	{
 		std::cout << "check if player wins start" << std::endl;
-    }
- 
-//if true fink out which player won by the marks
- // make sure both payers do not have the same mark
+	}
+
+	//if true fink out which player won by the marks
+	 // make sure both payers do not have the same mark
 
 
-  for(int wincase_index = 0; wincase_index <8; wincase_index++)
-  {
-       int mark_true_case = 0;
+	for (int wincase_index = 0; wincase_index < 8; wincase_index++)
+	{
+		int mark_true_case = 0;
 
-    for(int wincase_combination_index = 0; wincase_combination_index <3; wincase_combination_index++)
-     {
-       if(*passed_player->GetPlayerMark() == *GetGameGrid()->GetGameTile(*GetWinCase(wincase_index).GetCombination(wincase_combination_index)->GetX(), *GetWinCase(wincase_index).GetCombination(wincase_combination_index)->GetY()).GetTileMark())
-        {
-           ++mark_true_case;
-		   if (debug.is_debug_mode())
-		   {
-			   std::cout << "Marked case = " << mark_true_case << std::endl;
-		   }
-         
-        }
-
-     }	
-      // check if three matches were found
-    if(mark_true_case == 3)
-      {
-      // trigger wincase
-		if (debug.is_debug_mode())
+		for (int wincase_combination_index = 0; wincase_combination_index < 3; wincase_combination_index++)
 		{
-			std::cout << "Player " << *passed_player->GetPlayerMark() << " Wins!!" << std::endl;
+			if (*passed_player->GetPlayerMark() == *GetGameGrid()->GetGameTile(*GetWinCase(wincase_index).GetCombination(wincase_combination_index)->GetX(), *GetWinCase(wincase_index).GetCombination(wincase_combination_index)->GetY()).GetTileMark())
+			{
+				++mark_true_case;
+				if (debug.is_debug_mode())
+				{
+					std::cout << "Marked case = " << mark_true_case << std::endl;
+				}
+
+			}
+
 		}
-     
-       return true;
-      }
-  } 
-return false;
+		// check if three matches were found
+		if (mark_true_case == 3)
+		{
+			// trigger wincase
+			if (debug.is_debug_mode())
+			{
+				std::cout << "Player " << *passed_player->GetPlayerMark() << " Wins!!" << std::endl;
+			}
+
+			return true;
+		}
+	}
+	return false;
 }
 
 void Game::MainGameMenu() //not needed
 {
 	/*
-	load 
-	
+	load
+
 	images audio
 	*/
 
@@ -410,7 +410,7 @@ bool Game::LoadGameplayObjects()
 {
 	GameObject* hash_table_game_obj = NULL;
 	//load hash table
-	HashTable* hash_table = new HashTable( new LoaderParams( SCREEN_WIDTH /2, SCREEN_HEIGHT /2,400,400,"Hash Table" ) );
+	HashTable* hash_table = new HashTable(new LoaderParams(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 400, 400, "Hash Table"));
 
 	game_object_map["Hash Table"] = hash_table;
 	hash_table_game_obj = hash_table;
@@ -449,7 +449,7 @@ bool Game::LoadGameObjectContent()
 		{
 			std::cout << "Game::LoadGameObjectContent() Error - allGameObjects found empty!" << std::endl;
 		}
-		
+
 
 		return false;
 	}
@@ -464,9 +464,9 @@ bool Game::LoadGameOpeningMenu()
 	//x, y, width, height, std::string passed_textureID
 
 	//center text pass center x and y
-	start_menu_text = new GameText(new LoaderParams(SCREEN_WIDTH/2, SCREEN_HEIGHT/2,100,100,"Start Game"),60);
+	start_menu_text = new GameText(new LoaderParams(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 100, 100, "Start Game"), 60);
 
-	if(start_menu_text == NULL)
+	if (start_menu_text == NULL)
 	{
 		if (debug.is_debug_mode())
 		{
@@ -475,7 +475,7 @@ bool Game::LoadGameOpeningMenu()
 		}
 
 	}
-	
+
 	game_object_map["Start Game"] = start_menu_text;
 	allGameObjects.push_back(start_menu_text);
 
@@ -492,8 +492,8 @@ bool Game::LoadGameOpeningMenu()
 bool Game::LoadGameOptionsMenu()
 {
 	/*
-	
-	Load text 
+
+	Load text
 
 	Play       Options       Credits
 	x-axis of width
@@ -527,9 +527,9 @@ y axis 50% of height
 
 	GameObject* game_options_menu_credits_text = NULL;
 
-	GameText* options_menu_credits = new GameText(new LoaderParams((SCREEN_WIDTH / 5) * 4, (SCREEN_HEIGHT / 2) , 100, 100, "Credits Button"), "Credits", 30);
+	GameText* options_menu_credits = new GameText(new LoaderParams((SCREEN_WIDTH / 5) * 4, (SCREEN_HEIGHT / 2), 100, 100, "Credits Button"), "Credits", 30);
 
-	
+
 	game_options_menu_credits_text = options_menu_credits;
 
 	game_object_map["Credits Button"] = game_options_menu_credits_text;
@@ -546,12 +546,12 @@ bool Game::loadPlayerTextureMarks()
 
 	//need rect* of hash table , make x and y change depending on maked tiles
 
-	
-	TileMarker* tile_marker_obj = new TileMarker(new LoaderParams((SCREEN_WIDTH /2), (SCREEN_HEIGHT / 2) , 100, 100, "test mark"),game_grid, player_pos_1, game_object_map["Hash Table"]->GetTextureRect()); // may only the player string mark is needed
+
+	TileMarker* tile_marker_obj = new TileMarker(new LoaderParams((SCREEN_WIDTH / 2), (SCREEN_HEIGHT / 2), 100, 100, "test mark"), game_grid, player_pos_1, game_object_map["Hash Table"]->GetTextureRect()); // may only the player string mark is needed
 
 	player_tile_mark_gam_obj = tile_marker_obj;
 
-	
+
 
 	game_object_map["test mark"] = tile_marker_obj; // did not use game object here
 
@@ -570,7 +570,7 @@ void Game::RenderGameTextures()
 {
 	if (!(allGameObjects.empty()))
 	{
-		
+
 		if (x_o_game_state == main_menu)
 		{
 			//use map istead of for loop
@@ -580,11 +580,11 @@ void Game::RenderGameTextures()
 				{
 					(*game_object_index)->Draw(csdl_obj->GetSDLRenderer());
 				}
-				
+
 			}
 			*/
-			
-			game_object_map["Start Game"]->Draw(csdl_obj->GetSDLRenderer()); 
+
+			game_object_map["Start Game"]->Draw(csdl_obj->GetSDLRenderer());
 		}
 		//Game options
 		else if (x_o_game_state == game_options)
@@ -603,14 +603,14 @@ void Game::RenderGameTextures()
 
 		}
 
-		else if (x_o_game_state == gameplay)
+		else if (x_o_game_state == match_gameplay)
 		{
 
 			//render grid
-	    	game_object_map["Hash Table"]->Draw( csdl_obj->GetSDLRenderer() );
+			game_object_map["Hash Table"]->Draw(csdl_obj->GetSDLRenderer());
 
 			//loop through marked tiles , render marks to proper spots
-			game_object_map["test mark"]->Draw( csdl_obj->GetSDLRenderer() );
+			game_object_map["test mark"]->Draw(csdl_obj->GetSDLRenderer());
 
 		}
 
@@ -622,7 +622,7 @@ void Game::RenderGameTextures()
 			}
 
 		}
-		
+
 	}
 }
 
@@ -718,12 +718,12 @@ void Game::GameEventManager()
 
 				x_o_highlighted_option = none_of_the_options_highlighted;
 			}
-			else if (total_text_highlighted  < 0) 
+			else if (total_text_highlighted < 0)
 			{
 				total_text_highlighted = 0;
 				x_o_highlighted_option = none_of_the_options_highlighted;
 			}
-			
+
 			// SDL_CONTROLLER_BUTTON_DPAD_LEFT   or    SDL_CONTROLLER_BUTTON_DPAD_RIGHT
 			// SDLK_LEFT  SDLK_RIGHT
 			//none_of_the_options,play_option,options_option,credits_option
@@ -748,11 +748,11 @@ void Game::GameEventManager()
 				}
 				// if b or esc pressed
 				// SDLK_RETURN
-				
 
-				else if (( csdl_obj->GetSDLGameEvent()->cbutton.button == SDL_CONTROLLER_BUTTON_START ) || (csdl_obj->GetSDLGameEvent()->cbutton.button == SDL_CONTROLLER_BUTTON_A ) || (csdl_obj->GetSDLGameEvent()->key.keysym.sym == SDLK_RETURN ) )
+
+				else if ((csdl_obj->GetSDLGameEvent()->cbutton.button == SDL_CONTROLLER_BUTTON_START) || (csdl_obj->GetSDLGameEvent()->cbutton.button == SDL_CONTROLLER_BUTTON_A) || (csdl_obj->GetSDLGameEvent()->key.keysym.sym == SDLK_RETURN))
 				{
-					x_o_game_state = gameplay;
+					x_o_game_state = match_gameplay;
 
 					game_object_map["Play Button"]->RevertAlteredTextureColor();
 					game_object_map["Options Button"]->RevertAlteredTextureColor();
@@ -766,7 +766,7 @@ void Game::GameEventManager()
 				}
 
 
-				else if ((csdl_obj->GetSDLGameEvent()->cbutton.button == SDL_CONTROLLER_BUTTON_B && csdl_obj->GetSDLGameEvent()->cbutton.state == SDL_PRESSED) || ( (csdl_obj->GetSDLGameEvent()->key.keysym.sym == SDLK_ESCAPE) && (csdl_obj->GetSDLGameEvent()->type == SDL_KEYDOWN ) ) )
+				else if ((csdl_obj->GetSDLGameEvent()->cbutton.button == SDL_CONTROLLER_BUTTON_B && csdl_obj->GetSDLGameEvent()->cbutton.state == SDL_PRESSED) || ((csdl_obj->GetSDLGameEvent()->key.keysym.sym == SDLK_ESCAPE) && (csdl_obj->GetSDLGameEvent()->type == SDL_KEYDOWN)))
 				{
 					//revert all texture and  go to menu
 					game_object_map["Play Button"]->RevertAlteredTextureColor();
@@ -782,13 +782,13 @@ void Game::GameEventManager()
 					}
 
 				}
-				
+
 
 				break;
 
 			case  options_option_highlighted:
 				//left command or click in hit box
-				if ((csdl_obj->GetSDLGameEvent()->cbutton.button == SDL_CONTROLLER_BUTTON_LEFTSTICK) || (csdl_obj->GetSDLGameEvent()->cbutton.button == SDL_CONTROLLER_BUTTON_DPAD_LEFT && csdl_obj->GetSDLGameEvent()->cbutton.state == SDL_PRESSED ) || (csdl_obj->GetSDLGameEvent()->key.keysym.sym == SDLK_LEFT) && (csdl_obj->GetSDLGameEvent()->type == SDL_KEYDOWN))
+				if ((csdl_obj->GetSDLGameEvent()->cbutton.button == SDL_CONTROLLER_BUTTON_LEFTSTICK) || (csdl_obj->GetSDLGameEvent()->cbutton.button == SDL_CONTROLLER_BUTTON_DPAD_LEFT && csdl_obj->GetSDLGameEvent()->cbutton.state == SDL_PRESSED) || (csdl_obj->GetSDLGameEvent()->key.keysym.sym == SDLK_LEFT) && (csdl_obj->GetSDLGameEvent()->type == SDL_KEYDOWN))
 				{
 					x_o_highlighted_option = play_option_highlighted;
 					// unhighlight options
@@ -805,7 +805,7 @@ void Game::GameEventManager()
 
 
 				//right command or click in hit box
-				else if (csdl_obj->GetSDLGameEvent()->cbutton.button == SDL_CONTROLLER_BUTTON_RIGHTSTICK || (csdl_obj->GetSDLGameEvent()->cbutton.button == SDL_CONTROLLER_BUTTON_DPAD_RIGHT && csdl_obj->GetSDLGameEvent()->cbutton.state == SDL_PRESSED ) || ((csdl_obj->GetSDLGameEvent()->key.keysym.sym == SDLK_RIGHT) && (csdl_obj->GetSDLGameEvent()->type == SDL_KEYDOWN)))
+				else if (csdl_obj->GetSDLGameEvent()->cbutton.button == SDL_CONTROLLER_BUTTON_RIGHTSTICK || (csdl_obj->GetSDLGameEvent()->cbutton.button == SDL_CONTROLLER_BUTTON_DPAD_RIGHT && csdl_obj->GetSDLGameEvent()->cbutton.state == SDL_PRESSED) || ((csdl_obj->GetSDLGameEvent()->key.keysym.sym == SDLK_RIGHT) && (csdl_obj->GetSDLGameEvent()->type == SDL_KEYDOWN)))
 				{
 					x_o_highlighted_option = credits_option_highlighted;
 					// unhighlight options
@@ -818,8 +818,8 @@ void Game::GameEventManager()
 						std::cout << "\n Credits Button Highlighted \n" << std::endl;
 					}
 				}
-				
-				else if ((csdl_obj->GetSDLGameEvent()->cbutton.button == SDL_CONTROLLER_BUTTON_B && csdl_obj->GetSDLGameEvent()->cbutton.state == SDL_PRESSED ) || ((csdl_obj->GetSDLGameEvent()->key.keysym.sym == SDLK_ESCAPE && csdl_obj->GetSDLGameEvent()->type == SDL_KEYDOWN ) ) )
+
+				else if ((csdl_obj->GetSDLGameEvent()->cbutton.button == SDL_CONTROLLER_BUTTON_B && csdl_obj->GetSDLGameEvent()->cbutton.state == SDL_PRESSED) || ((csdl_obj->GetSDLGameEvent()->key.keysym.sym == SDLK_ESCAPE && csdl_obj->GetSDLGameEvent()->type == SDL_KEYDOWN)))
 				{
 					//revert all texture and  go to menu
 					game_object_map["Play Button"]->RevertAlteredTextureColor();
@@ -833,7 +833,7 @@ void Game::GameEventManager()
 					{
 						std::cout << "\n play_option_highlighted - Exit condition 1 met \n" << std::endl;
 					}
-					
+
 				}
 				else
 				{
@@ -843,7 +843,7 @@ void Game::GameEventManager()
 
 			case  credits_option_highlighted:
 				//left command or click in hit box
-				if ((csdl_obj->GetSDLGameEvent()->cbutton.button == SDL_CONTROLLER_BUTTON_LEFTSTICK) || (csdl_obj->GetSDLGameEvent()->cbutton.button == SDL_CONTROLLER_BUTTON_DPAD_LEFT && csdl_obj->GetSDLGameEvent()->cbutton.state == SDL_PRESSED ) || ((csdl_obj->GetSDLGameEvent()->key.keysym.sym == SDLK_LEFT) && (csdl_obj->GetSDLGameEvent()->type == SDL_KEYDOWN)))
+				if ((csdl_obj->GetSDLGameEvent()->cbutton.button == SDL_CONTROLLER_BUTTON_LEFTSTICK) || (csdl_obj->GetSDLGameEvent()->cbutton.button == SDL_CONTROLLER_BUTTON_DPAD_LEFT && csdl_obj->GetSDLGameEvent()->cbutton.state == SDL_PRESSED) || ((csdl_obj->GetSDLGameEvent()->key.keysym.sym == SDLK_LEFT) && (csdl_obj->GetSDLGameEvent()->type == SDL_KEYDOWN)))
 				{
 					x_o_highlighted_option = options_option_highlighted;
 					// unhighlight credits
@@ -856,8 +856,8 @@ void Game::GameEventManager()
 						std::cout << "\n Options Button Highlighted \n" << std::endl;
 					}
 				}
-				
-				else if ((csdl_obj->GetSDLGameEvent()->cbutton.button == SDL_CONTROLLER_BUTTON_B && csdl_obj->GetSDLGameEvent()->cbutton.state == SDL_PRESSED ) || ((csdl_obj->GetSDLGameEvent()->key.keysym.sym == SDLK_ESCAPE && csdl_obj->GetSDLGameEvent()->type == SDL_KEYDOWN ) ) )
+
+				else if ((csdl_obj->GetSDLGameEvent()->cbutton.button == SDL_CONTROLLER_BUTTON_B && csdl_obj->GetSDLGameEvent()->cbutton.state == SDL_PRESSED) || ((csdl_obj->GetSDLGameEvent()->key.keysym.sym == SDLK_ESCAPE && csdl_obj->GetSDLGameEvent()->type == SDL_KEYDOWN)))
 				{
 					//revert all texture and  go to menu
 					game_object_map["Play Button"]->RevertAlteredTextureColor();
@@ -873,14 +873,14 @@ void Game::GameEventManager()
 					}
 
 				}
-				
+
 				break;
 
 			case  none_of_the_options_highlighted:
 
 				// highight play if button is not keyboard escape or button B
 
-				if((csdl_obj->GetSDLGameEvent()->cbutton.button == SDL_CONTROLLER_BUTTON_B) && (csdl_obj->GetSDLGameEvent()->type == SDL_CONTROLLERBUTTONDOWN))
+				if ((csdl_obj->GetSDLGameEvent()->cbutton.button == SDL_CONTROLLER_BUTTON_B) && (csdl_obj->GetSDLGameEvent()->type == SDL_CONTROLLERBUTTONDOWN))
 				{
 					//revert all texture and  go to menu
 					game_object_map["Play Button"]->RevertAlteredTextureColor();
@@ -895,7 +895,7 @@ void Game::GameEventManager()
 						std::cout << "\n none_of_the_options_highlighted - Controller - Exit condition 2 met \n" << std::endl;
 					}
 
-				}				
+				}
 				else if ((csdl_obj->GetSDLGameEvent()->key.keysym.sym == SDLK_ESCAPE) && (csdl_obj->GetSDLGameEvent()->type == SDL_KEYDOWN))
 				{
 					//revert all texture and  go to menu
@@ -911,7 +911,7 @@ void Game::GameEventManager()
 						std::cout << "\n none_of_the_options_highlighted - Keyboard - Exit condition 2 met \n" << std::endl;
 					}
 				}
-				else 
+				else
 				{
 					//got back one menu
 
@@ -926,8 +926,8 @@ void Game::GameEventManager()
 					{
 						std::cout << "\n Play Button Highlighted \n" << std::endl;
 					}
-					
-					
+
+
 
 				}
 
@@ -938,25 +938,57 @@ void Game::GameEventManager()
 				break;
 			}
 
-			
+
 
 		} // end of game_options events
 
-	
-
-	/*
-	SDL2 Button input Feedback 
-
-	- not needed for release
-	*/
-
-	
-		if (csdl_obj->GetSDLGameEvent()->type == SDL_KEYUP)
+		else if (x_o_game_state == match_gameplay)
 		{
-			std::cout << csdl_obj->GetSDLGameEvent()->key.keysym.sym << std::endl;
+
+		if ((csdl_obj->GetSDLGameEvent()->key.keysym.sym == SDLK_SPACE) && (csdl_obj->GetSDLGameEvent()->type == SDL_KEYDOWN))
+		{
+			/*
+			call turn phase method 
+
+			if the string value of sdl_player_input_string is valid and the selected tile is available the tile should get marked
+
+			*/
 		}
 
-		if(csdl_obj->GetSDLGameEvent()->type == SDL_CONTROLLERBUTTONDOWN )
+		} //end of match_gameplay 
+
+		/*
+		SDL2 Button input Feedback
+
+		- not needed for release
+		*/
+
+
+
+		if (csdl_obj->GetSDLGameEvent()->type == SDL_KEYDOWN)
+		{
+
+			unsigned int sdl_keyboard_input = csdl_obj->GetSDLGameEvent()->key.keysym.sym;
+
+			std::cout << csdl_obj->GetSDLGameEvent()->key.keysym.sym << std::endl;
+
+
+
+			if (((sdl_keyboard_input > 47) && (sdl_keyboard_input < 58)) || ((sdl_keyboard_input > 96) && (sdl_keyboard_input < 123)))
+			{
+				printf("\nWhich is also equal to : %c \n", sdl_keyboard_input);
+				*sdl_player_input_string += char(sdl_keyboard_input);
+				std::cout << "Player input string = " << *sdl_player_input_string << std::endl;
+				if (sdl_player_input_string->length() >= 5)
+				{
+					*sdl_player_input_string = "";
+
+					std::cout << "Player input string too long" << std::endl;
+				}
+			}
+		}
+
+		if (csdl_obj->GetSDLGameEvent()->type == SDL_CONTROLLERBUTTONDOWN)
 		{
 			if (csdl_obj->GetSDLGameEvent()->cbutton.button == SDL_CONTROLLER_BUTTON_A)
 			{
@@ -1034,12 +1066,12 @@ void Game::GameEventManager()
 			{
 				std::cout << " \"RIGHTSTICK\" was pressed!" << std::endl;
 			}
-			else 
+			else
 			{
 				std::cout << csdl_obj->GetSDLGameEvent()->cbutton.button << std::endl;
 			}
-			
-			
+
+
 		}
 
 	}
