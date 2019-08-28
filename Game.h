@@ -20,6 +20,10 @@ class Player;
 class AI;
 class Position;
 class CSDL;
+
+
+//static enum ButtonValue { UP, DOWN, LEFT, RIGHT, START, SELECT, A_ACTION, B_ACTION };
+
 class Game{
 
 //Player* pos_1
@@ -68,6 +72,11 @@ unsigned int SCREEN_HEIGHT;
 bool sdl_button_released;
 
 std::string* sdl_player_input_string;
+
+
+
+
+// InputButtonValue;
 public:
 Game(unsigned int passed_screen_width, unsigned int passed_screen_height);
 ~Game();
@@ -106,5 +115,29 @@ bool loadPlayerTextureMarks();
 void GameEventManager();
 
 void RenderGameTextures();
+
+
+// texture modding 
+
+/*
+RevertGameObjectColorList();
+
+variadic template member method to change color altered textures of the texture map to there original colors
+
+strings passed are used as keys
+
+
+- For GameText obj - text changes to white
+
+*/
+
+//base function 
+void RevertGameObjectColorList();
+
+template<typename... String_args>
+void RevertGameObjectColorList(std::string passed_string_arg, String_args... other_passed_string_args);
+
+template<typename... Basic_string_args>
+void RevertGameObjectColorList( char* passed_string_arg, Basic_string_args... other_passed_string_args);
 };
 #endif //GAME_H
