@@ -37,6 +37,7 @@ Win_Case win_cases[8];
 CSDL* csdl_obj;
 unsigned int turn_phase;
 
+unsigned int players_turn_order = 0; // if not 0 player at pos_2 has the first turn
 //gameobjects
 std::vector<GameObject*> allGameObjects;
 
@@ -46,8 +47,11 @@ std::map<std::string, GameObject* > game_object_map;
 
 // game mode enum
 
-enum current_game_state {main_menu,game_options, match_gameplay,credits,pause,quit};
+enum current_game_state {main_menu,game_options,opponent_selection, match_gameplay,credits,pause,quit};
+
 enum current_gameplay_mode {human_vs_human,human_vs_computer};
+
+
 enum current_highlighted_option_menu_text { none_of_the_options_highlighted,play_option_highlighted,options_option_highlighted,credits_option_highlighted };
 
 // changeable variable 0-2 for options open highlighted option
@@ -85,12 +89,17 @@ void SetGameTileMark(Position* position_to_mark,std::string player_mark);
 int PlayerTurn(Player* current_player);
 void TurnPhaseEvent();
 
+//void LoadAIPlayer();
+//Load nomal Player
+//AI V AI?
 bool LoadGameObjectContent();
 
 bool LoadGameOpeningMenu();
 //switch method calls other methods depending on scene
 bool LoadGameOptionsMenu();
 bool LoadGameplayObjects();
+
+bool LoadOpponentOptions();
 
 bool loadPlayerTextureMarks();
 

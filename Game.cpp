@@ -8,16 +8,16 @@ Game::Game(unsigned int passed_screen_width, unsigned int passed_screen_height)
 	sdl_player_input_string = new std::string;
 
 	total_turns = 0;
-	
+
 	game_grid = new Grid; //add params
 	csdl_obj = new CSDL(SCREEN_WIDTH, SCREEN_HEIGHT);
-	
+
 	player_pos_1 = new Player(sdl_player_input_string, csdl_obj); //lol fully redeclared before going out out scope or passing value into args cause segmentation errors
 	player_pos_2 = new Player(sdl_player_input_string, csdl_obj); //if ai use diffent initailizer
 	Game_Over = false;
 	quit_game_from_input = false;
 	win_cases_loaded = false;
-	
+
 	player_pos_1->SetPlayerMark("!");
 	player_pos_2->SetPlayerMark("#");
 	LoadWinCases();
@@ -40,7 +40,12 @@ Game::Game(unsigned int passed_screen_width, unsigned int passed_screen_height)
 	LoadGameOptionsMenu();
 	// hash table and marks
 	LoadGameplayObjects();
-	loadPlayerTextureMarks(); // test version
+
+	//load opponent options
+
+	LoadOpponentOptions(); // forgot to uncomment on finishing lol
+
+	loadPlayerTextureMarks(); // test version load two marks
 
 
 	LoadGameObjectContent(); // loads all content in allGameObjects. put all game objects before this
@@ -361,8 +366,8 @@ void Game::MainGameMenu() //not needed
 //call on click of keyboard, button, mouse input conditions met
 void Game::TurnPhaseEvent()
 {
-
-	if (total_turns % 2 == 0)
+	//make false to change turn order to player_pos_2 starting
+	if (total_turns % 2 == players_turn_order)
 	{
 		int p1_turn = PlayerTurn(player_pos_1);
 
@@ -388,7 +393,7 @@ void Game::TurnPhaseEvent()
 			if (PlayerWin(player_pos_1))
 			{
 				std::cout << "Player 1 Wins!" << std::endl;
-				Game_Over = true;
+				Game_Over = true; // add play again case
 			}
 		}
 		else if (total_turns % 2 == 0)
@@ -490,6 +495,43 @@ bool Game::LoadGameOpeningMenu()
 	return true;
 }
 
+
+bool Game::LoadOpponentOptions()
+{
+	/*
+	two texts "PVC" and "PVP"
+	*/
+
+	GameObject* player_vs_computer_text = NULL;
+
+	//start_menu_text = new GameText(new LoaderParams(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 100, 100, "Start Game"), 60);
+
+	GameText* player_vs_computer_game_text = new GameText(new LoaderParams((SCREEN_WIDTH / 4), SCREEN_HEIGHT / 2, 100, 100, "Player VS AI"), "Player v Comp", 30);
+
+	player_vs_computer_text = player_vs_computer_game_text;
+
+	game_object_map["Player VS Comp"] = player_vs_computer_text;
+
+	allGameObjects.push_back(player_vs_computer_text);
+
+
+	//Two player mode
+
+	GameObject* player_vs_player_text = NULL; //map and vector need value of game object type
+
+	//set values of text
+
+	GameText* player_vs_player_game_text = new GameText(new LoaderParams((SCREEN_WIDTH / 4) * 3, SCREEN_HEIGHT / 2, 100, 100, "Player VS Player"), "Player v Player", 30);
+
+	// make GameObject point to GameText object
+	player_vs_player_text = player_vs_player_game_text;
+
+	game_object_map["Player VS Player"] = player_vs_player_text;
+
+	allGameObjects.push_back(player_vs_player_text);
+
+	return true;
+}
 
 //
 bool Game::LoadGameOptionsMenu()
@@ -606,6 +648,14 @@ void Game::RenderGameTextures()
 
 		}
 
+		else if (x_o_game_state == opponent_selection)
+		{
+			game_object_map["Player VS Comp"]->Draw(csdl_obj->GetSDLRenderer());
+
+			game_object_map["Player VS Player"]->Draw(csdl_obj->GetSDLRenderer());
+
+		}
+
 		else if (x_o_game_state == match_gameplay)
 		{
 
@@ -664,7 +714,6 @@ void Game::GameEventManager()
 
 		else if (x_o_game_state == game_options)
 		{
-
 
 
 			// if none of Play Options or Credits Highlighted Highlight Play
@@ -755,7 +804,7 @@ void Game::GameEventManager()
 
 				else if ((csdl_obj->GetSDLGameEvent()->cbutton.button == SDL_CONTROLLER_BUTTON_START) || (csdl_obj->GetSDLGameEvent()->cbutton.button == SDL_CONTROLLER_BUTTON_A) || (csdl_obj->GetSDLGameEvent()->key.keysym.sym == SDLK_RETURN))
 				{
-					x_o_game_state = match_gameplay;
+					x_o_game_state = opponent_selection;
 
 					game_object_map["Play Button"]->RevertAlteredTextureColor();
 					game_object_map["Options Button"]->RevertAlteredTextureColor();
@@ -945,6 +994,99 @@ void Game::GameEventManager()
 
 		} // end of game_options events
 
+         // select player v player or player v computer
+		else if (x_o_game_state == opponent_selection)
+		{
+			// Player vs computer or Player vs Player
+
+			//check if both are highlighted unhighlight both if true
+			if ((game_object_map["Player VS Comp"]->GetAreColorsAltered() == true) && (game_object_map["Player VS Player"]->GetAreColorsAltered() == true))
+			{
+				game_object_map["Player VS Comp"]->RevertAlteredTextureColor();
+				game_object_map["Player VS Player"]->RevertAlteredTextureColor();
+
+			}
+
+			//if no options highlighted
+			if ((game_object_map["Player VS Comp"]->GetAreColorsAltered() == false) && (game_object_map["Player VS Player"]->GetAreColorsAltered() == false))
+			{
+				if ((csdl_obj->GetSDLGameEvent()->cbutton.button == SDL_CONTROLLER_BUTTON_B) && (csdl_obj->GetSDLGameEvent()->type == SDL_CONTROLLERBUTTONDOWN))
+				{
+					// go back
+				}
+			}
+			// Player Vs Computer Highlighted
+			else if (game_object_map["Player VS Comp"]->GetAreColorsAltered() == true)
+			{
+
+				//right press
+				if (csdl_obj->GetSDLGameEvent()->cbutton.button == SDL_CONTROLLER_BUTTON_RIGHTSTICK || (csdl_obj->GetSDLGameEvent()->cbutton.button == SDL_CONTROLLER_BUTTON_DPAD_RIGHT && csdl_obj->GetSDLGameEvent()->cbutton.state == SDL_PRESSED) || ( (csdl_obj->GetSDLGameEvent()->key.keysym.sym == SDLK_RIGHT) && (csdl_obj->GetSDLGameEvent()->type == SDL_KEYDOWN) ))
+				{
+					//AlterTextureColor(38, 64, 139)
+					
+					//unhighlight P V C
+
+					game_object_map["Player VS Comp"]->RevertAlteredTextureColor();
+
+					//highlight P V P text
+
+					game_object_map["Player VS Player"]->AlterTextureColor(38, 64, 139);
+				}
+
+				//enter or A make shorter some how. just make more else if conditions. Call methods
+				else if ((csdl_obj->GetSDLGameEvent()->cbutton.button == SDL_CONTROLLER_BUTTON_START) || (csdl_obj->GetSDLGameEvent()->cbutton.button == SDL_CONTROLLER_BUTTON_A) || (csdl_obj->GetSDLGameEvent()->key.keysym.sym == SDLK_RETURN))
+				{
+					x_o_gameplay_mode = human_vs_computer;
+
+					
+					//change to gameplay scene
+
+					x_o_game_state = match_gameplay;
+					
+					//unhighlight all text 
+					
+					game_object_map["Player VS Comp"]->RevertAlteredTextureColor();
+					game_object_map["Player VS Player"]->RevertAlteredTextureColor();
+					
+				}
+
+				// esc or B
+
+				else if ((csdl_obj->GetSDLGameEvent()->cbutton.button == SDL_CONTROLLER_BUTTON_B) && (csdl_obj->GetSDLGameEvent()->type == SDL_CONTROLLERBUTTONDOWN))
+				{
+
+				}
+
+				else if ((csdl_obj->GetSDLGameEvent()->key.keysym.sym == SDLK_ESCAPE) && (csdl_obj->GetSDLGameEvent()->type == SDL_KEYDOWN))
+				{
+
+				}
+			}
+
+			else if (game_object_map["Player VS Player"]->GetAreColorsAltered() == true)
+			{
+				//left press
+				if ((csdl_obj->GetSDLGameEvent()->cbutton.button == SDL_CONTROLLER_BUTTON_LEFTSTICK) || (csdl_obj->GetSDLGameEvent()->cbutton.button == SDL_CONTROLLER_BUTTON_DPAD_LEFT && csdl_obj->GetSDLGameEvent()->cbutton.state == SDL_PRESSED) || ((csdl_obj->GetSDLGameEvent()->key.keysym.sym == SDLK_LEFT) && (csdl_obj->GetSDLGameEvent()->type == SDL_KEYDOWN)))
+				{
+
+				}
+
+				
+
+
+				//enter or A
+
+
+
+				// esc or B
+
+			}
+
+			//
+
+		}
+
+
 		else if (x_o_game_state == match_gameplay)
 		{
 
@@ -957,6 +1099,7 @@ void Game::GameEventManager()
 
 				clear if invalid or valid
 				*/
+				TurnPhaseEvent();
 			}
 
 			/*
