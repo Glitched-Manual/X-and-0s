@@ -51,18 +51,9 @@ std::map<std::string, GameObject* > game_object_map;
 
 // game mode enum
 
-<<<<<<< HEAD
-enum current_game_state {main_menu,game_options, match_gameplay,credits,pause,quit};
-=======
 enum current_game_state {main_menu,game_options,opponent_selection, match_gameplay,credits,pause,quit};
 
->>>>>>> gameplay-reconstruction
 enum current_gameplay_mode {human_vs_human,human_vs_computer};
-enum current_highlighted_option_menu_text { none_of_the_options_highlighted,play_option_highlighted,options_option_highlighted,credits_option_highlighted };
-
-// changeable variable 0-2 for options open highlighted option
-
-unsigned int game_option_select_value = 0;
 
 
 enum current_highlighted_option_menu_text { none_of_the_options_highlighted,play_option_highlighted,options_option_highlighted,credits_option_highlighted };
@@ -79,16 +70,13 @@ unsigned int SCREEN_WIDTH;
 
 unsigned int SCREEN_HEIGHT;
 bool sdl_button_released;
-<<<<<<< HEAD
 
 std::string* sdl_player_input_string;
-=======
 
-std::string* sdl_player_input_string;
+
 
 
 // InputButtonValue;
->>>>>>> gameplay-reconstruction
 public:
 Game(unsigned int passed_screen_width, unsigned int passed_screen_height);
 ~Game();
@@ -120,11 +108,8 @@ bool LoadGameOpeningMenu();
 bool LoadGameOptionsMenu();
 bool LoadGameplayObjects();
 
-<<<<<<< HEAD
-=======
 bool LoadOpponentOptions();
 
->>>>>>> gameplay-reconstruction
 bool loadPlayerTextureMarks();
 
 void GameEventManager();

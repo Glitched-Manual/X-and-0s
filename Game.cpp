@@ -8,29 +8,6 @@ Game::Game(unsigned int passed_screen_width, unsigned int passed_screen_height)
 	sdl_player_input_string = new std::string;
 
 	total_turns = 0;
-<<<<<<< HEAD
-	
-	game_grid = new Grid; //add params
-	csdl_obj = new CSDL(SCREEN_WIDTH, SCREEN_HEIGHT);
-	
-	player_pos_1 = new Player(sdl_player_input_string, csdl_obj); //lol fully redeclared before going out out scope or passing value into args cause segmentation errors
-	player_pos_2 = new Player(sdl_player_input_string, csdl_obj); //if ai use diffent initailizer
-	Game_Over = false;
-	quit_game_from_input = false;
-	win_cases_loaded = false;
-	
-	player_pos_1->SetPlayerMark("!");
-	player_pos_2->SetPlayerMark("#");
-	LoadWinCases();
-
-	if (debug.is_debug_mode())
-	{
-		std::cout << "WinCases Loaded" << std::endl;
-	}
-
-	//init sdl
-	csdl_obj->Init();
-=======
 
 	game_grid = new Grid; //add params
 	csdl_obj = new CSDL(SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -40,24 +17,11 @@ Game::Game(unsigned int passed_screen_width, unsigned int passed_screen_height)
 	Game_Over = false;
 	quit_game_from_input = false;
 	win_cases_loaded = false;
->>>>>>> gameplay-reconstruction
 
 	player_pos_1->SetPlayerMark("!");
 	player_pos_2->SetPlayerMark("#");
 	LoadWinCases();
 
-<<<<<<< HEAD
-	x_o_game_state = main_menu;
-
-	//Load Main menu textures
-	LoadGameOpeningMenu();
-
-	//Load Options menu textures
-	LoadGameOptionsMenu();
-	// hash table and marks
-	LoadGameplayObjects();
-	loadPlayerTextureMarks(); // test version
-=======
 	if (debug.is_debug_mode())
 	{
 		std::cout << "WinCases Loaded" << std::endl;
@@ -82,7 +46,6 @@ Game::Game(unsigned int passed_screen_width, unsigned int passed_screen_height)
 	LoadOpponentOptions(); // forgot to uncomment on finishing lol
 
 	loadPlayerTextureMarks(); // test version load two marks
->>>>>>> gameplay-reconstruction
 
 
 	LoadGameObjectContent(); // loads all content in allGameObjects. put all game objects before this
@@ -257,8 +220,6 @@ bool Game::FilterUserInput(std::string raw_input_string, Position* passed_positi
 
 	if ((mode == y_cord) & (filter_successful))
 	{
-<<<<<<< HEAD
-=======
 
 		if ((x_pos < 3) & (y_pos < 3))
 		{
@@ -284,37 +245,8 @@ bool Game::FilterUserInput(std::string raw_input_string, Position* passed_positi
 
 		return false;
 	}
->>>>>>> gameplay-reconstruction
-
-		if ((x_pos < 3) & (y_pos < 3))
-		{
-			passed_position->SetX(x_pos);
-			passed_position->SetY(y_pos);
-		}
-		else
-		{
-			if (debug.is_debug_mode())
-			{
-				std::cout << "Game.cpp FilterUserInput error: (x_pos < 3)&(y_pos < 3) found false" << std::endl;
-			}
-
-<<<<<<< HEAD
-			return false;
-		}
-	}
-	else
-	{
-		if (debug.is_debug_mode())
-		{
-			std::cout << "Game.cpp FilterUserInput error: (mode == y_cord)&(filter_successful) found false" << std::endl;
-		}
-
-		return false;
-	}
 
 
-=======
->>>>>>> gameplay-reconstruction
 	return true;
 }
 
@@ -432,11 +364,8 @@ void Game::MainGameMenu() //not needed
 //fix after events and graphics
 
 //call on click of keyboard, button, mouse input conditions met
-<<<<<<< HEAD
-=======
 
 
->>>>>>> gameplay-reconstruction
 void Game::TurnPhaseEvent()
 {
 	//make false to change turn order to player_pos_2 starting
@@ -569,8 +498,6 @@ bool Game::LoadGameOpeningMenu()
 }
 
 
-<<<<<<< HEAD
-=======
 bool Game::LoadOpponentOptions()
 {
 	/*
@@ -608,7 +535,6 @@ bool Game::LoadOpponentOptions()
 	return true;
 }
 
->>>>>>> gameplay-reconstruction
 //
 bool Game::LoadGameOptionsMenu()
 {
@@ -717,12 +643,6 @@ void Game::RenderGameTextures()
 			//Options
 
 			game_object_map["Options Button"]->Draw(csdl_obj->GetSDLRenderer());
-<<<<<<< HEAD
-
-			//Credits
-
-			game_object_map["Credits Button"]->Draw(csdl_obj->GetSDLRenderer());
-=======
 
 			//Credits
 
@@ -735,7 +655,6 @@ void Game::RenderGameTextures()
 			game_object_map["Player VS Comp"]->Draw(csdl_obj->GetSDLRenderer());
 
 			game_object_map["Player VS Player"]->Draw(csdl_obj->GetSDLRenderer());
->>>>>>> gameplay-reconstruction
 
 		}
 
@@ -776,31 +695,20 @@ void Game::GameEventManager()
 
 
 				//if start button or enter key pressed
-<<<<<<< HEAD
-			if ((csdl_obj->GetSDLGameEvent()->cbutton.button == SDL_CONTROLLER_BUTTON_START) || ((csdl_obj->GetSDLGameEvent()->key.keysym.sym == SDLK_RETURN && csdl_obj->GetSDLGameEvent()->type == SDL_KEYDOWN)))
-=======
 			if ((csdl_obj->ButtonInputCheck("START")) || ((csdl_obj->GetSDLGameEvent()->key.keysym.sym == SDLK_RETURN && csdl_obj->GetSDLGameEvent()->type == SDL_KEYDOWN)))
->>>>>>> gameplay-reconstruction
 			{
 				if (debug.is_debug_mode())
 				{
 					std::cout << "\nYou Started the game!\n" << std::endl;
 				}
 				//rgb(38, 64, 139)
-<<<<<<< HEAD
-				game_object_map["Start Game"]->ToggleTextureColor(38, 64, 139);
-=======
 				game_object_map["Start Game"]->AlterTextureColor(38, 64, 139);
->>>>>>> gameplay-reconstruction
 
 
 				//create a change state to put values back to starting position
 				x_o_game_state = game_options;
-<<<<<<< HEAD
-=======
 
 				RevertGameObjectColorList("Start Game");
->>>>>>> gameplay-reconstruction
 				//game_object_map["Start Game"]->AlterTextureColor( 38, 64, 139);
 			}
 		}
@@ -813,10 +721,6 @@ void Game::GameEventManager()
 		{
 
 
-<<<<<<< HEAD
-
-=======
->>>>>>> gameplay-reconstruction
 			// if none of Play Options or Credits Highlighted Highlight Play
 
 			//if left key pressed or left button pressed highlight button left of the last, unless it is the left most button
@@ -885,11 +789,7 @@ void Game::GameEventManager()
 
 			case  play_option_highlighted:
 				//right command or click in hit box
-<<<<<<< HEAD
-				if ((csdl_obj->GetSDLGameEvent()->cbutton.button == SDL_CONTROLLER_BUTTON_RIGHTSTICK) || (csdl_obj->GetSDLGameEvent()->cbutton.button == SDL_CONTROLLER_BUTTON_DPAD_RIGHT && csdl_obj->GetSDLGameEvent()->cbutton.state == SDL_PRESSED) || ((csdl_obj->GetSDLGameEvent()->key.keysym.sym == SDLK_RIGHT) && (csdl_obj->GetSDLGameEvent()->type == SDL_KEYDOWN)))
-=======
 				if ((csdl_obj->GetSDLGameEvent()->cbutton.button == SDL_CONTROLLER_BUTTON_RIGHTSTICK) || (csdl_obj->ButtonInputCheck("RIGHT") && csdl_obj->GetSDLGameEvent()->cbutton.state == SDL_PRESSED) || ((csdl_obj->GetSDLGameEvent()->key.keysym.sym == SDLK_RIGHT) && (csdl_obj->GetSDLGameEvent()->type == SDL_KEYDOWN)))
->>>>>>> gameplay-reconstruction
 				{
 					//change x_o_highlighted_option  play_option_highlighted to options_option_highlighted
 					x_o_highlighted_option = options_option_highlighted;
@@ -907,15 +807,9 @@ void Game::GameEventManager()
 				// SDLK_RETURN
 
 
-<<<<<<< HEAD
-				else if ((csdl_obj->GetSDLGameEvent()->cbutton.button == SDL_CONTROLLER_BUTTON_START) || (csdl_obj->GetSDLGameEvent()->cbutton.button == SDL_CONTROLLER_BUTTON_A) || (csdl_obj->GetSDLGameEvent()->key.keysym.sym == SDLK_RETURN))
-				{
-					x_o_game_state = match_gameplay;
-=======
 				else if ((csdl_obj->ButtonInputCheck("START")) || (csdl_obj->ButtonInputCheck("A_ACTION")) || (csdl_obj->GetSDLGameEvent()->key.keysym.sym == SDLK_RETURN))
 				{
 					x_o_game_state = opponent_selection;
->>>>>>> gameplay-reconstruction
 
 					game_object_map["Play Button"]->RevertAlteredTextureColor();
 					game_object_map["Options Button"]->RevertAlteredTextureColor();
@@ -929,11 +823,7 @@ void Game::GameEventManager()
 				}
 
 
-<<<<<<< HEAD
-				else if ((csdl_obj->GetSDLGameEvent()->cbutton.button == SDL_CONTROLLER_BUTTON_B && csdl_obj->GetSDLGameEvent()->cbutton.state == SDL_PRESSED) || ((csdl_obj->GetSDLGameEvent()->key.keysym.sym == SDLK_ESCAPE) && (csdl_obj->GetSDLGameEvent()->type == SDL_KEYDOWN)))
-=======
 				else if ((csdl_obj->ButtonInputCheck("B_ACTION") ) || ((csdl_obj->GetSDLGameEvent()->key.keysym.sym == SDLK_ESCAPE) && (csdl_obj->GetSDLGameEvent()->type == SDL_KEYDOWN)))
->>>>>>> gameplay-reconstruction
 				{
 					//revert all texture and  go to menu
 					game_object_map["Play Button"]->RevertAlteredTextureColor();
@@ -955,11 +845,7 @@ void Game::GameEventManager()
 
 			case  options_option_highlighted:
 				//left command or click in hit box
-<<<<<<< HEAD
-				if ((csdl_obj->GetSDLGameEvent()->cbutton.button == SDL_CONTROLLER_BUTTON_LEFTSTICK) || (csdl_obj->GetSDLGameEvent()->cbutton.button == SDL_CONTROLLER_BUTTON_DPAD_LEFT && csdl_obj->GetSDLGameEvent()->cbutton.state == SDL_PRESSED) || (csdl_obj->GetSDLGameEvent()->key.keysym.sym == SDLK_LEFT) && (csdl_obj->GetSDLGameEvent()->type == SDL_KEYDOWN))
-=======
 				if ((csdl_obj->GetSDLGameEvent()->cbutton.button == SDL_CONTROLLER_BUTTON_LEFTSTICK) || (csdl_obj->ButtonInputCheck("LEFT") && csdl_obj->GetSDLGameEvent()->cbutton.state == SDL_PRESSED) || (csdl_obj->GetSDLGameEvent()->key.keysym.sym == SDLK_LEFT) && (csdl_obj->GetSDLGameEvent()->type == SDL_KEYDOWN))
->>>>>>> gameplay-reconstruction
 				{
 					x_o_highlighted_option = play_option_highlighted;
 					// unhighlight options
@@ -976,11 +862,7 @@ void Game::GameEventManager()
 
 
 				//right command or click in hit box
-<<<<<<< HEAD
-				else if (csdl_obj->GetSDLGameEvent()->cbutton.button == SDL_CONTROLLER_BUTTON_RIGHTSTICK || (csdl_obj->GetSDLGameEvent()->cbutton.button == SDL_CONTROLLER_BUTTON_DPAD_RIGHT && csdl_obj->GetSDLGameEvent()->cbutton.state == SDL_PRESSED) || ((csdl_obj->GetSDLGameEvent()->key.keysym.sym == SDLK_RIGHT) && (csdl_obj->GetSDLGameEvent()->type == SDL_KEYDOWN)))
-=======
 				else if (csdl_obj->GetSDLGameEvent()->cbutton.button == SDL_CONTROLLER_BUTTON_RIGHTSTICK || (csdl_obj->ButtonInputCheck("RIGHT") && csdl_obj->GetSDLGameEvent()->cbutton.state == SDL_PRESSED) || ((csdl_obj->GetSDLGameEvent()->key.keysym.sym == SDLK_RIGHT) && (csdl_obj->GetSDLGameEvent()->type == SDL_KEYDOWN)))
->>>>>>> gameplay-reconstruction
 				{
 					x_o_highlighted_option = credits_option_highlighted;
 					// unhighlight options
@@ -994,11 +876,7 @@ void Game::GameEventManager()
 					}
 				}
 
-<<<<<<< HEAD
-				else if ((csdl_obj->GetSDLGameEvent()->cbutton.button == SDL_CONTROLLER_BUTTON_B && csdl_obj->GetSDLGameEvent()->cbutton.state == SDL_PRESSED) || ((csdl_obj->GetSDLGameEvent()->key.keysym.sym == SDLK_ESCAPE && csdl_obj->GetSDLGameEvent()->type == SDL_KEYDOWN)))
-=======
 				else if ((csdl_obj->ButtonInputCheck("B_ACTION")) || ((csdl_obj->GetSDLGameEvent()->key.keysym.sym == SDLK_ESCAPE && csdl_obj->GetSDLGameEvent()->type == SDL_KEYDOWN)))
->>>>>>> gameplay-reconstruction
 				{
 					//revert all texture and  go to menu
 					game_object_map["Play Button"]->RevertAlteredTextureColor();
@@ -1022,11 +900,7 @@ void Game::GameEventManager()
 
 			case  credits_option_highlighted:
 				//left command or click in hit box
-<<<<<<< HEAD
-				if ((csdl_obj->GetSDLGameEvent()->cbutton.button == SDL_CONTROLLER_BUTTON_LEFTSTICK) || (csdl_obj->GetSDLGameEvent()->cbutton.button == SDL_CONTROLLER_BUTTON_DPAD_LEFT && csdl_obj->GetSDLGameEvent()->cbutton.state == SDL_PRESSED) || ((csdl_obj->GetSDLGameEvent()->key.keysym.sym == SDLK_LEFT) && (csdl_obj->GetSDLGameEvent()->type == SDL_KEYDOWN)))
-=======
 				if ((csdl_obj->GetSDLGameEvent()->cbutton.button == SDL_CONTROLLER_BUTTON_LEFTSTICK) || (csdl_obj->ButtonInputCheck("LEFT") && csdl_obj->GetSDLGameEvent()->cbutton.state == SDL_PRESSED) || ((csdl_obj->GetSDLGameEvent()->key.keysym.sym == SDLK_LEFT) && (csdl_obj->GetSDLGameEvent()->type == SDL_KEYDOWN)))
->>>>>>> gameplay-reconstruction
 				{
 					x_o_highlighted_option = options_option_highlighted;
 					// unhighlight credits
@@ -1040,11 +914,7 @@ void Game::GameEventManager()
 					}
 				}
 
-<<<<<<< HEAD
-				else if ((csdl_obj->GetSDLGameEvent()->cbutton.button == SDL_CONTROLLER_BUTTON_B && csdl_obj->GetSDLGameEvent()->cbutton.state == SDL_PRESSED) || ((csdl_obj->GetSDLGameEvent()->key.keysym.sym == SDLK_ESCAPE && csdl_obj->GetSDLGameEvent()->type == SDL_KEYDOWN)))
-=======
 				else if ((csdl_obj->ButtonInputCheck("B_ACTION") && csdl_obj->GetSDLGameEvent()->cbutton.state == SDL_PRESSED) || ((csdl_obj->GetSDLGameEvent()->key.keysym.sym == SDLK_ESCAPE && csdl_obj->GetSDLGameEvent()->type == SDL_KEYDOWN)))
->>>>>>> gameplay-reconstruction
 				{
 					//revert all texture and  go to menu
 					game_object_map["Play Button"]->RevertAlteredTextureColor();
@@ -1052,11 +922,8 @@ void Game::GameEventManager()
 					game_object_map["Credits Button"]->RevertAlteredTextureColor();
 					game_object_map["Start Game"]->RevertAlteredTextureColor();
 
-<<<<<<< HEAD
-=======
 
 
->>>>>>> gameplay-reconstruction
 					x_o_highlighted_option = none_of_the_options_highlighted;
 
 					if (debug.is_debug_mode())
@@ -1072,11 +939,7 @@ void Game::GameEventManager()
 
 				// highight play if button is not keyboard escape or button B
 
-<<<<<<< HEAD
-				if ((csdl_obj->GetSDLGameEvent()->cbutton.button == SDL_CONTROLLER_BUTTON_B) && (csdl_obj->GetSDLGameEvent()->type == SDL_CONTROLLERBUTTONDOWN))
-=======
 				if ((csdl_obj->ButtonInputCheck("B_ACTION")))
->>>>>>> gameplay-reconstruction
 				{
 					//revert all texture and  go to menu
 					game_object_map["Play Button"]->RevertAlteredTextureColor();
@@ -1097,13 +960,8 @@ void Game::GameEventManager()
 					//revert all texture and  go to menu
 					game_object_map["Play Button"]->RevertAlteredTextureColor();
 					game_object_map["Options Button"]->RevertAlteredTextureColor();
-<<<<<<< HEAD
-					game_object_map["Credits Button"]->RevertAlteredTextureColor();
-					game_object_map["Start Game"]->RevertAlteredTextureColor();
-=======
 					game_object_map["Credits Button"]->RevertAlteredTextureColor();					
 					RevertGameObjectColorList("Play Button", "Options Button", "Credits Button");
->>>>>>> gameplay-reconstruction
 
 					x_o_game_state = main_menu;
 
@@ -1143,41 +1001,6 @@ void Game::GameEventManager()
 
 		} // end of game_options events
 
-<<<<<<< HEAD
-		else if (x_o_game_state == match_gameplay)
-		{
-
-			if ((csdl_obj->GetSDLGameEvent()->key.keysym.sym == SDLK_SPACE) && (csdl_obj->GetSDLGameEvent()->type == SDL_KEYDOWN))
-			{
-				/*
-				call turn phase method
-
-				if the string value of sdl_player_input_string is valid and the selected tile is available the tile should get marked
-
-				clear if invalid or valid
-				*/
-			}
-
-			/*
-			if A button pressed
-
-			hit box gives value to sting input ie: 2x2 or 0x1
-			*/
-			//if mouse click within a tile hit box
-
-		} //end of match_gameplay 
-
-		/*
-		SDL2 Button input Feedback
-
-		- not needed for release
-		*/
-
-
-
-		if (csdl_obj->GetSDLGameEvent()->type == SDL_KEYDOWN)
-		{
-=======
          // select player v player or player v computer
 		else if (x_o_game_state == opponent_selection)
 		{
@@ -1378,7 +1201,6 @@ void Game::GameEventManager()
 
 		if (csdl_obj->GetSDLGameEvent()->type == SDL_KEYDOWN)
 		{
->>>>>>> gameplay-reconstruction
 
 			unsigned int sdl_keyboard_input = csdl_obj->GetSDLGameEvent()->key.keysym.sym;
 
@@ -1487,9 +1309,6 @@ void Game::GameEventManager()
 		}
 
 	}
-<<<<<<< HEAD
-} //end of Xs an Os game events
-=======
 } //end of Xs an Os game events
 
 
@@ -1518,4 +1337,3 @@ void Game::RevertGameObjectColorList(char* passed_string_arg, Basic_string_args.
 
 	RevertGameObjectColorList(other_passed_string_args...);
 }
->>>>>>> gameplay-reconstruction
