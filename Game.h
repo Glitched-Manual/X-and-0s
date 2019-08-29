@@ -74,8 +74,6 @@ bool sdl_button_released;
 std::string* sdl_player_input_string;
 
 
-
-
 // InputButtonValue;
 public:
 Game(unsigned int passed_screen_width, unsigned int passed_screen_height);
