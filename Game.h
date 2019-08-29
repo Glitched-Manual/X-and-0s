@@ -20,6 +20,10 @@ class Player;
 class AI;
 class Position;
 class CSDL;
+
+
+//static enum ButtonValue { UP, DOWN, LEFT, RIGHT, START, SELECT, A_ACTION, B_ACTION };
+
 class Game{
 
 //Player* pos_1
@@ -37,6 +41,7 @@ Win_Case win_cases[8];
 CSDL* csdl_obj;
 unsigned int turn_phase;
 
+unsigned int players_turn_order = 0; // if not 0 player at pos_2 has the first turn
 //gameobjects
 std::vector<GameObject*> allGameObjects;
 
@@ -46,8 +51,20 @@ std::map<std::string, GameObject* > game_object_map;
 
 // game mode enum
 
+<<<<<<< HEAD
 enum current_game_state {main_menu,game_options, match_gameplay,credits,pause,quit};
+=======
+enum current_game_state {main_menu,game_options,opponent_selection, match_gameplay,credits,pause,quit};
+
+>>>>>>> gameplay-reconstruction
 enum current_gameplay_mode {human_vs_human,human_vs_computer};
+enum current_highlighted_option_menu_text { none_of_the_options_highlighted,play_option_highlighted,options_option_highlighted,credits_option_highlighted };
+
+// changeable variable 0-2 for options open highlighted option
+
+unsigned int game_option_select_value = 0;
+
+
 enum current_highlighted_option_menu_text { none_of_the_options_highlighted,play_option_highlighted,options_option_highlighted,credits_option_highlighted };
 
 // changeable variable 0-2 for options open highlighted option
@@ -62,8 +79,18 @@ unsigned int SCREEN_WIDTH;
 
 unsigned int SCREEN_HEIGHT;
 bool sdl_button_released;
+<<<<<<< HEAD
 
 std::string* sdl_player_input_string;
+=======
+
+std::string* sdl_player_input_string;
+
+
+
+
+// InputButtonValue;
+>>>>>>> gameplay-reconstruction
 public:
 Game(unsigned int passed_screen_width, unsigned int passed_screen_height);
 ~Game();
@@ -85,6 +112,9 @@ void SetGameTileMark(Position* position_to_mark,std::string player_mark);
 int PlayerTurn(Player* current_player);
 void TurnPhaseEvent();
 
+//void LoadAIPlayer();
+//Load nomal Player
+//AI V AI?
 bool LoadGameObjectContent();
 
 bool LoadGameOpeningMenu();
@@ -92,10 +122,39 @@ bool LoadGameOpeningMenu();
 bool LoadGameOptionsMenu();
 bool LoadGameplayObjects();
 
+<<<<<<< HEAD
+=======
+bool LoadOpponentOptions();
+
+>>>>>>> gameplay-reconstruction
 bool loadPlayerTextureMarks();
 
 void GameEventManager();
 
 void RenderGameTextures();
+
+
+// texture modding 
+
+/*
+RevertGameObjectColorList();
+
+variadic template member method to change color altered textures of the texture map to there original colors
+
+strings passed are used as keys
+
+
+- For GameText obj - text changes to white
+
+*/
+
+//base function 
+void RevertGameObjectColorList();
+
+template<typename... String_args>
+void RevertGameObjectColorList(std::string passed_string_arg, String_args... other_passed_string_args);
+
+template<typename... Basic_string_args>
+void RevertGameObjectColorList( char* passed_string_arg, Basic_string_args... other_passed_string_args);
 };
 #endif //GAME_H
