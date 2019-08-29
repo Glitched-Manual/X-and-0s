@@ -87,8 +87,6 @@ std::string* sdl_player_input_string;
 std::string* sdl_player_input_string;
 
 
-
-
 // InputButtonValue;
 >>>>>>> gameplay-reconstruction
 public:
