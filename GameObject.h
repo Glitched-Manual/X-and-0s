@@ -32,6 +32,9 @@ public:
 	virtual bool GetAreColorsAltered() = 0;
 	virtual SDL_Rect* GetTextureRect() = 0;
 
+	
+	virtual void AlterTextureAlpha(Uint8 alpha_value, std::string passed_texture_key){}
+
 	GameObject(){}
 protected:
 

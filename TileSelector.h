@@ -65,7 +65,7 @@ public:
 
 	 //load colors
 
-	 void LoadSelectorColors();
+	// void LoadSelectorColors();
 
 };
 
