@@ -73,8 +73,8 @@ bool sdl_button_released;
 
 std::string* sdl_player_input_string;
 
-
-
+enum GameResult {no_result,player1_wins,player2_wins,match_draw};
+GameResult current_game_result = no_result;
 
 // InputButtonValue;
 public:
@@ -111,6 +111,8 @@ bool LoadGameplayObjects();
 bool LoadOpponentOptions();
 
 bool loadPlayerTextureMarks();
+
+bool LoadPlayAgainPrompt();
 
 void GameEventManager();
 

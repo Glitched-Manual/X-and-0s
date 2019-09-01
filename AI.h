@@ -42,6 +42,7 @@ public:
 	 std::string GetPlayerInput(bool* quit); //not needed can use the ai will not be able to quit //use but do ai stuff
 	 void SetPlayerMark(std::string passed_string_mark);
 	 std::string* GetPlayerMark() { return ai_mark; }
+	 void ResetAIPlayerValues();
 
 	 void CollectAvailablePositions();
 

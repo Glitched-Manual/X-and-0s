@@ -13,7 +13,13 @@ Game::Game(unsigned int passed_screen_width, unsigned int passed_screen_height)
 	csdl_obj = new CSDL(SCREEN_WIDTH, SCREEN_HEIGHT);
 
 	player_pos_1 = new Player(sdl_player_input_string, csdl_obj); //lol fully redeclared before going out out scope or passing value into args cause segmentation errors
-	player_pos_2 = new Player(sdl_player_input_string, csdl_obj); //if ai use diffent initailizer
+	
+	/*
+
+	if Player vs computer change Player2 to AI
+	
+	*/
+	player_pos_2 = new Player(sdl_player_input_string, csdl_obj); //if ai use diffent initailizer 
 	Game_Over = false;
 	quit_game_from_input = false;
 	win_cases_loaded = false;
@@ -366,21 +372,27 @@ void Game::MainGameMenu() //not needed
 //call on click of keyboard, button, mouse input conditions met
 
 
+
+
 void Game::TurnPhaseEvent()
 {
-	//make false to change turn order to player_pos_2 starting
-	if (total_turns % 2 == players_turn_order)
-	{
-		int p1_turn = PlayerTurn(player_pos_1);
 
-		//if (p1_turn == 0) break;
-	}
-	//turn 2 Player* pos or AI - ai inherits player class
-	else
+	if (!Game_Over)
 	{
-		int p2_turn = PlayerTurn(player_pos_2);
+		
+		if (total_turns % 2 == players_turn_order) //make false to change turn order to player_pos_2 starting if 0 p1 first. 1 p2 first
+		{
+			int p1_turn = PlayerTurn(player_pos_1);
 
-		//if (p2_turn == 0) break;
+			//if (p1_turn == 0) break;
+		}
+		//turn 2 Player* pos or AI - ai inherits player class
+		else
+		{
+			int p2_turn = PlayerTurn(player_pos_2);
+
+			//if (p2_turn == 0) break;
+		}
 	}
 	//check for win if total_turns > 4
 	//total_turns++; add to true case of if square available case
@@ -396,6 +408,8 @@ void Game::TurnPhaseEvent()
 			{
 				std::cout << "Player 1 Wins!" << std::endl;
 				Game_Over = true; // add play again case
+				current_game_result = player1_wins;
+				//draw to screen
 			}
 		}
 		else if (total_turns % 2 == 0)
@@ -405,6 +419,8 @@ void Game::TurnPhaseEvent()
 			{
 				std::cout << "Player 2 Wins!!" << std::endl;
 				Game_Over = true;
+				current_game_result = player2_wins;
+				//draw to screen
 			}
 		}
 	}
@@ -413,6 +429,8 @@ void Game::TurnPhaseEvent()
 
 		Game_Over = true;
 		std::cout << "Draw!" << std::endl;
+		current_game_result = match_draw;
+		//draw to screen
 	}
 }
 

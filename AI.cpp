@@ -112,3 +112,20 @@ void AI::CollectAvailablePositions()
 	}
 
 }
+
+void AI::ResetAIPlayerValues()
+{
+
+	/*
+	  if available_tile_positions is not empty
+
+	  pop until empty or use .clear()
+	*/
+	if ( !available_tile_positions.empty() )
+	{
+		available_tile_positions.clear();
+	}
+	//set available_tile_positions_collected to false
+	available_tile_positions_collected = false;
+
+}
