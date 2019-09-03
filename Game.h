@@ -10,6 +10,7 @@
 #include "HashTable.h"
 #include "GameText.h"
 #include "TileMarker.h"
+#include "PromptWindow.h"
 
 #ifndef GAME_H
 #define GAME_H
@@ -20,7 +21,7 @@ class Player;
 class AI;
 class Position;
 class CSDL;
-
+class PromptWindow;
 
 //static enum ButtonValue { UP, DOWN, LEFT, RIGHT, START, SELECT, A_ACTION, B_ACTION };
 
@@ -40,6 +41,7 @@ Grid* game_grid = NULL;
 Win_Case win_cases[8];
 CSDL* csdl_obj;
 unsigned int turn_phase;
+
 
 unsigned int players_turn_order = 0; // if not 0 player at pos_2 has the first turn
 //gameobjects
@@ -76,6 +78,7 @@ std::string* sdl_player_input_string;
 enum GameResult {no_result,player1_wins,player2_wins,match_draw};
 GameResult current_game_result = no_result;
 
+bool menu_activated = false;
 // InputButtonValue;
 public:
 Game(unsigned int passed_screen_width, unsigned int passed_screen_height);
@@ -118,6 +121,7 @@ void GameEventManager();
 
 void RenderGameTextures();
 
+void GameRematchReset();
 
 // texture modding 
 

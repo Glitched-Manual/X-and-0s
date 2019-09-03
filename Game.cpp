@@ -53,6 +53,7 @@ Game::Game(unsigned int passed_screen_width, unsigned int passed_screen_height)
 
 	loadPlayerTextureMarks(); // test version load two marks
 
+	LoadPlayAgainPrompt(); // test version loads rematch prompt
 
 	LoadGameObjectContent(); // loads all content in allGameObjects. put all game objects before this
 
@@ -434,6 +435,29 @@ void Game::TurnPhaseEvent()
 	}
 }
 
+
+void Game::GameRematchReset()
+{
+	/*
+	player_pos_1->SetPlayerMark("!");
+	player_pos_2->SetPlayerMark("#");
+	
+
+	reset tiles
+	 - marked bool
+	 - tile_mark to anything other than "!" or "#"
+
+	if ai reset
+
+	change game_result to none
+
+	turn Game_Over false
+
+
+
+	*/
+}
+
 bool Game::LoadGameplayObjects()
 {
 	GameObject* hash_table_game_obj = NULL;
@@ -631,6 +655,32 @@ bool Game::loadPlayerTextureMarks()
 }
 
 
+bool Game::LoadPlayAgainPrompt()
+{
+	GameObject* prompt_window_game_object = NULL;
+	//create promptWindow
+	PromptWindow* rematch_prompt = new PromptWindow(new LoaderParams(SCREEN_WIDTH/2, SCREEN_HEIGHT/2, 400, 200, "rematch prompt"),csdl_obj);
+	//add more text
+	/*
+	
+	rematch_prompt->CreatePromptText(x percentage of prompt window,y percentage of prompt window,"text id","text message",text size);
+
+	*/
+	rematch_prompt->CreatePromptText(50,25,"play again rematch text","Play Again?",20);
+	rematch_prompt->CreatePromptText(25, 50, "yes rematch text", "YES", 20);
+	rematch_prompt->CreatePromptText(75, 50, "no rematch text", "NO", 20);
+	//pin to game object
+	prompt_window_game_object = rematch_prompt;
+	// add map and vector
+
+	game_object_map["rematch prompt"] = prompt_window_game_object;
+
+	allGameObjects.push_back(prompt_window_game_object);
+
+	return true;
+}
+
+
 void Game::RenderGameTextures()
 {
 	if (!(allGameObjects.empty()))
@@ -684,6 +734,12 @@ void Game::RenderGameTextures()
 
 			//loop through marked tiles , render marks to proper spots
 			game_object_map["test mark"]->Draw(csdl_obj->GetSDLRenderer());
+
+			//if game over as player if they want to play again
+			if(Game_Over)
+			{
+				game_object_map["rematch prompt"]->Draw(csdl_obj->GetSDLRenderer());
+			}
 
 		}
 
@@ -1187,7 +1243,44 @@ void Game::GameEventManager()
 
 		else if (x_o_game_state == match_gameplay)
 		{
+		//if paused or rematch prompt
+		if (menu_activated) 
+		{
 
+		}
+		else if (Game_Over)
+		{
+			//do something with rematch prompt
+
+			/*
+			rematch_prompt->CreatePromptText(25, 50, "yes rematch text", "YES", 20);
+	rematch_prompt->CreatePromptText(75, 50, "no rematch text", "NO", 20);
+			*/
+			//both options highlighted
+			if(game_object_map["rematch prompt"]->GetAreColorsAltered("yes rematch text")&&(game_object_map["rematch prompt"]->GetAreColorsAltered("no rematch text")))
+			{
+				game_object_map["rematch prompt"]->RevertAlteredTextureColor("yes rematch text");
+				game_object_map["rematch prompt"]->RevertAlteredTextureColor("no rematch text");
+			}
+
+			//
+			else if (game_object_map["rematch prompt"]->GetAreColorsAltered("yes rematch text"))
+			{
+
+			}
+			//
+			else if (game_object_map["rematch prompt"]->GetAreColorsAltered("no rematch text"))
+			{
+
+			}
+			else
+			{
+
+			}
+
+		}
+		else
+		{
 			if (csdl_obj->ButtonInputCheck("SPACE"))
 			{
 				/*
@@ -1206,8 +1299,11 @@ void Game::GameEventManager()
 			hit box gives value to sting input ie: 2x2 or 0x1
 			*/
 			//if mouse click within a tile hit box
+		}
 
-		} //end of match_gameplay 
+			
+
+		} //end of match_gameplay events
 
 		/*
 		SDL2 Button input Feedback
