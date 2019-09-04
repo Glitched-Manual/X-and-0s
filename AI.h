@@ -3,6 +3,7 @@
 #include <vector>
 #include <ctime>
 #include <cstdlib>
+#include <algorithm>
 
 #include "Player.h"
 #include "Grid.h"
@@ -20,9 +21,11 @@ struct Developer;
 class AI:public Player
 {
 	std::string* ai_mark;
+	std::string* player_input_string;
 	bool available_tile_positions_collected = false;
 	Grid* game_grid;
-
+	enum PlayerType { computer_player };
+	PlayerType current_player_type = computer_player;
 	/*
 	vector to contain the available positions for ai
 
@@ -34,8 +37,9 @@ class AI:public Player
 
 public:
 
-	AI();
-	AI(const AI& obj);
+	
+	AI(std::string* passed_input_string, Grid* passed_grid);
+	AI(const AI& obj, Grid* passed_grid);
 	~AI();
 	 //if ai is active in human vs ai Import grid
 	void ImportGrid( Grid* passed_grid) { game_grid = passed_grid; }
@@ -45,8 +49,10 @@ public:
 	 void ResetAIPlayerValues();
 
 	 void CollectAvailablePositions();
-
+	 void SetToAIMode() { current_player_type = computer_player; }
 	 int RandomAIMove();
+	 void DisplayAvailablePositionsVector();
+	
 };
 
 #endif //AI_H

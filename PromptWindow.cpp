@@ -124,7 +124,7 @@ void PromptWindow::AlterTextureColor(std::string passed_string, Uint8 passed_r_v
 
 	if (finder != game_texts_map.end())
 	{
-		game_texts_map[passed_string]->RevertAlteredTextureColor();
+		game_texts_map[passed_string]->AlterTextureColor(passed_r_value, passed_g_value, passed_b_value);;
 	}
 
 	else
@@ -133,9 +133,23 @@ void PromptWindow::AlterTextureColor(std::string passed_string, Uint8 passed_r_v
 		{
 			std::cout << "map key not found" << std::endl;
 		}
-
+		
 	}
 
+	if (!game_texts_vector.empty())
+	{
+
+
+		for (std::vector<GameText*>::iterator game_text_object_index = game_texts_vector.begin(); game_text_object_index != game_texts_vector.end(); game_text_object_index++)
+		{
+			if ((*game_text_object_index)->GetGameObjectID() == passed_string)
+			{
+				(*game_text_object_index)->AlterTextureColor(passed_r_value, passed_g_value, passed_b_value);
+				std::cout << "map key found in vector" << std::endl;
+			}
+
+		}
+	}
 }
 
 void PromptWindow::RevertAlteredTextureColor()
@@ -178,6 +192,20 @@ void PromptWindow::RevertAlteredTextureColor(std::string passed_string)
 			std::cout << "map key not found" << std::endl;
 		}
 
+		if (!game_texts_vector.empty())
+		{
+			
+			for (std::vector<GameText*>::iterator game_text_object_index = game_texts_vector.begin(); game_text_object_index != game_texts_vector.end(); game_text_object_index++)
+			{
+				if ((*game_text_object_index)->GetGameObjectID() == passed_string)
+				{
+					(*game_text_object_index)->RevertAlteredTextureColor();
+					std::cout << "map key found in vector" << std::endl;
+				}
+
+			}
+		}
+
 	}
 }
 
@@ -194,6 +222,20 @@ bool PromptWindow::GetAreColorsAltered(std::string passed_string)
 	if (debug.is_debug_mode())
 	{
 		std::cout << "map key not found" << std::endl;
+		if (!game_texts_vector.empty())
+		{
+
+			for (std::vector<GameText*>::iterator game_text_object_index = game_texts_vector.begin(); game_text_object_index != game_texts_vector.end(); game_text_object_index++)
+			{
+				if ((*game_text_object_index)->GetGameObjectID() == passed_string)
+				{
+					
+					std::cout << "map key found in vector" << std::endl;
+					return (*game_text_object_index)->GetAreColorsAltered();
+				}
+
+			}
+		}
 	}
 
 	return false;

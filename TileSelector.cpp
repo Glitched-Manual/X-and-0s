@@ -103,7 +103,8 @@ void TileSelector::Update()
 
 	if (current_game_controls == mouse_controls)
 	{
-		SDL_GetMouseState(mouse_pos_x, mouse_pos_y);
+		SDL_GetMouseState( mouse_pos_x, mouse_pos_y );
+		SetSelectorScreenPosition();//updates position of selector
 	}
 
 	/*
@@ -136,7 +137,14 @@ void TileSelector::SetOriginalColors()
 
 }
 
-void LoadSelectorColors()
+void TileSelector::LoadSelectorColors()
 {
 	
+}
+
+void TileSelector::SetSelectorScreenPosition()
+{
+	tile_selector_texture_rect->x = *mouse_pos_x;
+		
+	tile_selector_texture_rect->y = *mouse_pos_y;
 }

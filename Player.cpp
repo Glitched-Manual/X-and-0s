@@ -2,11 +2,27 @@
 
 Player::Player()
 {
-player_mark = new std::string;
+	player_type = "Human";
+
+   player_mark = new std::string;
+}
+
+Player::Player(const Player& obj)
+{
+	player_mark = new std::string;
+
+	player_type = "?";
+	
+	if (debug.is_debug_mode())
+	{
+		std::cout << "Player::Player(const Player& obj) called player type " << std::endl;
+	}
 }
 
 Player::Player(std::string* passed_input_string,CSDL* passed_csdl_obj)
 {
+
+	player_type = "Human";
 	player_mark = new std::string; // lol forgot to put this here :P
 
 	sdl_player_input_string = passed_input_string;

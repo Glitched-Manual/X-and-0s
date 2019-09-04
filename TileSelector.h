@@ -39,7 +39,7 @@ class TileSelector: public GameObject
 	//for switching controls
 	enum ControlsType {keyboard_controls,mouse_controls,game_controller_controls};
 
-	ControlsType current_game_controls;
+	ControlsType current_game_controls = mouse_controls;
 
 public:
 	TileSelector(LoaderParams* pParams, Grid* passed_grid, SDL_Rect* passed_hash_table_rect, CSDL* passed_csdl_obj, std::string passed_id_name);
@@ -67,6 +67,9 @@ public:
 
 	// void LoadSelectorColors();
 
+	void LoadSelectorColors();
+	 //SetSelectorScreenPosition();
+	void SetSelectorScreenPosition();
 };
 
 

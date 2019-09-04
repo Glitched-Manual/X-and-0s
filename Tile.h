@@ -25,10 +25,12 @@ void SetTileMark(std::string passed_mark){ *tile_mark = passed_mark; *tile_is_ma
 std::string* GetTileMark(){ return tile_mark; }
 
 bool* GetTileIsMarkedStatus(){ return tile_is_marked;}
-
+bool ReturnTileIsMarkedStatus() { return *tile_is_marked; }
 void SetTilePosition(int passed_x, int passed_y);
 
 Position* GetTilePosition(){return tile_position;}
+
+void ResetTileAttributes();
 
 };
 #endif //TILE_H

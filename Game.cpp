@@ -19,7 +19,21 @@ Game::Game(unsigned int passed_screen_width, unsigned int passed_screen_height)
 	if Player vs computer change Player2 to AI
 	
 	*/
-	player_pos_2 = new Player(sdl_player_input_string, csdl_obj); //if ai use diffent initailizer 
+
+	if (x_o_gameplay_mode == human_vs_computer)
+	{
+		//delete player_pos_2;
+	   //player_pos_2 = nullptr;
+		AI* game_bot7000 = new AI(sdl_player_input_string,game_grid);
+		player_pos_2 = game_bot7000;
+		player_pos_2->SetPlayerMark("#");
+	}
+	else 
+	{
+		player_pos_2 = new Player(sdl_player_input_string, csdl_obj); //if ai use diffent initailizer 
+		player_pos_2->SetPlayerMark("#");
+	}
+	
 	Game_Over = false;
 	quit_game_from_input = false;
 	win_cases_loaded = false;
@@ -55,8 +69,14 @@ Game::Game(unsigned int passed_screen_width, unsigned int passed_screen_height)
 
 	LoadPlayAgainPrompt(); // test version loads rematch prompt
 
+
+
+	LoadTileSelector();//loads cursor selector
+
+
 	LoadGameObjectContent(); // loads all content in allGameObjects. put all game objects before this
 
+	
 }
 
 Game::~Game()
@@ -78,7 +98,7 @@ void Game::GameLoop()
 		std::cout << "CSDL::init() call finished! Starting GameLoop!" << std::endl;
 
 	}
-
+	//use quit_game_from_inputto quit game 
 	while ((csdl_obj->GetSDLGameEvent()->type != SDL_QUIT) && (quit_game_from_input == false))
 	{
 		/*if (debug.is_text_based_game())
@@ -105,7 +125,7 @@ void Game::GameLoop()
 		*/
 
 		//update
-
+		UpdateGameTextures();
 
 		//clean
 
@@ -113,6 +133,28 @@ void Game::GameLoop()
 	}
 
 }
+
+void Game::SetupSecondPlayerValue()
+{
+
+	if (x_o_gameplay_mode == human_vs_computer)
+	{
+	//	delete player_pos_2;
+	//	player_pos_2 = nullptr;
+		AI* game_bot7000 = new AI(sdl_player_input_string, game_grid);
+		player_pos_2 = game_bot7000;
+		player_pos_2->SetPlayerMark("#");
+	}
+	else
+	{
+		player_pos_2 = new Player(sdl_player_input_string, csdl_obj); //if ai use diffent initailizer 
+		player_pos_2->SetPlayerMark("#");
+	}
+	SetCurrentPlayerTurn();
+}
+
+
+
 //returns status codes 
 /*
 0 - quit
@@ -196,6 +238,11 @@ bool Game::FilterUserInput(std::string raw_input_string, Position* passed_positi
 	bool filter_successful = false;
 	enum axis { x_cord, y_cord };
 
+	if (debug.is_debug_mode())
+	{
+		std::cout << "filtering " << raw_input_string << std::endl;
+	}
+
 	for (unsigned int ind = 0; ind < raw_input_string.length(); ind++)
 	{
 		if ((raw_input_string[ind] == 'x') | (raw_input_string[ind] == 'X'))
@@ -225,7 +272,7 @@ bool Game::FilterUserInput(std::string raw_input_string, Position* passed_positi
 	}
 	*/
 
-	if ((mode == y_cord) & (filter_successful))
+	if ((mode == y_cord) && (filter_successful))
 	{
 
 		if ((x_pos < 3) & (y_pos < 3))
@@ -237,7 +284,7 @@ bool Game::FilterUserInput(std::string raw_input_string, Position* passed_positi
 		{
 			if (debug.is_debug_mode())
 			{
-				std::cout << "Game.cpp FilterUserInput error: (x_pos < 3)&(y_pos < 3) found false" << std::endl;
+				std::cout << "Game.cpp FilterUserInput error: (  "<<x_pos <<" < 3)&( "<< y_pos<< " < 3) found false" << std::endl;
 			}
 
 			return false;
@@ -354,31 +401,47 @@ bool Game::PlayerWin(Player* passed_player)
 	return false;
 }
 
-void Game::MainGameMenu() //not needed
-{
-	/*
-	load
 
-	images audio
-	*/
-
-	//run
-
-	//close and clean
-
-
-}
 //fix after events and graphics
 
 //call on click of keyboard, button, mouse input conditions met
 
+void Game::SetCurrentPlayerTurn()
+{
+	if (total_turns % 2 == 0)
+	{
+		if(players_turn_order == 0)
+		{
+			//p1 turn
+			x_o_current_player_turn = Player_1_turn;
+		}
+		else
+		{
+			//p2 turn
+			x_o_current_player_turn = Player_2_turn;
+		}
+	}
+	else
+	{
+		if (players_turn_order == 0)
+		{
+			//p2 turn
+			x_o_current_player_turn = Player_2_turn;
+		}
+		else
+		{
+			//p1 turn
+			x_o_current_player_turn = Player_1_turn;
+		}
+	}
 
+}
 
 
 void Game::TurnPhaseEvent()
 {
 
-	if (!Game_Over)
+	if ((!Game_Over) && !(total_turns > 8))
 	{
 		
 		if (total_turns % 2 == players_turn_order) //make false to change turn order to player_pos_2 starting if 0 p1 first. 1 p2 first
@@ -433,6 +496,7 @@ void Game::TurnPhaseEvent()
 		current_game_result = match_draw;
 		//draw to screen
 	}
+	SetCurrentPlayerTurn();
 }
 
 
@@ -456,6 +520,29 @@ void Game::GameRematchReset()
 
 
 	*/
+	//resets tiles
+	game_grid->ResetAllTileAttributes();
+
+	//reset AI
+	if (x_o_gameplay_mode == human_vs_computer)
+	{
+		player_pos_2->ResetAIPlayerValues();
+	}
+
+	///set total_turns to 0. forgot I lol
+
+	total_turns = 0;
+	//Reset Result to none
+	current_game_result = no_result;
+	
+	//GameOver to false
+
+	Game_Over = false;
+
+	if (debug.is_debug_mode())
+	{
+		std::cout << "\nAll match values were reset!\n" << std::endl;
+	}
 }
 
 bool Game::LoadGameplayObjects()
@@ -468,7 +555,7 @@ bool Game::LoadGameplayObjects()
 	hash_table_game_obj = hash_table;
 
 	allGameObjects.push_back(hash_table_game_obj);
-
+	
 	//load marks
 
 	return true;
@@ -639,9 +726,7 @@ bool Game::loadPlayerTextureMarks()
 	TileMarker* tile_marker_obj = new TileMarker(new LoaderParams((SCREEN_WIDTH / 2), (SCREEN_HEIGHT / 2), 100, 100, "test mark"), game_grid, player_pos_1, game_object_map["Hash Table"]->GetTextureRect()); // may only the player string mark is needed
 
 	player_tile_mark_gam_obj = tile_marker_obj;
-
-
-
+	   
 	game_object_map["test mark"] = tile_marker_obj; // did not use game object here
 
 	allGameObjects.push_back(player_tile_mark_gam_obj); //pushed TileMark instead of game object lol
@@ -679,7 +764,35 @@ bool Game::LoadPlayAgainPrompt()
 
 	return true;
 }
+//call after loading hash_table
+bool Game::LoadTileSelector()
+{
+	GameObject* game_object_tile_selector = NULL;
+	/*
+	
+	TileSelector(LoaderParams* pParams, Grid* passed_grid, SDL_Rect* passed_hash_table_rect, CSDL* passed_csdl_obj, std::string passed_id_name);
+	*/
 
+	//
+	TileSelector* tile_selector_buffer = new TileSelector(new LoaderParams(10,10,50,50,"tile_selector cursor"),game_grid, game_object_map["Hash Table"]->GetTextureRect(),csdl_obj,"tile_selector cursor");
+
+	game_object_tile_selector = tile_selector_buffer;
+
+	game_object_map["tile_selector cursor"] = game_object_tile_selector;
+
+	/*
+	change color
+
+	71,91,99 - DEEP SPACE SPARKLE
+
+	117, 201, 200 - MOONSTONE BLUE
+
+	*/
+	game_object_map["tile_selector cursor"]->AlterTextureColor(71, 91, 99);
+	allGameObjects.push_back(game_object_tile_selector);
+
+	return true;
+}
 
 void Game::RenderGameTextures()
 {
@@ -751,10 +864,38 @@ void Game::RenderGameTextures()
 			}
 
 		}
-
+		//will always be rendered last here
+		game_object_map["tile_selector cursor"]->Draw(csdl_obj->GetSDLRenderer());
 	}
 }
 
+void Game::UpdateGameTextures()
+{
+
+	if (!(allGameObjects.empty()))
+	{
+
+		for (std::vector<GameObject*>::iterator game_object_index = allGameObjects.begin(); game_object_index != allGameObjects.end(); game_object_index++)
+		{
+			/*
+			updates game objects perhaps the most taxing method
+			maybe update only what is draw
+			*/
+			(*game_object_index)->Update();
+		}
+		
+
+	}
+	else
+	{
+		if (debug.is_debug_mode())
+		{
+			std::cout << "Game::LoadGameObjectContent() Error - allGameObjects found empty!" << std::endl;
+		}
+		
+	}
+
+}
 
 void Game::GameEventManager()
 {
@@ -1148,7 +1289,7 @@ void Game::GameEventManager()
 				else if ((csdl_obj->ButtonInputCheck("START")) || (csdl_obj->ButtonInputCheck("A_ACTION")) || (csdl_obj->GetSDLGameEvent()->key.keysym.sym == SDLK_RETURN))
 				{
 					x_o_gameplay_mode = human_vs_computer;
-
+					SetupSecondPlayerValue();
 					
 					//change to gameplay scene
 
@@ -1210,7 +1351,7 @@ void Game::GameEventManager()
 					//
 					
 					x_o_gameplay_mode = human_vs_human;
-
+					SetupSecondPlayerValue();
 					x_o_game_state = match_gameplay;
 
 					RevertGameObjectColorList("Player VS Player");
@@ -1263,19 +1404,60 @@ void Game::GameEventManager()
 				game_object_map["rematch prompt"]->RevertAlteredTextureColor("no rematch text");
 			}
 
-			//
+			//YES highlighted
 			else if (game_object_map["rematch prompt"]->GetAreColorsAltered("yes rematch text"))
 			{
+				//Left or Right pressed
+				if (csdl_obj->ButtonInputCheck("LEFT")|| csdl_obj->ButtonInputCheck("RIGHT"))
+				{
+					game_object_map["rematch prompt"]->RevertAlteredTextureColor("yes rematch text");
+					game_object_map["rematch prompt"]->AlterTextureColor("no rematch text", 38, 64, 139);
 
+					//if A or Start Pressed
+				}
+				//if A or Start Pressed
+				else if (csdl_obj->ButtonInputCheck("A_ACTION") || csdl_obj->ButtonInputCheck("START"))
+				{
+
+					//reset 
+					GameRematchReset();
+
+				}
 			}
-			//
+			//NO Highlighted
 			else if (game_object_map["rematch prompt"]->GetAreColorsAltered("no rematch text"))
 			{
+				//Left or Right pressed
+				if (csdl_obj->ButtonInputCheck("LEFT") || csdl_obj->ButtonInputCheck("RIGHT"))
+				{
+					game_object_map["rematch prompt"]->RevertAlteredTextureColor("no rematch text");
+					game_object_map["rematch prompt"]->AlterTextureColor("yes rematch text", 38, 64, 139);
 
+				}
+
+				//if A or Start Pressed
+				else if (csdl_obj->ButtonInputCheck("A_ACTION") || csdl_obj->ButtonInputCheck("START"))
+				{
+					//reset  
+					GameRematchReset();
+					
+					//return to options menu
+
+					x_o_game_state = game_options;
+				}
 			}
+			//none highlighted
 			else
 			{
-
+				//any button highlight YES
+				if (csdl_obj->GetSDLGameEvent()->cbutton.state == SDL_PRESSED)
+				{
+					game_object_map["rematch prompt"]->AlterTextureColor("yes rematch text", 38, 64, 139);
+				}
+				if (csdl_obj->GetSDLGameEvent()->key.state == SDL_PRESSED)
+				{
+					game_object_map["rematch prompt"]->AlterTextureColor("yes rematch text", 38, 64, 139);
+				}
 			}
 
 		}
