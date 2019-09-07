@@ -20,11 +20,10 @@ class Grid
 
 public:
 	
-	void Load();
+	
 	Grid();
 	~Grid();
 Developer debug;
-
 
 void DisplayGrid();
 
@@ -47,6 +46,10 @@ void Update();
 void CleanGameObjectContent();
 
 bool GetContentLoadedStatus() { return object_content_loaded; }
+
+//Reset tiles for rematch
+void ResetAllTileAttributes();
+
 
 protected:
 	

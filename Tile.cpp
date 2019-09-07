@@ -33,3 +33,11 @@ tile_position->SetY(passed_y);
 
 }
 
+
+void Tile::ResetTileAttributes()
+{
+
+	*tile_is_marked = false;
+	*tile_mark = "?";
+
+}

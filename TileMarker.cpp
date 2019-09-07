@@ -56,7 +56,7 @@ bool TileMarker::LoadGameObjectContent(SDL_Renderer* passed_Renderer)
 
 	//load texture
 	//tile_marker_texture = NULL;
-	tile_marker_texture = IMG_LoadTexture(passed_Renderer, "Drill mark blue.png");
+	tile_marker_texture = IMG_LoadTexture(passed_Renderer, "resources/images/Drill mark blue.png");
 
 	if (tile_marker_texture == NULL)
 	{
@@ -72,7 +72,7 @@ bool TileMarker::LoadGameObjectContent(SDL_Renderer* passed_Renderer)
 
 
 
-	tile_marker_texture_player2 = IMG_LoadTexture(passed_Renderer, "manual18 mark.png");
+	tile_marker_texture_player2 = IMG_LoadTexture(passed_Renderer, "resources/images/manual18 mark.png");
 
 	if (tile_marker_texture_player2 == NULL)
 	{

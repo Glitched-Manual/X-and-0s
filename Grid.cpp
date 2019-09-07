@@ -109,3 +109,15 @@ void Grid::CleanGameObjectContent()
 {
 
 }
+//Reset tiles for rematch
+void Grid::ResetAllTileAttributes()
+{
+	for (unsigned int yi = 0; yi < 3; yi++)
+	{
+		
+		for (unsigned int xi = 0; xi < 3; xi++)
+		{
+			game_tiles[xi][yi].ResetTileAttributes();
+		}
+	}
+}

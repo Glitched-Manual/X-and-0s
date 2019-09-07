@@ -10,6 +10,8 @@
 #include "HashTable.h"
 #include "GameText.h"
 #include "TileMarker.h"
+#include "PromptWindow.h"
+#include "TileSelector.h"
 
 #ifndef GAME_H
 #define GAME_H
@@ -20,7 +22,7 @@ class Player;
 class AI;
 class Position;
 class CSDL;
-
+class PromptWindow;
 
 //static enum ButtonValue { UP, DOWN, LEFT, RIGHT, START, SELECT, A_ACTION, B_ACTION };
 
@@ -41,11 +43,12 @@ Win_Case win_cases[8];
 CSDL* csdl_obj;
 unsigned int turn_phase;
 
-unsigned int players_turn_order = 0; // if not 0 player at pos_2 has the first turn
+unsigned int players_turn_order = 0; // if 1 player at pos_2 has the first turn
+
+enum CurrentPlayerTurn {not_in_match,Player_1_turn,Player_2_turn};
+
 //gameobjects
 std::vector<GameObject*> allGameObjects;
-
-
 
 std::map<std::string, GameObject* > game_object_map;
 
@@ -62,6 +65,7 @@ enum current_highlighted_option_menu_text { none_of_the_options_highlighted,play
 
 unsigned int game_option_select_value = 0;
 
+CurrentPlayerTurn x_o_current_player_turn = not_in_match;
 current_game_state x_o_game_state;
 current_gameplay_mode x_o_gameplay_mode;
 current_highlighted_option_menu_text x_o_highlighted_option = none_of_the_options_highlighted;
@@ -73,9 +77,10 @@ bool sdl_button_released;
 
 std::string* sdl_player_input_string;
 
+enum GameResult {no_result,player1_wins,player2_wins,match_draw};
+GameResult current_game_result = no_result;
 
-
-
+bool menu_activated = false;
 // InputButtonValue;
 public:
 Game(unsigned int passed_screen_width, unsigned int passed_screen_height);
@@ -92,7 +97,6 @@ bool PlayerWin(Player* passed_player);
 void LoadWinCases();
 Win_Case GetWinCase(int win_case_index);
 
-void MainGameMenu(); //wip
 void GameLoop();
 void SetGameTileMark(Position* position_to_mark,std::string player_mark);
 int PlayerTurn(Player* current_player);
@@ -112,10 +116,21 @@ bool LoadOpponentOptions();
 
 bool loadPlayerTextureMarks();
 
+bool LoadPlayAgainPrompt();
+
+bool LoadTileSelector();
+
 void GameEventManager();
 
 void RenderGameTextures();
 
+void UpdateGameTextures();
+
+void GameRematchReset();
+
+void SetupSecondPlayerValue();
+
+void SetCurrentPlayerTurn();
 
 // texture modding 
 

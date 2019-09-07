@@ -27,6 +27,15 @@ TileSelector::TileSelector(LoaderParams* pParams, Grid* passed_grid, SDL_Rect* p
 
 	 tile_selector_id = passed_id_name;
 
+	  mouse_pos_x = new int;
+
+	  mouse_pos_y = new int;
+
+
+	  *mouse_pos_x = 0;
+
+	  *mouse_pos_y = 0;
+	  current_game_controls = mouse_controls;
 }
 
 
@@ -34,7 +43,7 @@ TileSelector::TileSelector(LoaderParams* pParams, Grid* passed_grid, SDL_Rect* p
 bool TileSelector::LoadGameObjectContent(SDL_Renderer* passed_Renderer)
 {
 	//open image
-	tile_selector_texture = IMG_LoadTexture(passed_Renderer, "tile_selection_image.png");
+	tile_selector_texture = IMG_LoadTexture(passed_Renderer, "resources/images/tile_selection_image.png");
 
 	if (tile_selector_texture == NULL)
 	{
@@ -65,6 +74,12 @@ void TileSelector::Draw(SDL_Renderer* passed_Renderer)
 	if mouse draw using Uint32 SDL_GetMouseState(int* x, int* y);
 
 	*/
+	if (current_game_controls == mouse_controls)
+	{
+	    tile_selector_texture_rect->x = *mouse_pos_x - (tile_selector_texture_rect->w / 2);
+		tile_selector_texture_rect->y = *mouse_pos_y - (tile_selector_texture_rect->h / 2);
+	}
+
 
 	if (tile_selector_content_loaded)
 	{
@@ -76,6 +91,7 @@ void TileSelector::Draw(SDL_Renderer* passed_Renderer)
 }
 void TileSelector::Update()
 {
+		
 	/*
 	
 	Needs to change control types 
@@ -85,8 +101,17 @@ void TileSelector::Update()
 	*/
 	// 
 
-	//if tile unavailable change color
+	if (current_game_controls == mouse_controls)
+	{
+		SDL_GetMouseState( mouse_pos_x, mouse_pos_y );
+		SetSelectorScreenPosition();//updates position of selector
+	}
 
+	/*
+	if tile unavailable change color
+
+	check tile if selector is over
+	*/
 }
 void TileSelector::CleanGameObjectContent()
 {
@@ -112,8 +137,14 @@ void TileSelector::SetOriginalColors()
 
 }
 
-void LoadSelectorColors()
+void TileSelector::LoadSelectorColors()
 {
+	
+}
 
-
+void TileSelector::SetSelectorScreenPosition()
+{
+	tile_selector_texture_rect->x = *mouse_pos_x;
+		
+	tile_selector_texture_rect->y = *mouse_pos_y;
 }
