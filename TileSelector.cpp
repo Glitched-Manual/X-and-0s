@@ -43,7 +43,7 @@ TileSelector::TileSelector(LoaderParams* pParams, Grid* passed_grid, SDL_Rect* p
 bool TileSelector::LoadGameObjectContent(SDL_Renderer* passed_Renderer)
 {
 	//open image
-	tile_selector_texture = IMG_LoadTexture(passed_Renderer, "tile_selection_image.png");
+	tile_selector_texture = IMG_LoadTexture(passed_Renderer, "resources/images/tile_selection_image.png");
 
 	if (tile_selector_texture == NULL)
 	{

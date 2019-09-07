@@ -16,7 +16,7 @@ HashTable::HashTable(const LoaderParams* pParams)
 
 bool HashTable::LoadGameObjectContent(SDL_Renderer* passed_Renderer)
 {
-	hash_table_texture = IMG_LoadTexture(passed_Renderer,"table_image_2.png");
+	hash_table_texture = IMG_LoadTexture(passed_Renderer,"resources/images/table_image_2.png");
 
 	if (hash_table_texture == NULL)
 	{

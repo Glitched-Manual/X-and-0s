@@ -109,7 +109,7 @@ void GameText::RevertAlteredTextureColor()
 //load
 bool GameText::LoadGameObjectContent(SDL_Renderer* passed_Renderer)
 {
-	TTF_Font* font = TTF_OpenFont("PressStart2P.ttf", game_text_size);
+	TTF_Font* font = TTF_OpenFont("resources/fonts/PressStart2P.ttf", game_text_size);
 	SDL_Color color = { 255,255,255 };
 
 	if (game_text_id.empty())
