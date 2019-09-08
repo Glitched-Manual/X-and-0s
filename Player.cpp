@@ -103,7 +103,7 @@ void Player::LoadSelectorDirections()
 
 }
 
-void Player::MoveMatchMark(std::string passed_string_direction)
+void Player::MoveMatchSelector(std::string passed_string_direction)
 {
 
 	switch (selector_direction_map[passed_string_direction])
