@@ -162,6 +162,7 @@ void AI::CollectAvailablePositions()
 									
 									replace with value at back, pop back
 									*/
+									delete available_tile_positions[available_tile_positions.size() - 1];
 
 									*available_tile_positions_index = available_tile_positions.back();
 									

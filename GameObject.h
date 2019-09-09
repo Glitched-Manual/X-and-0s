@@ -3,6 +3,7 @@
 #include "Developer.h"
 #include "Color.h"
 
+
 #include <string>
 
 #ifndef GAMEOBJECT_H
@@ -37,6 +38,11 @@ public:
 
 	
 	virtual void AlterTextureAlpha(Uint8 alpha_value, std::string passed_texture_key){}
+
+	//Collision methods
+	virtual	SDL_Rect* GetCollisionRect() { return NULL; }
+
+	virtual bool HasObjectCollided() { return false; }
 
 	GameObject(){}
 protected:

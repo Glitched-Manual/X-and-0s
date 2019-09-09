@@ -11,6 +11,7 @@ HashTable::HashTable(const LoaderParams* pParams)
 	hash_table_rect->w = pParams->GetWidth();
 	hash_table_rect->h = pParams->GetHeight();
 
+	hash_table_collision_rect = new CCollisionRectangle();
 }
 
 

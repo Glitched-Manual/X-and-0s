@@ -13,7 +13,7 @@ class HashTable: public GameObject
 	bool colors_altered = false;
 
 	Color hash_table_original_color;
-
+	CCollisionRectangle* hash_table_collision_rect = NULL;
 protected:
 	
 
