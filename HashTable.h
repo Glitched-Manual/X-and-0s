@@ -1,5 +1,7 @@
 #include "GameObject.h"
+#include "CCollisionRectangle.h"
 
+#include <vector>
 #ifndef HASHTABLE_H
 #define HASHTABLE_H
 
@@ -13,7 +15,9 @@ class HashTable: public GameObject
 	bool colors_altered = false;
 
 	Color hash_table_original_color;
-	CCollisionRectangle* hash_table_collision_rect = NULL;
+	
+
+	std::vector< CCollisionRectangle*> collision_rects_vector;
 protected:
 	
 
@@ -39,6 +43,11 @@ public:
 	  Color GetOringinalColors() { return hash_table_original_color; }
 	  bool GetAreColorsAltered() { return colors_altered; }
 	  SDL_Rect* GetTextureRect() { return hash_table_rect;   }
+
+	  //Collision methods
+
+	 void SetCollisionRectVector();
+	 void CreateCollisionRectangle(unsigned int x,unsigned int y);
 };
 
 #endif //HASHTABLE_H

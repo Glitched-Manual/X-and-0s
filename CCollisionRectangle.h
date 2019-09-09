@@ -6,9 +6,10 @@
 
 class CCollisionRectangle
 {
-	SDL_Rect* CollisionRect;
+	SDL_Rect* CollisionRect = NULL;
 public:
 	CCollisionRectangle();
+	CCollisionRectangle(int x, int y, int w, int h);
 	~CCollisionRectangle();
 	void SetCollisionRect(int x,int y, int w, int h);
 	SDL_Rect* GetCollisionRect() { return CollisionRect; }
