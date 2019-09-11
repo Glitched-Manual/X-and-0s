@@ -6,7 +6,7 @@
 #ifndef HITBOX_H
 #define HITBOX_H
 
-class Developer;
+struct Developer;
 
 class HitBox
 {

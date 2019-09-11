@@ -4,6 +4,8 @@ TileSelector::TileSelector(LoaderParams* pParams, Grid* passed_grid, SDL_Rect* p
 {
 	tile_selector_texture_rect = new SDL_Rect;
 
+	selector_position = new Position;
+
 	//LoaderParams
 
 	tile_selector_texture_rect->x = pParams->GetX() - (pParams->GetWidth() / 2);
@@ -35,7 +37,7 @@ TileSelector::TileSelector(LoaderParams* pParams, Grid* passed_grid, SDL_Rect* p
 	  *mouse_pos_x = 0;
 
 	  *mouse_pos_y = 0;
-	  current_game_controls = mouse_controls;
+	  current_game_controls = game_controller_controls;
 }
 
 
@@ -79,7 +81,11 @@ void TileSelector::Draw(SDL_Renderer* passed_Renderer)
 	    tile_selector_texture_rect->x = *mouse_pos_x - (tile_selector_texture_rect->w / 2);
 		tile_selector_texture_rect->y = *mouse_pos_y - (tile_selector_texture_rect->h / 2);
 	}
-
+	else if (current_game_controls == game_controller_controls)
+	{
+		tile_selector_texture_rect->x = *mouse_pos_x - (tile_selector_texture_rect->w / 2);
+		tile_selector_texture_rect->y = *mouse_pos_y - (tile_selector_texture_rect->h / 2);
+	}
 
 	if (tile_selector_content_loaded)
 	{
@@ -105,6 +111,27 @@ void TileSelector::Update()
 	{
 		SDL_GetMouseState( mouse_pos_x, mouse_pos_y );
 		SetSelectorScreenPosition();//updates position of selector
+	}
+	else if (current_game_controls == game_controller_controls)
+	{
+		/*
+		do controller selector direction changes here
+		*/
+		if (csdl_obj->GetSDLGameEvent()->type == SDL_KEYDOWN)
+		{
+		//	ButtonControls();
+		}
+		
+	}
+	else if (current_game_controls == keyboard_controls)
+	{
+		/*
+		do keyboard selector direction changes here
+		*/
+		if (csdl_obj->GetSDLGameEvent()->type == SDL_KEYDOWN)
+		{
+			ButtonControls();
+		}
 	}
 
 	/*
@@ -144,7 +171,42 @@ void TileSelector::LoadSelectorColors()
 
 void TileSelector::SetSelectorScreenPosition()
 {
+
 	tile_selector_texture_rect->x = *mouse_pos_x;
 		
 	tile_selector_texture_rect->y = *mouse_pos_y;
+}
+
+void TileSelector::MoveSelector(int passed_x, int passed_y)
+{
+	/*tile_selector_texture_rect->x = passed_x;
+	tile_selector_texture_rect->y = passed_y;
+
+	*/
+
+	*mouse_pos_x = passed_x;
+
+	*mouse_pos_y = passed_y;
+}
+
+void TileSelector::ButtonControls()
+{
+	if (csdl_obj->ButtonInputCheck("UP"))
+	{
+
+
+		*mouse_pos_y -= 4;
+	}
+	else if (csdl_obj->ButtonInputCheck("DOWN"))
+	{
+		*mouse_pos_y += 4;
+	}
+	else if (csdl_obj->ButtonInputCheck("LEFT"))
+	{
+		*mouse_pos_x -= 4;
+	}
+	else if (csdl_obj->ButtonInputCheck("RIGHT"))
+	{
+		*mouse_pos_x += 4;
+	}
 }

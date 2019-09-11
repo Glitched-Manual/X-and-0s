@@ -776,8 +776,14 @@ bool Game::LoadTileSelector()
 	//
 	TileSelector* tile_selector_buffer = new TileSelector(new LoaderParams(10,10,50,50,"tile_selector cursor"),game_grid, game_object_map["Hash Table"]->GetTextureRect(),csdl_obj,"tile_selector cursor");
 
-	game_object_tile_selector = tile_selector_buffer;
 
+	/*
+	To call move direction
+	*/
+	game_tile_selector = tile_selector_buffer;
+    //as game object
+	game_object_tile_selector = tile_selector_buffer;
+    //as part of object map
 	game_object_map["tile_selector cursor"] = game_object_tile_selector;
 
 	/*
@@ -1481,6 +1487,37 @@ void Game::GameEventManager()
 			hit box gives value to sting input ie: 2x2 or 0x1
 			*/
 			//if mouse click within a tile hit box
+
+
+			/*
+			
+			Move Selector arrow keys and controller
+			*/
+
+			if (csdl_obj->ButtonInputCheck("DOWN"))
+			{
+				game_tile_selector->MoveSelector((game_tile_selector->GetX()) , (game_tile_selector->GetY()) + 2 );
+			}
+
+			else if (csdl_obj->ButtonInputCheck("UP"))
+			{
+				game_tile_selector->MoveSelector((game_tile_selector->GetX()), (game_tile_selector->GetY()) - 2 );
+			}
+
+			else if (csdl_obj->ButtonInputCheck("LEFT"))
+			{
+				game_tile_selector->MoveSelector((game_tile_selector->GetX()) - 2, (game_tile_selector->GetY()));
+			}
+
+			else if (csdl_obj->ButtonInputCheck("RIGHT"))
+			{
+				game_tile_selector->MoveSelector((game_tile_selector->GetX()) + 2, (game_tile_selector->GetY()));
+
+				if (debug.is_debug_mode())
+				{
+					std::cout << "The selcetor is now located at " << game_tile_selector->GetX() << "," << game_tile_selector->GetY() << std::endl;
+				}
+			}
 		}
 
 			

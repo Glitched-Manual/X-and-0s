@@ -36,6 +36,8 @@ class TileSelector: public GameObject
 
 	 int *mouse_pos_y;
 
+	 Position* selector_position;
+
 	//for switching controls
 	enum ControlsType {keyboard_controls,mouse_controls,game_controller_controls};
 
@@ -62,7 +64,10 @@ public:
 	 Color GetOringinalColors() {	 return tile_selector_base_color;	 } //leave empty return white
 	 bool GetAreColorsAltered() { return tile_selector_texture_texture_colors_altered; }
 	 SDL_Rect* GetTextureRect() { return tile_selector_texture_rect; }
+	 void MoveSelector(int x, int y);
 
+	 int GetX(){ return *mouse_pos_x;}
+	 int GetY() { return *mouse_pos_y; }
 	 //load colors
 
 	// void LoadSelectorColors();
@@ -70,6 +75,9 @@ public:
 	void LoadSelectorColors();
 	 //SetSelectorScreenPosition();
 	void SetSelectorScreenPosition();
+
+	//Controller and Arrow keys change direction
+	void ButtonControls();
 };
 
 

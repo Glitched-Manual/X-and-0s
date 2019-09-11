@@ -162,17 +162,22 @@ void AI::CollectAvailablePositions()
 									
 									replace with value at back, pop back
 									*/
+									//copy value not ptr
+
+									(*available_tile_positions_index)->SetX(*available_tile_positions[available_tile_positions.size() - 1]->GetX());
+									(*available_tile_positions_index)->SetY(*available_tile_positions[available_tile_positions.size() - 1]->GetY());
+									//*available_tile_positions_index = *available_tile_positions.back();
 									delete available_tile_positions[available_tile_positions.size() - 1];
 
-									*available_tile_positions_index = available_tile_positions.back();
 									
+
 									available_tile_positions.pop_back(); // changes loop and checks deleted addresses by chance
 
 									if (debug.is_debug_mode())
 									{
 										std::cout << "The Position located in available_tile_positions at [" << erase_at_index << "]  was swtiched back and popped"<< std::endl;
 									}
-									CollectAvailablePositions();//recursive call may work may fail
+									//CollectAvailablePositions();//recursive call may work may fail
 								}
 								erase_at_index++;
 							}

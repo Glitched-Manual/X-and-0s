@@ -52,6 +52,8 @@ std::vector<GameObject*> allGameObjects;
 
 std::map<std::string, GameObject* > game_object_map;
 
+//in game selector
+TileSelector* game_tile_selector = NULL;
 // game mode enum
 
 enum current_game_state {main_menu,game_options,opponent_selection, match_gameplay,credits,pause,quit};
