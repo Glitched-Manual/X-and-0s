@@ -352,3 +352,33 @@ bool CSDL::ButtonInputCheck(std::string input_to_check)
 
 
 }
+
+
+bool CSDL::ButtonPressedCheck()
+{//SDL_JOYBUTTONDOWN or SDL_CONTROLLERBUTTONDOWN
+	if (sdl2_Game_Event->cbutton.type == SDL_CONTROLLERBUTTONDOWN)
+	{
+		return true;
+	}
+	else if (sdl2_Game_Event->cbutton.type == SDL_KEYDOWN)
+	{
+		return true;
+	}
+
+	return false;
+}
+
+bool CSDL::ButtonReleasedCheck()
+{
+	if (sdl2_Game_Event->cbutton.type == SDL_CONTROLLERBUTTONUP)
+	{
+		return true;
+	}
+	else if (sdl2_Game_Event->cbutton.type == SDL_KEYUP)
+	{
+		return true;
+	}
+
+	return false;
+}
+

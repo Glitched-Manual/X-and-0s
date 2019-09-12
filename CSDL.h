@@ -40,6 +40,10 @@ public:
 	// Button interperter
 
 	bool ButtonInputCheck(std::string input_to_check);
+
+	bool ButtonPressedCheck();
+
+	bool ButtonReleasedCheck();
 };
 
 #endif //CSDL_H

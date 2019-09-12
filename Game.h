@@ -84,11 +84,15 @@ GameResult current_game_result = no_result;
 
 bool menu_activated = false;
 // InputButtonValue;
+
+Developer debug;
+
+
 public:
 Game(unsigned int passed_screen_width, unsigned int passed_screen_height);
 ~Game();
 
-Developer debug;
+
 //filter check then mark
 bool FilterUserInput(std::string raw_input_string,Position* passed_position);
 bool CheckIfTileIsAvailable(Position* passed_position_to_check);
@@ -133,6 +137,8 @@ void GameRematchReset();
 void SetupSecondPlayerValue();
 
 void SetCurrentPlayerTurn();
+
+
 
 // texture modding 
 

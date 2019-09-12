@@ -50,7 +50,7 @@ Game::Game(unsigned int passed_screen_width, unsigned int passed_screen_height)
 	//init sdl
 	csdl_obj->Init();
 
-
+	
 	x_o_game_state = main_menu;
 
 	//Load Main menu textures
@@ -905,8 +905,7 @@ void Game::UpdateGameTextures()
 
 void Game::GameEventManager()
 {
-	if (csdl_obj->GetSDLGameEvent()->cbutton.state == SDL_PRESSED || csdl_obj->GetSDLGameEvent()->key.state == SDL_PRESSED)
-	{
+	
 
 
 		//if at main menu
@@ -1493,31 +1492,86 @@ void Game::GameEventManager()
 			
 			Move Selector arrow keys and controller
 			*/
+			//if sdl pressed
+			
 
-			if (csdl_obj->ButtonInputCheck("DOWN"))
+			
+
+			if (csdl_obj->ButtonPressedCheck())
 			{
-				game_tile_selector->MoveSelector((game_tile_selector->GetX()) , (game_tile_selector->GetY()) + 2 );
-			}
 
-			else if (csdl_obj->ButtonInputCheck("UP"))
-			{
-				game_tile_selector->MoveSelector((game_tile_selector->GetX()), (game_tile_selector->GetY()) - 2 );
-			}
-
-			else if (csdl_obj->ButtonInputCheck("LEFT"))
-			{
-				game_tile_selector->MoveSelector((game_tile_selector->GetX()) - 2, (game_tile_selector->GetY()));
-			}
-
-			else if (csdl_obj->ButtonInputCheck("RIGHT"))
-			{
-				game_tile_selector->MoveSelector((game_tile_selector->GetX()) + 2, (game_tile_selector->GetY()));
-
-				if (debug.is_debug_mode())
+				if (csdl_obj->ButtonInputCheck("DOWN"))
 				{
-					std::cout << "The selcetor is now located at " << game_tile_selector->GetX() << "," << game_tile_selector->GetY() << std::endl;
+					game_tile_selector->SetDirectionTrue("DOWN");
 				}
+
+				 if (csdl_obj->ButtonInputCheck("UP"))
+				{
+					 game_tile_selector->SetDirectionTrue("UP");
+				}
+
+				 if (csdl_obj->ButtonInputCheck("LEFT"))
+				{
+					 game_tile_selector->SetDirectionTrue("LEFT");
+				}
+
+				 if (csdl_obj->ButtonInputCheck("RIGHT"))
+				{
+					 game_tile_selector->SetDirectionTrue("RIGHT");
+
+				/*	if (debug.is_debug_mode())
+					{
+						std::cout << "The selcetor is now located at " << game_tile_selector->GetX() << "," << game_tile_selector->GetY() << std::endl;
+					}
+					*/
+				}
+				 if (debug.is_debug_mode())
+				 {
+					 std::cout << "The selcetor is now located at " << game_tile_selector->GetX() << "," << game_tile_selector->GetY() << std::endl;
+				 }
 			}
+
+			
+
+			/*
+			if released version
+
+			ButtonPressedCheck()
+
+ButtonReleasedCheck()
+			*/
+
+			if (csdl_obj->ButtonReleasedCheck())
+			{
+				if (csdl_obj->ButtonInputCheck("DOWN"))
+				{
+					game_tile_selector->SetDirectionFalse("DOWN");
+				}
+
+				if (csdl_obj->ButtonInputCheck("UP"))
+				{
+					game_tile_selector->SetDirectionFalse("UP");
+				}
+
+				if (csdl_obj->ButtonInputCheck("LEFT"))
+				{
+					game_tile_selector->SetDirectionFalse("LEFT");
+				}
+
+				if (csdl_obj->ButtonInputCheck("RIGHT"))
+				{
+					game_tile_selector->SetDirectionFalse("RIGHT");
+
+					/*	if (debug.is_debug_mode())
+						{
+							std::cout << "The selcetor is now located at " << game_tile_selector->GetX() << "," << game_tile_selector->GetY() << std::endl;
+						}
+						*/
+				}
+
+			}
+
+
 		}
 
 			
@@ -1641,7 +1695,7 @@ void Game::GameEventManager()
 
 		}
 
-	}
+	
 } //end of Xs an Os game events
 
 

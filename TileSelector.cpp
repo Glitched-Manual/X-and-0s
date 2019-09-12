@@ -5,7 +5,7 @@ TileSelector::TileSelector(LoaderParams* pParams, Grid* passed_grid, SDL_Rect* p
 	tile_selector_texture_rect = new SDL_Rect;
 
 	selector_position = new Position;
-
+	time_Check = SDL_GetTicks();
 	//LoaderParams
 
 	tile_selector_texture_rect->x = pParams->GetX() - (pParams->GetWidth() / 2);
@@ -76,22 +76,23 @@ void TileSelector::Draw(SDL_Renderer* passed_Renderer)
 	if mouse draw using Uint32 SDL_GetMouseState(int* x, int* y);
 
 	*/
-	if (current_game_controls == mouse_controls)
-	{
-	    tile_selector_texture_rect->x = *mouse_pos_x - (tile_selector_texture_rect->w / 2);
-		tile_selector_texture_rect->y = *mouse_pos_y - (tile_selector_texture_rect->h / 2);
-	}
-	else if (current_game_controls == game_controller_controls)
-	{
-		tile_selector_texture_rect->x = *mouse_pos_x - (tile_selector_texture_rect->w / 2);
-		tile_selector_texture_rect->y = *mouse_pos_y - (tile_selector_texture_rect->h / 2);
-	}
+	
+		if (current_game_controls == mouse_controls)
+		{
+			tile_selector_texture_rect->x = *mouse_pos_x - (tile_selector_texture_rect->w / 2);
+			tile_selector_texture_rect->y = *mouse_pos_y - (tile_selector_texture_rect->h / 2);
+		}
+		else if (current_game_controls == game_controller_controls)
+		{
+			tile_selector_texture_rect->x = *mouse_pos_x - (tile_selector_texture_rect->w / 2);
+			tile_selector_texture_rect->y = *mouse_pos_y - (tile_selector_texture_rect->h / 2);
+		}
 
-	if (tile_selector_content_loaded)
-	{
-		SDL_RenderCopyEx(passed_Renderer, tile_selector_texture, NULL, tile_selector_texture_rect, 0, NULL, SDL_FLIP_NONE);
-	}
-
+		if (tile_selector_content_loaded)
+		{
+			SDL_RenderCopyEx(passed_Renderer, tile_selector_texture, NULL, tile_selector_texture_rect, 0, NULL, SDL_FLIP_NONE);
+		}
+	
 
 	
 }
@@ -105,40 +106,43 @@ void TileSelector::Update()
 	  - if controller button pressed controller
 	  - if keyboard key keyboard arrows
 	*/
-	// 
-
-	if (current_game_controls == mouse_controls)
+	// do get ticks thing
+	if (time_Check + 500 < SDL_GetTicks())
 	{
-		SDL_GetMouseState( mouse_pos_x, mouse_pos_y );
-		SetSelectorScreenPosition();//updates position of selector
-	}
-	else if (current_game_controls == game_controller_controls)
-	{
-		/*
-		do controller selector direction changes here
-		*/
-		if (csdl_obj->GetSDLGameEvent()->type == SDL_KEYDOWN)
+		if (current_game_controls == mouse_controls)
 		{
-		//	ButtonControls();
+			SDL_GetMouseState(mouse_pos_x, mouse_pos_y);
+			SetSelectorScreenPosition();//updates position of selector
 		}
-		
-	}
-	else if (current_game_controls == keyboard_controls)
-	{
-		/*
-		do keyboard selector direction changes here
-		*/
-		if (csdl_obj->GetSDLGameEvent()->type == SDL_KEYDOWN)
+		else if (current_game_controls == game_controller_controls)
 		{
+			/*
+			do controller selector direction changes here
+			*/
+
 			ButtonControls();
-		}
-	}
 
+
+		}
+		else if (current_game_controls == keyboard_controls)
+		{
+			/*
+			do keyboard selector direction changes here
+			*/
+
+			ButtonControls();
+
+		}
+	        time_Check = SDL_GetTicks();
+			SetSelectorScreenPosition();
+	}
 	/*
 	if tile unavailable change color
 
 	check tile if selector is over
 	*/
+
+
 }
 void TileSelector::CleanGameObjectContent()
 {
@@ -191,22 +195,71 @@ void TileSelector::MoveSelector(int passed_x, int passed_y)
 
 void TileSelector::ButtonControls()
 {
-	if (csdl_obj->ButtonInputCheck("UP"))
+	if (left_direction == true)
 	{
+		*mouse_pos_x -= 2;
+	}
 
+	if (right_direction == true)
+	{
+		*mouse_pos_x += 2;
+	}
 
-		*mouse_pos_y -= 4;
-	}
-	else if (csdl_obj->ButtonInputCheck("DOWN"))
+	if (up_direction == true)
 	{
-		*mouse_pos_y += 4;
+		*mouse_pos_y -= 2;
 	}
-	else if (csdl_obj->ButtonInputCheck("LEFT"))
+
+	if (down_direction == true)
 	{
-		*mouse_pos_x -= 4;
+		*mouse_pos_y += 2;
 	}
-	else if (csdl_obj->ButtonInputCheck("RIGHT"))
+}
+
+void TileSelector::SetDirectionTrue(std::string passed_direction)
+{
+	if (passed_direction == "UP")
 	{
-		*mouse_pos_x += 4;
+		up_direction = true;
 	}
+
+	else if (passed_direction == "DOWN")
+	{
+		down_direction = true;
+	}
+
+	else if (passed_direction == "LEFT")
+	{
+		left_direction = true;
+	}
+
+	else if (passed_direction == "RIGHT")
+	{
+		right_direction = true;
+	}
+}
+
+void TileSelector::SetDirectionFalse(std::string passed_direction)
+{
+
+	if (passed_direction == "UP")
+	{
+		up_direction = false;
+	}
+
+	else if (passed_direction == "DOWN")
+	{
+		down_direction = false;
+	}
+
+	else if (passed_direction == "LEFT")
+	{
+		left_direction = false;
+	}
+
+	else if (passed_direction == "RIGHT")
+	{
+		right_direction = false;
+	}
+
 }

@@ -36,12 +36,19 @@ class TileSelector: public GameObject
 
 	 int *mouse_pos_y;
 
+	 bool left_direction = false;
+	 bool right_direction = false;
+	 bool up_direction = false;
+	 bool down_direction = false;
+
 	 Position* selector_position;
 
 	//for switching controls
 	enum ControlsType {keyboard_controls,mouse_controls,game_controller_controls};
 
 	ControlsType current_game_controls = mouse_controls;
+
+	int time_Check;
 
 public:
 	TileSelector(LoaderParams* pParams, Grid* passed_grid, SDL_Rect* passed_hash_table_rect, CSDL* passed_csdl_obj, std::string passed_id_name);
@@ -78,6 +85,10 @@ public:
 
 	//Controller and Arrow keys change direction
 	void ButtonControls();
+
+	void SetDirectionTrue(std::string passed_direction);
+
+	void SetDirectionFalse(std::string passed_direction);
 };
 
 
