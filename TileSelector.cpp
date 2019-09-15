@@ -37,7 +37,8 @@ TileSelector::TileSelector(LoaderParams* pParams, Grid* passed_grid, SDL_Rect* p
 	  *mouse_pos_x = 0;
 
 	  *mouse_pos_y = 0;
-	  current_game_controls = game_controller_controls;
+	 // current_game_controls = game_controller_controls;
+	  current_game_controls = mouse_controls;
 }
 
 
@@ -119,9 +120,9 @@ void TileSelector::Update()
 			/*
 			do controller selector direction changes here
 			*/
-
+			ButtonPressed();
 			ButtonControls();
-
+			ButtonReleased();
 
 		}
 		else if (current_game_controls == keyboard_controls)
@@ -129,8 +130,9 @@ void TileSelector::Update()
 			/*
 			do keyboard selector direction changes here
 			*/
-
+			ButtonPressed();
 			ButtonControls();
+			ButtonReleased();
 
 		}
 	        time_Check = SDL_GetTicks();
@@ -262,4 +264,114 @@ void TileSelector::SetDirectionFalse(std::string passed_direction)
 		right_direction = false;
 	}
 
+}
+
+
+
+
+
+/*
+			if A button pressed
+
+			hit box gives value to sting input ie: 2x2 or 0x1
+			*/
+			//if mouse click within a tile hit box
+
+
+	
+
+void TileSelector::ButtonPressed()
+{
+	/*
+
+	Move Selector arrow keys and controller
+	*/
+	//if sdl pressed
+
+
+	
+
+	if (csdl_obj->GetSDLGameEvent()->type == SDL_KEYDOWN)
+	{
+
+		if (csdl_obj->ButtonInputCheck("UP"))
+		{
+			up_direction = true;
+		}
+
+		if (csdl_obj->ButtonInputCheck("DOWN"))
+		{
+			down_direction = true;
+		}
+
+		
+
+		if (csdl_obj->ButtonInputCheck("LEFT"))
+		{
+			left_direction = true;
+		}
+
+		if (csdl_obj->ButtonInputCheck("RIGHT"))
+		{
+			right_direction = true;
+						
+		}
+		if (debug.is_debug_mode())
+		{
+
+			
+			std::cout << "Directional button Pressed " << std::endl;
+			std::cout << "The selector is now located at " << mouse_pos_x << "," << mouse_pos_y << std::endl;
+		}
+	}
+}
+
+
+void TileSelector::ButtonReleased()
+{
+
+	/*
+	if released version
+
+	ButtonPressedCheck()
+
+	ButtonReleasedCheck()
+				*/
+
+	if (csdl_obj->GetSDLGameEvent()->type == SDL_KEYUP)
+	{
+		
+
+		if (csdl_obj->ButtonInputCheck("UP"))
+		{
+			up_direction = false;
+		}
+
+		if (csdl_obj->ButtonInputCheck("DOWN"))
+		{
+
+			down_direction = false;
+		}
+
+		if (csdl_obj->ButtonInputCheck("LEFT"))
+		{
+			left_direction = false;
+		}
+
+		if (csdl_obj->ButtonInputCheck("RIGHT"))
+		{
+			right_direction = false;
+
+			/*	if (debug.is_debug_mode())
+				{
+					std::cout << "The selcetor is now located at " << game_tile_selector->GetX() << "," << game_tile_selector->GetY() << std::endl;
+				}
+				*/
+		}
+
+		if (debug.is_debug_mode())
+		{
+			std::cout << "Directional button Released " << std::endl;
+		}
+	}
 }

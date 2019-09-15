@@ -21,10 +21,11 @@ public:
 	HitBox(SDL_Renderer* passed_renderer);
 	~HitBox();
 
-	bool LoadTexture();
+	bool LoadTexture(SDL_Renderer* passed_renderer);
 
 	void SetRenderer(SDL_Renderer* passed_renderer);
 	void RenderGameObjectHitBox(SDL_Rect* passed_collision_rect);
+	void RenderGameObjectHitBox(SDL_Renderer* passed_renderer, SDL_Rect* passed_collision_rect);
 };
 
 

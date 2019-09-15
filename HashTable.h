@@ -1,6 +1,6 @@
 #include "GameObject.h"
 #include "CCollisionRectangle.h"
-
+#include "HitBox.h"
 #include <vector>
 #ifndef HASHTABLE_H
 #define HASHTABLE_H
@@ -18,9 +18,7 @@ class HashTable: public GameObject
 	
 
 	std::vector< CCollisionRectangle*> collision_rects_vector;
-protected:
-	
-
+	HitBox* hash_table_hit_box;
 
 public:
 	 HashTable(const LoaderParams* pParams);

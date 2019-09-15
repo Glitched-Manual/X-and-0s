@@ -851,6 +851,10 @@ void Game::RenderGameTextures()
 			//render grid
 			game_object_map["Hash Table"]->Draw(csdl_obj->GetSDLRenderer());
 
+			/*
+			render hit boxes
+			*/
+
 			//loop through marked tiles , render marks to proper spots
 			game_object_map["test mark"]->Draw(csdl_obj->GetSDLRenderer());
 
@@ -1481,95 +1485,10 @@ void Game::GameEventManager()
 			}
 
 			/*
-			if A button pressed
+			if A ,Enter , or click occurs on a tile it is marked if available
 
-			hit box gives value to sting input ie: 2x2 or 0x1
+			collision returns a position value to check
 			*/
-			//if mouse click within a tile hit box
-
-
-			/*
-			
-			Move Selector arrow keys and controller
-			*/
-			//if sdl pressed
-			
-
-			
-
-			if (csdl_obj->ButtonPressedCheck())
-			{
-
-				if (csdl_obj->ButtonInputCheck("DOWN"))
-				{
-					game_tile_selector->SetDirectionTrue("DOWN");
-				}
-
-				 if (csdl_obj->ButtonInputCheck("UP"))
-				{
-					 game_tile_selector->SetDirectionTrue("UP");
-				}
-
-				 if (csdl_obj->ButtonInputCheck("LEFT"))
-				{
-					 game_tile_selector->SetDirectionTrue("LEFT");
-				}
-
-				 if (csdl_obj->ButtonInputCheck("RIGHT"))
-				{
-					 game_tile_selector->SetDirectionTrue("RIGHT");
-
-				/*	if (debug.is_debug_mode())
-					{
-						std::cout << "The selcetor is now located at " << game_tile_selector->GetX() << "," << game_tile_selector->GetY() << std::endl;
-					}
-					*/
-				}
-				 if (debug.is_debug_mode())
-				 {
-					 std::cout << "The selcetor is now located at " << game_tile_selector->GetX() << "," << game_tile_selector->GetY() << std::endl;
-				 }
-			}
-
-			
-
-			/*
-			if released version
-
-			ButtonPressedCheck()
-
-ButtonReleasedCheck()
-			*/
-
-			if (csdl_obj->ButtonReleasedCheck())
-			{
-				if (csdl_obj->ButtonInputCheck("DOWN"))
-				{
-					game_tile_selector->SetDirectionFalse("DOWN");
-				}
-
-				if (csdl_obj->ButtonInputCheck("UP"))
-				{
-					game_tile_selector->SetDirectionFalse("UP");
-				}
-
-				if (csdl_obj->ButtonInputCheck("LEFT"))
-				{
-					game_tile_selector->SetDirectionFalse("LEFT");
-				}
-
-				if (csdl_obj->ButtonInputCheck("RIGHT"))
-				{
-					game_tile_selector->SetDirectionFalse("RIGHT");
-
-					/*	if (debug.is_debug_mode())
-						{
-							std::cout << "The selcetor is now located at " << game_tile_selector->GetX() << "," << game_tile_selector->GetY() << std::endl;
-						}
-						*/
-				}
-
-			}
 
 
 		}

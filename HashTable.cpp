@@ -11,7 +11,7 @@ HashTable::HashTable(const LoaderParams* pParams)
 	hash_table_rect->w = pParams->GetWidth();
 	hash_table_rect->h = pParams->GetHeight();
 
-	
+	SetCollisionRectVector();
 }
 
 
@@ -32,6 +32,10 @@ bool HashTable::LoadGameObjectContent(SDL_Renderer* passed_Renderer)
 	{
 		printf("HashTable was successfully loaded\n");
 	}
+	//load hit box
+	hash_table_hit_box = new HitBox(passed_Renderer);
+	hash_table_hit_box->LoadTexture(passed_Renderer);
+
 	hash_table_content_loaded = true;
 	return true;
 }
@@ -40,6 +44,12 @@ void HashTable::Draw(SDL_Renderer* passed_Renderer)
 {
 	
 	SDL_RenderCopyEx(passed_Renderer, hash_table_texture,NULL, hash_table_rect,0,NULL,SDL_FLIP_NONE);
+
+	for (std::vector<CCollisionRectangle*>::iterator collider_index = collision_rects_vector.begin(); collider_index != collision_rects_vector.end(); collider_index++)
+	{
+		
+		hash_table_hit_box->RenderGameObjectHitBox(passed_Renderer,(*collider_index)->GetCollisionRect());
+	}
 
 }
 void HashTable::Update()
@@ -106,9 +116,9 @@ void HashTable::CreateCollisionRectangle(unsigned int passed_x, unsigned int pas
 
 	int y_value = hash_table_rect->y + ( (hash_table_rect->h / 6) * (passed_y * 2) );
 
-	int w_value = x_value + ( (hash_table_rect->w / 6) * 2);
+	int w_value = ( (hash_table_rect->w / 6) * 2);
 
-	int h_value = y_value + ( (hash_table_rect->h / 6) * 2);
+	int h_value = ( (hash_table_rect->h / 6) * 2);
 
 	//give values to collisions rect
 

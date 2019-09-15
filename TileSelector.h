@@ -41,6 +41,7 @@ class TileSelector: public GameObject
 	 bool up_direction = false;
 	 bool down_direction = false;
 
+	 
 	 Position* selector_position;
 
 	//for switching controls
@@ -89,6 +90,10 @@ public:
 	void SetDirectionTrue(std::string passed_direction);
 
 	void SetDirectionFalse(std::string passed_direction);
+
+	void ButtonPressed();
+
+	void ButtonReleased();
 };
 
 
