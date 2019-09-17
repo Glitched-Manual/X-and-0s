@@ -110,7 +110,7 @@ void Game::GameLoop()
 
 		SDL_RenderClear(csdl_obj->GetSDLRenderer());
 
-		if (SDL_PollEvent(csdl_obj->GetSDLGameEvent()) > 0)
+		while (SDL_PollEvent(csdl_obj->GetSDLGameEvent()) > 0)
 		{
 
 			GameEventManager();
@@ -852,7 +852,7 @@ void Game::RenderGameTextures()
 			game_object_map["Hash Table"]->Draw(csdl_obj->GetSDLRenderer());
 
 			/*
-			render hit boxes
+			render hit boxes of hash_table - done in class
 			*/
 
 			//loop through marked tiles , render marks to proper spots
@@ -1013,7 +1013,7 @@ void Game::GameEventManager()
 
 			case  play_option_highlighted:
 				//right command or click in hit box
-				if ((csdl_obj->GetSDLGameEvent()->cbutton.button == SDL_CONTROLLER_BUTTON_RIGHTSTICK) || (csdl_obj->ButtonInputCheck("RIGHT") && csdl_obj->GetSDLGameEvent()->cbutton.state == SDL_PRESSED) || ((csdl_obj->GetSDLGameEvent()->key.keysym.sym == SDLK_RIGHT) && (csdl_obj->GetSDLGameEvent()->type == SDL_KEYDOWN)))
+				if ((csdl_obj->ButtonInputCheck("RIGHT") && (csdl_obj->ButtonPressedCheck() ) ))
 				{
 					//change x_o_highlighted_option  play_option_highlighted to options_option_highlighted
 					x_o_highlighted_option = options_option_highlighted;
@@ -1031,37 +1031,41 @@ void Game::GameEventManager()
 				// SDLK_RETURN
 
 
-				else if ((csdl_obj->ButtonInputCheck("START")) || (csdl_obj->ButtonInputCheck("A_ACTION")) || (csdl_obj->GetSDLGameEvent()->key.keysym.sym == SDLK_RETURN))
+				else if ((csdl_obj->ButtonInputCheck("START")) || (csdl_obj->ButtonInputCheck("A_ACTION")) )
 				{
-					x_o_game_state = opponent_selection;
-
-					game_object_map["Play Button"]->RevertAlteredTextureColor();
-					game_object_map["Options Button"]->RevertAlteredTextureColor();
-					game_object_map["Credits Button"]->RevertAlteredTextureColor();
-
-					if (debug.is_debug_mode())
+					if (csdl_obj->ButtonPressedCheck())
 					{
-						std::cout << "\n Play Game Selected! \n" << std::endl;
-					}
+						x_o_game_state = opponent_selection;
 
+						game_object_map["Play Button"]->RevertAlteredTextureColor();
+						game_object_map["Options Button"]->RevertAlteredTextureColor();
+						game_object_map["Credits Button"]->RevertAlteredTextureColor();
+
+						if (debug.is_debug_mode())
+						{
+							std::cout << "\n Play Game Selected! \n" << std::endl;
+						}
+					}
 				}
 
 
-				else if ((csdl_obj->ButtonInputCheck("B_ACTION") ) || ((csdl_obj->GetSDLGameEvent()->key.keysym.sym == SDLK_ESCAPE) && (csdl_obj->GetSDLGameEvent()->type == SDL_KEYDOWN)))
+				else if ((csdl_obj->ButtonInputCheck("B_ACTION") ) || (csdl_obj->ButtonInputCheck("ESCAPE")))
 				{
-					//revert all texture and  go to menu
-					game_object_map["Play Button"]->RevertAlteredTextureColor();
-					game_object_map["Options Button"]->RevertAlteredTextureColor();
-					game_object_map["Credits Button"]->RevertAlteredTextureColor();
-					game_object_map["Start Game"]->RevertAlteredTextureColor();
-
-					x_o_highlighted_option = none_of_the_options_highlighted;
-
-					if (debug.is_debug_mode())
+					if (csdl_obj->ButtonPressedCheck())
 					{
-						std::cout << "\n options_option_highlighted - Exit condition 1 met \n" << std::endl;
-					}
+						//revert all texture and  go to menu
+						game_object_map["Play Button"]->RevertAlteredTextureColor();
+						game_object_map["Options Button"]->RevertAlteredTextureColor();
+						game_object_map["Credits Button"]->RevertAlteredTextureColor();
+						game_object_map["Start Game"]->RevertAlteredTextureColor();
 
+						x_o_highlighted_option = none_of_the_options_highlighted;
+
+						if (debug.is_debug_mode())
+						{
+							std::cout << "\n options_option_highlighted - Exit condition 1 met \n" << std::endl;
+						}
+					}
 				}
 
 
@@ -1069,24 +1073,26 @@ void Game::GameEventManager()
 
 			case  options_option_highlighted:
 				//left command or click in hit box
-				if ((csdl_obj->GetSDLGameEvent()->cbutton.button == SDL_CONTROLLER_BUTTON_LEFTSTICK) || (csdl_obj->ButtonInputCheck("LEFT") && csdl_obj->GetSDLGameEvent()->cbutton.state == SDL_PRESSED) || (csdl_obj->GetSDLGameEvent()->key.keysym.sym == SDLK_LEFT) && (csdl_obj->GetSDLGameEvent()->type == SDL_KEYDOWN))
+				if ( csdl_obj->ButtonInputCheck("LEFT"))
 				{
-					x_o_highlighted_option = play_option_highlighted;
-					// unhighlight options
-					game_object_map["Options Button"]->RevertAlteredTextureColor();
-					// highlight play
-					game_object_map["Play Button"]->AlterTextureColor(38, 64, 139);
-
-					if (debug.is_debug_mode())
+					if (csdl_obj->ButtonPressedCheck())
 					{
-						std::cout << "\n Play Button Highlighted \n" << std::endl;
-					}
+						x_o_highlighted_option = play_option_highlighted;
+						// unhighlight options
+						game_object_map["Options Button"]->RevertAlteredTextureColor();
+						// highlight play
+						game_object_map["Play Button"]->AlterTextureColor(38, 64, 139);
 
+						if (debug.is_debug_mode())
+						{
+							std::cout << "\n Play Button Highlighted \n" << std::endl;
+						}
+					}
 				}
 
 
 				//right command or click in hit box
-				else if (csdl_obj->GetSDLGameEvent()->cbutton.button == SDL_CONTROLLER_BUTTON_RIGHTSTICK || (csdl_obj->ButtonInputCheck("RIGHT") && csdl_obj->GetSDLGameEvent()->cbutton.state == SDL_PRESSED) || ((csdl_obj->GetSDLGameEvent()->key.keysym.sym == SDLK_RIGHT) && (csdl_obj->GetSDLGameEvent()->type == SDL_KEYDOWN)))
+				else if (csdl_obj->ButtonInputCheck("RIGHT"))
 				{
 					x_o_highlighted_option = credits_option_highlighted;
 					// unhighlight options
@@ -1100,22 +1106,33 @@ void Game::GameEventManager()
 					}
 				}
 
-				else if ((csdl_obj->ButtonInputCheck("B_ACTION")) || ((csdl_obj->GetSDLGameEvent()->key.keysym.sym == SDLK_ESCAPE && csdl_obj->GetSDLGameEvent()->type == SDL_KEYDOWN)))
+				else if (( csdl_obj->ButtonInputCheck("B_ACTION") ) || (csdl_obj->ButtonInputCheck("ESCAPE") ) )
 				{
-					//revert all texture and  go to menu
-					game_object_map["Play Button"]->RevertAlteredTextureColor();
-					game_object_map["Options Button"]->RevertAlteredTextureColor();
-					game_object_map["Credits Button"]->RevertAlteredTextureColor();
-					game_object_map["Start Game"]->RevertAlteredTextureColor();
 
-					x_o_highlighted_option = none_of_the_options_highlighted;
-
-					if (debug.is_debug_mode())
+					//make sure holding  keyboard arrow keys are not triggering B button
+					if (csdl_obj->ButtonPressedCheck())
 					{
-						std::cout << "\n play_option_highlighted - Exit condition 1 met \n" << std::endl;
-					}
+						if (csdl_obj->ArrowKeyInput() == false)
+						{
 
+
+							//revert all texture and  go to menu
+							game_object_map["Play Button"]->RevertAlteredTextureColor();
+							game_object_map["Options Button"]->RevertAlteredTextureColor();
+							game_object_map["Credits Button"]->RevertAlteredTextureColor();
+							game_object_map["Start Game"]->RevertAlteredTextureColor();
+
+							x_o_highlighted_option = none_of_the_options_highlighted;
+
+							if (debug.is_debug_mode())
+							{
+								std::cout << "\n play_option_highlighted - Exit condition 1 met \n" << std::endl;
+							}
+						}
+					}
 				}
+
+
 				else
 				{
 
@@ -1138,21 +1155,28 @@ void Game::GameEventManager()
 					}
 				}
 
-				else if ((csdl_obj->ButtonInputCheck("B_ACTION") && csdl_obj->GetSDLGameEvent()->cbutton.state == SDL_PRESSED) || ((csdl_obj->GetSDLGameEvent()->key.keysym.sym == SDLK_ESCAPE && csdl_obj->GetSDLGameEvent()->type == SDL_KEYDOWN)))
+				else if ( (csdl_obj->ButtonInputCheck("B_ACTION")  || csdl_obj->ButtonInputCheck("ESCAPE") ) )
 				{
-					//revert all texture and  go to menu
-					game_object_map["Play Button"]->RevertAlteredTextureColor();
-					game_object_map["Options Button"]->RevertAlteredTextureColor();
-					game_object_map["Credits Button"]->RevertAlteredTextureColor();
-					game_object_map["Start Game"]->RevertAlteredTextureColor();
 
-
-
-					x_o_highlighted_option = none_of_the_options_highlighted;
-
-					if (debug.is_debug_mode())
+					if (csdl_obj->ButtonPressedCheck())
 					{
-						std::cout << "\n credits_option_highlighted - Exit condition 1 met \n" << std::endl;
+						if (csdl_obj->ArrowKeyInput() == false)
+						{
+							//revert all texture and  go to menu
+							game_object_map["Play Button"]->RevertAlteredTextureColor();
+							game_object_map["Options Button"]->RevertAlteredTextureColor();
+							game_object_map["Credits Button"]->RevertAlteredTextureColor();
+							game_object_map["Start Game"]->RevertAlteredTextureColor();
+
+
+
+							x_o_highlighted_option = none_of_the_options_highlighted;
+
+							if (debug.is_debug_mode())
+							{
+								std::cout << "\n credits_option_highlighted - Exit condition 1 met \n" << std::endl;
+							}
+						}
 					}
 
 				}
@@ -1163,37 +1187,29 @@ void Game::GameEventManager()
 
 				// highight play if button is not keyboard escape or button B
 
-				if ((csdl_obj->ButtonInputCheck("B_ACTION")))
+				if ((csdl_obj->ButtonInputCheck("B_ACTION")) || (csdl_obj->ButtonInputCheck("ESCAPE")))
 				{
-					//revert all texture and  go to menu
-					game_object_map["Play Button"]->RevertAlteredTextureColor();
-					game_object_map["Options Button"]->RevertAlteredTextureColor();
-					game_object_map["Credits Button"]->RevertAlteredTextureColor();
-					game_object_map["Start Game"]->RevertAlteredTextureColor();
-
-					x_o_game_state = main_menu;
-
-					if (debug.is_debug_mode())
+					if (csdl_obj->ButtonPressedCheck())
 					{
-						std::cout << "\n none_of_the_options_highlighted - Controller - Exit condition 2 met \n" << std::endl;
+						if (csdl_obj->ArrowKeyInput() == false)
+						{
+							//revert all texture and  go to menu
+							game_object_map["Play Button"]->RevertAlteredTextureColor();
+							game_object_map["Options Button"]->RevertAlteredTextureColor();
+							game_object_map["Credits Button"]->RevertAlteredTextureColor();
+							game_object_map["Start Game"]->RevertAlteredTextureColor();
+
+							x_o_game_state = main_menu;
+
+							if (debug.is_debug_mode())
+							{
+								std::cout << "\n none_of_the_options_highlighted - Controller - Exit condition 2 met \n" << std::endl;
+							}
+						}
 					}
 
 				}
-				else if ((csdl_obj->GetSDLGameEvent()->key.keysym.sym == SDLK_ESCAPE) && (csdl_obj->GetSDLGameEvent()->type == SDL_KEYDOWN))
-				{
-					//revert all texture and  go to menu
-					game_object_map["Play Button"]->RevertAlteredTextureColor();
-					game_object_map["Options Button"]->RevertAlteredTextureColor();
-					game_object_map["Credits Button"]->RevertAlteredTextureColor();					
-					RevertGameObjectColorList("Play Button", "Options Button", "Credits Button");
-
-					x_o_game_state = main_menu;
-
-					if (debug.is_debug_mode())
-					{
-						std::cout << "\n none_of_the_options_highlighted - Keyboard - Exit condition 2 met \n" << std::endl;
-					}
-				}
+				
 				else
 				{
 					//got back one menu
@@ -1249,12 +1265,18 @@ void Game::GameEventManager()
 				if ( ( csdl_obj->ButtonInputCheck("B_ACTION") ) || (csdl_obj->ButtonInputCheck("ESCAPE") ) )
 				{
 					// go back
-					
-					x_o_game_state = game_options;
-
-					if (debug.is_debug_mode())
+					if (csdl_obj->ButtonPressedCheck())
 					{
-						std::cout << "Back Option Selected" << std::endl;
+						if (csdl_obj->ArrowKeyInput() == false)
+						{
+
+							x_o_game_state = game_options;
+
+							if (debug.is_debug_mode())
+							{
+								std::cout << "Back Option Selected" << std::endl;
+							}
+						}
 					}
 				}
 								
@@ -1320,13 +1342,22 @@ void Game::GameEventManager()
 
 				// esc or B
 
+				/*
+				-> Left arrow key triggers B button when held
+				*/
+
 				else if ( (csdl_obj->ButtonInputCheck("B_ACTION")) || (csdl_obj->ButtonInputCheck("ESCAPE")) )
 				{
 					RevertGameObjectColorList("Player VS Comp");
-
-					if (debug.is_debug_mode())
+					if (csdl_obj->ButtonPressedCheck())
 					{
-						std::cout << "Player VS Comp unhighlighted - exit condition 1" << std::endl;
+						if (csdl_obj->ArrowKeyInput() == false)
+						{
+							if (debug.is_debug_mode())
+							{
+								std::cout << "Player VS Comp unhighlighted - exit condition 1" << std::endl;
+							}
+						}
 					}
 				}
 
@@ -1377,11 +1408,17 @@ void Game::GameEventManager()
 
 				else if ( csdl_obj->ButtonInputCheck("B_ACTION") || csdl_obj->ButtonInputCheck("ESCAPE"))
 				{
-					RevertGameObjectColorList("Player VS Player");
-
-					if (debug.is_debug_mode())
+					if (csdl_obj->ButtonPressedCheck())
 					{
-						std::cout << "Player VS Player text unhighlighted - Exit condition 1" << std::endl;
+						if (csdl_obj->ArrowKeyInput() == false)
+						{
+							RevertGameObjectColorList("Player VS Player");
+
+							if (debug.is_debug_mode())
+							{
+								std::cout << "Player VS Player text unhighlighted - Exit condition 1" << std::endl;
+							}
+						}
 					}
 				}
 			}
@@ -1406,6 +1443,7 @@ void Game::GameEventManager()
 			rematch_prompt->CreatePromptText(25, 50, "yes rematch text", "YES", 20);
 	rematch_prompt->CreatePromptText(75, 50, "no rematch text", "NO", 20);
 			*/
+
 			//both options highlighted
 			if(game_object_map["rematch prompt"]->GetAreColorsAltered("yes rematch text")&&(game_object_map["rematch prompt"]->GetAreColorsAltered("no rematch text")))
 			{
@@ -1419,18 +1457,25 @@ void Game::GameEventManager()
 				//Left or Right pressed
 				if (csdl_obj->ButtonInputCheck("LEFT")|| csdl_obj->ButtonInputCheck("RIGHT"))
 				{
-					game_object_map["rematch prompt"]->RevertAlteredTextureColor("yes rematch text");
-					game_object_map["rematch prompt"]->AlterTextureColor("no rematch text", 38, 64, 139);
+					if (csdl_obj->ButtonPressedCheck())
+					{
+						game_object_map["rematch prompt"]->RevertAlteredTextureColor("yes rematch text");
+						game_object_map["rematch prompt"]->AlterTextureColor("no rematch text", 38, 64, 139);
 
+
+					}
+
+					
 					//if A or Start Pressed
 				}
 				//if A or Start Pressed
 				else if (csdl_obj->ButtonInputCheck("A_ACTION") || csdl_obj->ButtonInputCheck("START"))
 				{
-
-					//reset 
-					GameRematchReset();
-
+					if (csdl_obj->ButtonPressedCheck())
+					{
+						//reset 
+						GameRematchReset();
+					}
 				}
 			}
 			//NO Highlighted
@@ -1447,25 +1492,28 @@ void Game::GameEventManager()
 				//if A or Start Pressed
 				else if (csdl_obj->ButtonInputCheck("A_ACTION") || csdl_obj->ButtonInputCheck("START"))
 				{
-					//reset  
-					GameRematchReset();
-					
-					//return to options menu
+					if (csdl_obj->ButtonPressedCheck())
+					{
+						//reset  
+						GameRematchReset();
 
-					x_o_game_state = game_options;
+						//return to options menu
+
+						x_o_game_state = game_options;
+					}
 				}
 			}
 			//none highlighted
-			else
+			else //not the best it any none action pressed it keeps calling add if "Yes" not highlighted
 			{
 				//any button highlight YES
-				if (csdl_obj->GetSDLGameEvent()->cbutton.state == SDL_PRESSED)
+				if(csdl_obj->ButtonPressedCheck())
 				{
-					game_object_map["rematch prompt"]->AlterTextureColor("yes rematch text", 38, 64, 139);
-				}
-				if (csdl_obj->GetSDLGameEvent()->key.state == SDL_PRESSED)
-				{
-					game_object_map["rematch prompt"]->AlterTextureColor("yes rematch text", 38, 64, 139);
+					if (game_object_map["rematch prompt"]->GetAreColorsAltered("yes rematch text") == false)
+					{
+						game_object_map["rematch prompt"]->AlterTextureColor("yes rematch text", 38, 64, 139);
+					}
+					
 				}
 			}
 

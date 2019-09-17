@@ -44,6 +44,9 @@ public:
 	bool ButtonPressedCheck();
 
 	bool ButtonReleasedCheck();
+
+	//to solve button when arrow keys held issue
+	bool ArrowKeyInput();
 };
 
 #endif //CSDL_H

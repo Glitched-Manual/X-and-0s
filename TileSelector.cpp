@@ -46,7 +46,7 @@ TileSelector::TileSelector(LoaderParams* pParams, Grid* passed_grid, SDL_Rect* p
 bool TileSelector::LoadGameObjectContent(SDL_Renderer* passed_Renderer)
 {
 	//open image
-	tile_selector_texture = IMG_LoadTexture(passed_Renderer, "resources/images/tile_selection_image.png");
+	tile_selector_texture = IMG_LoadTexture(passed_Renderer, "resources/images/crosshair_image.png");
 
 	if (tile_selector_texture == NULL)
 	{
@@ -108,7 +108,7 @@ void TileSelector::Update()
 	  - if keyboard key keyboard arrows
 	*/
 	// do get ticks thing
-	if (time_Check + 500 < SDL_GetTicks())
+	if (time_Check + 250 < SDL_GetTicks())
 	{
 		if (current_game_controls == mouse_controls)
 		{

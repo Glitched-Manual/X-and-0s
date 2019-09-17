@@ -150,6 +150,15 @@ void AI::CollectAvailablePositions()
 						//double check if vector is not set
 						if (!(available_tile_positions.empty()))
 						{
+							/*
+							find a solution for for loop
+
+							removing 1 is fine if two are removed the code will crash
+
+							because it is already in a loop. only one needs to be removed.
+
+							break after removal
+							*/
 							for (std::vector<Position*>::iterator available_tile_positions_index = available_tile_positions.begin(); available_tile_positions_index != available_tile_positions.end(); available_tile_positions_index++)
 							{
 								//erase the vector with the position of the marked tile
@@ -178,6 +187,8 @@ void AI::CollectAvailablePositions()
 										std::cout << "The Position located in available_tile_positions at [" << erase_at_index << "]  was swtiched back and popped"<< std::endl;
 									}
 									//CollectAvailablePositions();//recursive call may work may fail
+
+									break;
 								}
 								erase_at_index++;
 							}

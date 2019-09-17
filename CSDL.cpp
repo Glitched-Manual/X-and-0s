@@ -356,11 +356,17 @@ bool CSDL::ButtonInputCheck(std::string input_to_check)
 
 bool CSDL::ButtonPressedCheck()
 {//SDL_JOYBUTTONDOWN or SDL_CONTROLLERBUTTONDOWN
-	if (sdl2_Game_Event->cbutton.type == SDL_CONTROLLERBUTTONDOWN)
+
+	//SDL_PRESSED
+	if (sdl2_Game_Event->cbutton.state == SDL_PRESSED)
 	{
 		return true;
 	}
-	else if (sdl2_Game_Event->cbutton.type == SDL_KEYDOWN)
+	else if (sdl2_Game_Event->jbutton.state == SDL_PRESSED)
+	{
+		return true;
+	}
+	else if (sdl2_Game_Event->key.state == SDL_PRESSED)
 	{
 		return true;
 	}
@@ -370,11 +376,16 @@ bool CSDL::ButtonPressedCheck()
 
 bool CSDL::ButtonReleasedCheck()
 {
-	if (sdl2_Game_Event->cbutton.type == SDL_CONTROLLERBUTTONUP)
+	//SDL_RELEASED
+	if (sdl2_Game_Event->cbutton.state == SDL_RELEASED)
 	{
 		return true;
 	}
-	else if (sdl2_Game_Event->cbutton.type == SDL_KEYUP)
+	else if (sdl2_Game_Event->jbutton.state == SDL_RELEASED)
+	{
+		return true;
+	}
+	else if (sdl2_Game_Event->key.state == SDL_RELEASED)
 	{
 		return true;
 	}
@@ -382,3 +393,23 @@ bool CSDL::ButtonReleasedCheck()
 	return false;
 }
 
+bool CSDL::ArrowKeyInput()
+{
+	if (sdl2_Game_Event->key.keysym.sym == SDLK_UP)
+	{
+		return true;
+	}
+	else if (sdl2_Game_Event->key.keysym.sym == SDLK_DOWN)
+	{
+		return true;
+	}
+	else if (sdl2_Game_Event->key.keysym.sym == SDLK_LEFT)
+	{
+		return true;
+	}
+	else if (sdl2_Game_Event->key.keysym.sym == SDLK_RIGHT)
+	{
+		return true;
+	}
+	return false;
+}

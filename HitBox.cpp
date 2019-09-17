@@ -18,7 +18,7 @@ bool HitBox::LoadTexture(SDL_Renderer* passed_renderer)
 {
 	//load a colored background from a texture or a image with a x
 
-	hit_box_texture = IMG_LoadTexture(passed_renderer, "resources/images/hit_box_image001.png"); //forgot to add .png
+	hit_box_texture = IMG_LoadTexture(passed_renderer, "resources/images/hitbox.png"); //forgot to add .png
 
 	if (hit_box_texture == NULL)
 	{
@@ -28,6 +28,7 @@ bool HitBox::LoadTexture(SDL_Renderer* passed_renderer)
 		}
 		return false;
 	}
+	//SDL_SetTextureColorMod(hit_box_texture, 255, 0, 0);
 	return true;
 }
 

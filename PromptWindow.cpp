@@ -119,12 +119,17 @@ void PromptWindow::AlterTextureColor(std::string passed_string, Uint8 passed_r_v
 	}
 	*/
 
+	
+	/*
+
+	//never works
+
 	std::map<std::string, GameText*>::iterator finder;
 	finder = game_texts_map.find(passed_string);
 
 	if (finder != game_texts_map.end())
 	{
-		game_texts_map[passed_string]->AlterTextureColor(passed_r_value, passed_g_value, passed_b_value);;
+		game_texts_map[passed_string]->AlterTextureColor(passed_r_value, passed_g_value, passed_b_value);
 	}
 
 	else
@@ -135,6 +140,7 @@ void PromptWindow::AlterTextureColor(std::string passed_string, Uint8 passed_r_v
 		}
 		
 	}
+	*/
 
 	if (!game_texts_vector.empty())
 	{
