@@ -7,7 +7,7 @@ class GameObject;
 class GameText:public GameObject
 {
 	SDL_Texture* game_text_texture;
-	Developer debug;
+	
 
 	SDL_Rect* game_text_rect;
 	std::string game_text_id;

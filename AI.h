@@ -1,3 +1,5 @@
+#pragma once
+
 #include <iostream>
 #include <string>
 #include <vector>
@@ -12,11 +14,12 @@
 
 #ifndef AI_H
 #define AI_H
+struct Developer;
 class Player;
 class Grid;
 class Position;
 class Tile;
-struct Developer;
+
 
 class AI:public Player
 {
@@ -33,7 +36,7 @@ class AI:public Player
 	*/
 	std::vector<Position*> available_tile_positions;
 
-	Developer debug; // create as pointer later so there is only one Developer obj
+	
 
 public:
 

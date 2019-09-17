@@ -10,7 +10,7 @@ class HashTable: public GameObject
 	SDL_Texture* hash_table_texture = NULL;
 	SDL_Rect* hash_table_rect = NULL;
 	std::string hash_table_id;
-	Developer debug;
+	
 	bool hash_table_content_loaded = false;
 	bool colors_altered = false;
 

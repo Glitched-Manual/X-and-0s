@@ -23,7 +23,7 @@ y = new int;
 
 Position::~Position()
 {
-	if (debug.is_debug_mode())
+	if (Developer::GetInstance()->is_debug_mode())
 	{			
 	std::cout << "Postion Destroyed" << std::endl;
     }

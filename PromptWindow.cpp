@@ -29,7 +29,7 @@ bool PromptWindow::LoadGameObjectContent(SDL_Renderer* passed_renderer)
 {
 	CreateBackGroundTexture(passed_renderer);
 	prompt_window_content_loaded = true;
-	if(debug.is_debug_mode()) 
+	if(Developer::GetInstance()->is_debug_mode()) 
 	{
 		std::cout << "PromptWindow::LoadGameObjectContent  was loaded" << std::endl;
 	}
@@ -71,7 +71,7 @@ void PromptWindow::Draw(SDL_Renderer* passed_Renderer)
 
 		}
 	}
-	/*if (debug.is_debug_mode())
+	/*if (Developer::GetInstance()->is_debug_mode())
 	{
 		std::cout << "Promt "<< prompt_window_id <<" was drawn!" << std::endl;
 	}
@@ -123,7 +123,6 @@ void PromptWindow::AlterTextureColor(std::string passed_string, Uint8 passed_r_v
 	/*
 
 	//never works
-
 	std::map<std::string, GameText*>::iterator finder;
 	finder = game_texts_map.find(passed_string);
 
@@ -134,7 +133,7 @@ void PromptWindow::AlterTextureColor(std::string passed_string, Uint8 passed_r_v
 
 	else
 	{
-		if (debug.is_debug_mode())
+		if (Developer::GetInstance()->is_debug_mode())
 		{
 			std::cout << "map key not found" << std::endl;
 		}
@@ -193,7 +192,7 @@ void PromptWindow::RevertAlteredTextureColor(std::string passed_string)
 
 	else
 	{
-		if (debug.is_debug_mode())
+		if (Developer::GetInstance()->is_debug_mode())
 		{
 			std::cout << "map key not found" << std::endl;
 		}
@@ -225,7 +224,7 @@ bool PromptWindow::GetAreColorsAltered(std::string passed_string)
 		return game_texts_map[passed_string]->GetAreColorsAltered();
 	}
 
-	if (debug.is_debug_mode())
+	if (Developer::GetInstance()->is_debug_mode())
 	{
 		std::cout << "map key not found" << std::endl;
 		if (!game_texts_vector.empty())
@@ -312,7 +311,7 @@ bool PromptWindow::CreateBackGroundTexture(SDL_Renderer* passed_renderer)
 
 	if (propmt_background_surface == NULL)
 	{
-		if (debug.is_debug_mode())
+		if (Developer::GetInstance()->is_debug_mode())
 		{
 			std::cout << "PromptWindow::CreateBackGroundTexture, SDL_CreateRGBSurface error - " << SDL_GetError() << std::endl;
 		}
@@ -330,7 +329,7 @@ bool PromptWindow::CreateBackGroundTexture(SDL_Renderer* passed_renderer)
 
 	if (prompt_background_texture == NULL) 
 	{
-		if (debug.is_debug_mode())
+		if (Developer::GetInstance()->is_debug_mode())
 		{
 			std::cout << "PromptWindow::CreateBackGroundTexture, SDL_CreateTextureFromSurface error - "<< SDL_GetError() << std::endl;
 		}

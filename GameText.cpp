@@ -135,7 +135,7 @@ bool GameText::LoadGameObjectContent(SDL_Renderer* passed_Renderer)
 
 	if (textSurface == NULL)
 	{
-		if (debug.is_debug_mode())
+		if (Developer::GetInstance()->is_debug_mode())
 		{
 			printf("GameText::LoadGameObjectContent failed to create surface error: %s\n", SDL_GetError());
 		}
@@ -157,7 +157,7 @@ bool GameText::LoadGameObjectContent(SDL_Renderer* passed_Renderer)
 	game_text_texture = SDL_CreateTextureFromSurface(passed_Renderer, textSurface);
 	if (game_text_texture == NULL)
 	{
-		if (debug.is_debug_mode())
+		if (Developer::GetInstance()->is_debug_mode())
 		{
 			printf("GameText::LoadGameObjectContent() failed to open font error %s\n", SDL_GetError());
 		}
@@ -169,7 +169,7 @@ bool GameText::LoadGameObjectContent(SDL_Renderer* passed_Renderer)
 	
 
 
-	if (debug.is_debug_mode())
+	if (Developer::GetInstance()->is_debug_mode())
 	{
 		std::cout << "Finished loading Game text object " << game_text_id << std::endl;
 	}
@@ -205,7 +205,7 @@ void GameText::SetGameTextMessage( std::string passed_message)
 	 game_text_message = new char[passed_message.length() + 1];
 	strcpy(game_text_message, passed_message.c_str());
 		
-	if (debug.is_debug_mode())
+	if (Developer::GetInstance()->is_debug_mode())
 	{
 		std::cout << "Message from " << passed_message <<  " to " << game_text_message << std::endl;
 	}

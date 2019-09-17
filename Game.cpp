@@ -42,14 +42,14 @@ Game::Game(unsigned int passed_screen_width, unsigned int passed_screen_height)
 	player_pos_2->SetPlayerMark("#");
 	LoadWinCases();
 
-	if (debug.is_debug_mode())
+	if (Developer::GetInstance()->is_debug_mode())
 	{
 		std::cout << "WinCases Loaded" << std::endl;
 	}
 
 	//init sdl
 	csdl_obj->Init();
-
+	time_Check = SDL_GetTicks();
 	
 	x_o_game_state = main_menu;
 
@@ -93,7 +93,7 @@ void Game::GameLoop()
 
 	//Game.turn non sdl2 redendering version use events to not delay rendering
 
-	if (debug.is_debug_mode())
+	if (Developer::GetInstance()->is_debug_mode())
 	{
 		std::cout << "CSDL::init() call finished! Starting GameLoop!" << std::endl;
 
@@ -101,7 +101,7 @@ void Game::GameLoop()
 	//use quit_game_from_inputto quit game 
 	while ((csdl_obj->GetSDLGameEvent()->type != SDL_QUIT) && (quit_game_from_input == false))
 	{
-		/*if (debug.is_text_based_game())
+		/*if (Developer::GetInstance()->is_text_based_game())
 		{
 			//game_grid->DisplayGrid(); loops infinitly is a problem
 		}
@@ -114,8 +114,11 @@ void Game::GameLoop()
 		{
 
 			GameEventManager();
-		}
 
+			// if ai turn call ai move
+		}
+		//non player input update
+		PostEventUpdate();
 		//render
 		RenderGameTextures();
 		/*
@@ -132,6 +135,44 @@ void Game::GameLoop()
 		SDL_RenderPresent(csdl_obj->GetSDLRenderer());
 	}
 
+}
+
+void Game::AITurnEvent()
+{
+	TurnPhaseEvent();
+}
+
+
+void Game::PostEventUpdate()
+{
+	if (Game_Over == false)
+	{
+		//auto AI turn event
+		if (x_o_game_state == match_gameplay)
+		{
+			if (x_o_gameplay_mode == human_vs_computer)
+			{
+				if (x_o_current_player_turn == Player_2_turn)
+				{
+					if (time_Check + 10000 < SDL_GetTicks())
+					{
+						time_Check = SDL_GetTicks();
+					}
+					else if (time_Check + 2000 > SDL_GetTicks())
+					{
+						
+					}
+					//2 second delay
+					else if (time_Check + 2000 < SDL_GetTicks())
+					{
+						AITurnEvent();
+					}
+				}
+			}
+		}
+	}
+
+	
 }
 
 void Game::SetupSecondPlayerValue()
@@ -214,14 +255,14 @@ bool Game::CheckIfTileIsAvailable(Position* passed_position_to_check)
 	std::cout << "Game::CheckIfTileIsAvailable  get position" << std::endl;
 	if ((*GetGameGrid()->GetGameTile(*passed_position_to_check->GetX(), *passed_position_to_check->GetY()).GetTileIsMarkedStatus()) == true)
 	{
-		if (debug.is_debug_mode())
+		if (Developer::GetInstance()->is_debug_mode())
 		{
 			std::cout << "Game::CheckIfTileIsAvailable error tile is already marked" << std::endl;
 		}
 
 		return false;
 	}
-	if (debug.is_debug_mode())
+	if (Developer::GetInstance()->is_debug_mode())
 	{
 		std::cout << "Game::CheckIfTileIsAvailable  get position success" << std::endl;
 	}
@@ -238,7 +279,7 @@ bool Game::FilterUserInput(std::string raw_input_string, Position* passed_positi
 	bool filter_successful = false;
 	enum axis { x_cord, y_cord };
 
-	if (debug.is_debug_mode())
+	if (Developer::GetInstance()->is_debug_mode())
 	{
 		std::cout << "filtering " << raw_input_string << std::endl;
 	}
@@ -266,7 +307,7 @@ bool Game::FilterUserInput(std::string raw_input_string, Position* passed_positi
 		}
 	}
 	/*
-	if (debug.is_debug_mode())
+	if (Developer::GetInstance()->is_debug_mode())
 	{
 		std::cout << x_pos << "," << y_pos << std::endl;
 	}
@@ -282,7 +323,7 @@ bool Game::FilterUserInput(std::string raw_input_string, Position* passed_positi
 		}
 		else
 		{
-			if (debug.is_debug_mode())
+			if (Developer::GetInstance()->is_debug_mode())
 			{
 				std::cout << "Game.cpp FilterUserInput error: (  "<<x_pos <<" < 3)&( "<< y_pos<< " < 3) found false" << std::endl;
 			}
@@ -292,7 +333,7 @@ bool Game::FilterUserInput(std::string raw_input_string, Position* passed_positi
 	}
 	else
 	{
-		if (debug.is_debug_mode())
+		if (Developer::GetInstance()->is_debug_mode())
 		{
 			std::cout << "Game.cpp FilterUserInput error: (mode == y_cord)&(filter_successful) found false" << std::endl;
 		}
@@ -306,7 +347,7 @@ bool Game::FilterUserInput(std::string raw_input_string, Position* passed_positi
 
 void Game::LoadWinCases()
 {
-	if (debug.is_debug_mode())
+	if (Developer::GetInstance()->is_debug_mode())
 	{
 		std::cout << "LoadWinCase start" << std::endl;
 	}
@@ -333,7 +374,7 @@ void Game::LoadWinCases()
 	++x;
 	win_cases[x].SetWinCaseCombination(Position(2, 0), Position(1, 1), Position(0, 2));
 
-	if (debug.is_debug_mode())
+	if (Developer::GetInstance()->is_debug_mode())
 	{
 		std::cout << "LoadWinCase End" << std::endl;
 
@@ -360,7 +401,7 @@ bool Game::PlayerWin(Player* passed_player)
 
 
 	//check win cases if a player has won
-	if (debug.is_debug_mode())
+	if (Developer::GetInstance()->is_debug_mode())
 	{
 		std::cout << "check if player wins start" << std::endl;
 	}
@@ -378,7 +419,7 @@ bool Game::PlayerWin(Player* passed_player)
 			if (*passed_player->GetPlayerMark() == *GetGameGrid()->GetGameTile(*GetWinCase(wincase_index).GetCombination(wincase_combination_index)->GetX(), *GetWinCase(wincase_index).GetCombination(wincase_combination_index)->GetY()).GetTileMark())
 			{
 				++mark_true_case;
-				if (debug.is_debug_mode())
+				if (Developer::GetInstance()->is_debug_mode())
 				{
 					std::cout << "Marked case = " << mark_true_case << std::endl;
 				}
@@ -390,7 +431,7 @@ bool Game::PlayerWin(Player* passed_player)
 		if (mark_true_case == 3)
 		{
 			// trigger wincase
-			if (debug.is_debug_mode())
+			if (Developer::GetInstance()->is_debug_mode())
 			{
 				std::cout << "Player " << *passed_player->GetPlayerMark() << " Wins!!" << std::endl;
 			}
@@ -539,7 +580,7 @@ void Game::GameRematchReset()
 
 	Game_Over = false;
 
-	if (debug.is_debug_mode())
+	if (Developer::GetInstance()->is_debug_mode())
 	{
 		std::cout << "\nAll match values were reset!\n" << std::endl;
 	}
@@ -576,7 +617,7 @@ bool Game::LoadGameObjectContent()
 			//loades textures and such
 			(*game_object_index)->LoadGameObjectContent(csdl_obj->GetSDLRenderer());
 		}
-		if (debug.is_debug_mode())
+		if (Developer::GetInstance()->is_debug_mode())
 		{
 			std::cout << "Game::LoadGameObjectContent() Objects loaded" << std::endl;
 		}
@@ -584,7 +625,7 @@ bool Game::LoadGameObjectContent()
 	}
 	else
 	{
-		if (debug.is_debug_mode())
+		if (Developer::GetInstance()->is_debug_mode())
 		{
 			std::cout << "Game::LoadGameObjectContent() Error - allGameObjects found empty!" << std::endl;
 		}
@@ -607,7 +648,7 @@ bool Game::LoadGameOpeningMenu()
 
 	if (start_menu_text == NULL)
 	{
-		if (debug.is_debug_mode())
+		if (Developer::GetInstance()->is_debug_mode())
 		{
 			printf("Game::LoadGameOpeningMenu() SDL Error: %s\n", SDL_GetError());
 			return false;
@@ -618,7 +659,7 @@ bool Game::LoadGameOpeningMenu()
 	game_object_map["Start Game"] = start_menu_text;
 	allGameObjects.push_back(start_menu_text);
 
-	if (debug.is_debug_mode())
+	if (Developer::GetInstance()->is_debug_mode())
 	{
 		std::cout << "Game::LoadGameOpeningMenu() was pushed to the allGameObjects vector" << std::endl;
 	}
@@ -731,7 +772,7 @@ bool Game::loadPlayerTextureMarks()
 
 	allGameObjects.push_back(player_tile_mark_gam_obj); //pushed TileMark instead of game object lol
 
-	if (debug.is_debug_mode())
+	if (Developer::GetInstance()->is_debug_mode())
 	{
 		std::cout << "Player mark loaded" << std::endl;
 	}
@@ -898,7 +939,7 @@ void Game::UpdateGameTextures()
 	}
 	else
 	{
-		if (debug.is_debug_mode())
+		if (Developer::GetInstance()->is_debug_mode())
 		{
 			std::cout << "Game::LoadGameObjectContent() Error - allGameObjects found empty!" << std::endl;
 		}
@@ -921,7 +962,7 @@ void Game::GameEventManager()
 				//if start button or enter key pressed
 			if ((csdl_obj->ButtonInputCheck("START")) || ((csdl_obj->GetSDLGameEvent()->key.keysym.sym == SDLK_RETURN && csdl_obj->GetSDLGameEvent()->type == SDL_KEYDOWN)))
 			{
-				if (debug.is_debug_mode())
+				if (Developer::GetInstance()->is_debug_mode())
 				{
 					std::cout << "\nYou Started the game!\n" << std::endl;
 				}
@@ -989,7 +1030,7 @@ void Game::GameEventManager()
 
 				x_o_highlighted_option = none_of_the_options_highlighted;
 
-				if (debug.is_debug_mode())
+				if (Developer::GetInstance()->is_debug_mode())
 				{
 					std::cout << "\n All Buttons Buttons unhighlighted Highlighted \n" << std::endl;
 				}
@@ -1022,7 +1063,7 @@ void Game::GameEventManager()
 					// highlight options 38, 64, 139
 					game_object_map["Options Button"]->AlterTextureColor(38, 64, 139);
 
-					if (debug.is_debug_mode())
+					if (Developer::GetInstance()->is_debug_mode())
 					{
 						std::cout << "\n Options Button Highlighted \n" << std::endl;
 					}
@@ -1041,7 +1082,7 @@ void Game::GameEventManager()
 						game_object_map["Options Button"]->RevertAlteredTextureColor();
 						game_object_map["Credits Button"]->RevertAlteredTextureColor();
 
-						if (debug.is_debug_mode())
+						if (Developer::GetInstance()->is_debug_mode())
 						{
 							std::cout << "\n Play Game Selected! \n" << std::endl;
 						}
@@ -1061,7 +1102,7 @@ void Game::GameEventManager()
 
 						x_o_highlighted_option = none_of_the_options_highlighted;
 
-						if (debug.is_debug_mode())
+						if (Developer::GetInstance()->is_debug_mode())
 						{
 							std::cout << "\n options_option_highlighted - Exit condition 1 met \n" << std::endl;
 						}
@@ -1083,7 +1124,7 @@ void Game::GameEventManager()
 						// highlight play
 						game_object_map["Play Button"]->AlterTextureColor(38, 64, 139);
 
-						if (debug.is_debug_mode())
+						if (Developer::GetInstance()->is_debug_mode())
 						{
 							std::cout << "\n Play Button Highlighted \n" << std::endl;
 						}
@@ -1100,7 +1141,7 @@ void Game::GameEventManager()
 					// highlight credits
 					game_object_map["Credits Button"]->AlterTextureColor(38, 64, 139);
 
-					if (debug.is_debug_mode())
+					if (Developer::GetInstance()->is_debug_mode())
 					{
 						std::cout << "\n Credits Button Highlighted \n" << std::endl;
 					}
@@ -1124,7 +1165,7 @@ void Game::GameEventManager()
 
 							x_o_highlighted_option = none_of_the_options_highlighted;
 
-							if (debug.is_debug_mode())
+							if (Developer::GetInstance()->is_debug_mode())
 							{
 								std::cout << "\n play_option_highlighted - Exit condition 1 met \n" << std::endl;
 							}
@@ -1149,7 +1190,7 @@ void Game::GameEventManager()
 					// highlight options
 					game_object_map["Options Button"]->AlterTextureColor(38, 64, 139);
 
-					if (debug.is_debug_mode())
+					if (Developer::GetInstance()->is_debug_mode())
 					{
 						std::cout << "\n Options Button Highlighted \n" << std::endl;
 					}
@@ -1172,7 +1213,7 @@ void Game::GameEventManager()
 
 							x_o_highlighted_option = none_of_the_options_highlighted;
 
-							if (debug.is_debug_mode())
+							if (Developer::GetInstance()->is_debug_mode())
 							{
 								std::cout << "\n credits_option_highlighted - Exit condition 1 met \n" << std::endl;
 							}
@@ -1201,7 +1242,7 @@ void Game::GameEventManager()
 
 							x_o_game_state = main_menu;
 
-							if (debug.is_debug_mode())
+							if (Developer::GetInstance()->is_debug_mode())
 							{
 								std::cout << "\n none_of_the_options_highlighted - Controller - Exit condition 2 met \n" << std::endl;
 							}
@@ -1221,7 +1262,7 @@ void Game::GameEventManager()
 
 					x_o_highlighted_option = play_option_highlighted;
 
-					if (debug.is_debug_mode())
+					if (Developer::GetInstance()->is_debug_mode())
 					{
 						std::cout << "\n Play Button Highlighted \n" << std::endl;
 					}
@@ -1252,7 +1293,7 @@ void Game::GameEventManager()
 				
 				RevertGameObjectColorList("Player VS Comp", "Player VS Player");
 
-				if (debug.is_debug_mode())
+				if (Developer::GetInstance()->is_debug_mode())
 				{
 					std::cout << "Both Texts found highlighted. Then reverted" << std::endl;
 				}
@@ -1272,7 +1313,7 @@ void Game::GameEventManager()
 
 							x_o_game_state = game_options;
 
-							if (debug.is_debug_mode())
+							if (Developer::GetInstance()->is_debug_mode())
 							{
 								std::cout << "Back Option Selected" << std::endl;
 							}
@@ -1286,7 +1327,7 @@ void Game::GameEventManager()
 					//highlight PVC right - may be a problem later
 					game_object_map["Player VS Comp"]->AlterTextureColor(38, 64, 139);
 
-					if (debug.is_debug_mode())
+					if (Developer::GetInstance()->is_debug_mode())
 					{
 						std::cout << "Player VS Comp Highlighted" << std::endl;
 					}
@@ -1310,7 +1351,7 @@ void Game::GameEventManager()
 
 					game_object_map["Player VS Player"]->AlterTextureColor(38, 64, 139);
 
-					if (debug.is_debug_mode())
+					if (Developer::GetInstance()->is_debug_mode())
 					{
 						std::cout << "" << std::endl;
 					}
@@ -1333,7 +1374,7 @@ void Game::GameEventManager()
 					//game_object_map["Player VS Player"]->RevertAlteredTextureColor();
 					RevertGameObjectColorList("Player VS Comp");
 
-					if (debug.is_debug_mode())
+					if (Developer::GetInstance()->is_debug_mode())
 					{
 						std::cout << "" << std::endl;
 					}
@@ -1353,7 +1394,7 @@ void Game::GameEventManager()
 					{
 						if (csdl_obj->ArrowKeyInput() == false)
 						{
-							if (debug.is_debug_mode())
+							if (Developer::GetInstance()->is_debug_mode())
 							{
 								std::cout << "Player VS Comp unhighlighted - exit condition 1" << std::endl;
 							}
@@ -1375,7 +1416,7 @@ void Game::GameEventManager()
 					//highlight PVC
 					game_object_map["Player VS Comp"]->AlterTextureColor(38, 64, 139);
 
-					if (debug.is_debug_mode())
+					if (Developer::GetInstance()->is_debug_mode())
 					{
 						std::cout << "" << std::endl;
 					}
@@ -1396,7 +1437,7 @@ void Game::GameEventManager()
 
 					RevertGameObjectColorList("Player VS Player");
 
-					if (debug.is_debug_mode())
+					if (Developer::GetInstance()->is_debug_mode())
 					{
 						std::cout << "" << std::endl;
 					}
@@ -1414,7 +1455,7 @@ void Game::GameEventManager()
 						{
 							RevertGameObjectColorList("Player VS Player");
 
-							if (debug.is_debug_mode())
+							if (Developer::GetInstance()->is_debug_mode())
 							{
 								std::cout << "Player VS Player text unhighlighted - Exit condition 1" << std::endl;
 							}
@@ -1457,13 +1498,12 @@ void Game::GameEventManager()
 				//Left or Right pressed
 				if (csdl_obj->ButtonInputCheck("LEFT")|| csdl_obj->ButtonInputCheck("RIGHT"))
 				{
-					if (csdl_obj->ButtonPressedCheck())
-					{
+					
 						game_object_map["rematch prompt"]->RevertAlteredTextureColor("yes rematch text");
 						game_object_map["rematch prompt"]->AlterTextureColor("no rematch text", 38, 64, 139);
 
 
-					}
+					
 
 					
 					//if A or Start Pressed

@@ -15,7 +15,7 @@
 
 int main(int argc, char* args[])
 {
-
+Developer::GetInstance();
 
 Game* game;
 

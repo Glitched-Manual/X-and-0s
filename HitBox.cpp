@@ -22,7 +22,7 @@ bool HitBox::LoadTexture(SDL_Renderer* passed_renderer)
 
 	if (hit_box_texture == NULL)
 	{
-		if (debug.is_debug_mode())
+		if (Developer::GetInstance()->is_debug_mode())
 		{
 			std::cout << "HitBox::LoadTexture() error - " << IMG_GetError() << std::endl;
 		}

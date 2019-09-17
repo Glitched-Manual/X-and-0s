@@ -61,7 +61,7 @@ bool TileMarker::LoadGameObjectContent(SDL_Renderer* passed_Renderer)
 	if (tile_marker_texture == NULL)
 	{
 
-		if (debug.is_debug_mode())
+		if (Developer::GetInstance()->is_debug_mode())
 		{
 			std::cout << "TileMarker::LoadGameObjectContent() error - " << IMG_GetError() << std::endl;
 		}
@@ -77,7 +77,7 @@ bool TileMarker::LoadGameObjectContent(SDL_Renderer* passed_Renderer)
 	if (tile_marker_texture_player2 == NULL)
 	{
 
-		if (debug.is_debug_mode())
+		if (Developer::GetInstance()->is_debug_mode())
 		{
 			std::cout << "TileMarker::LoadGameObjectContent() error - " << IMG_GetError() << std::endl;
 		}
@@ -86,7 +86,7 @@ bool TileMarker::LoadGameObjectContent(SDL_Renderer* passed_Renderer)
 	}
 
 
-	if (debug.is_debug_mode())
+	if (Developer::GetInstance()->is_debug_mode())
 	{
 		std::cout << "TileMarker " << tile_marker_id << " was loaded!" << std::endl;
 	}

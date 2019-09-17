@@ -23,7 +23,7 @@ public:
 	
 	Grid();
 	~Grid();
-Developer debug;
+
 
 void DisplayGrid();
 

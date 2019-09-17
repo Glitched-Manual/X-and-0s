@@ -25,7 +25,7 @@ CSDL* csdl_obj = NULL;
 
 
 Position* match_mark_position;
-Developer debug;
+
 public:
 
 

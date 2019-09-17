@@ -17,7 +17,7 @@ class CSDL
 	SDL_Renderer* sdl2_GameRenderer;
 	SDL_Event* sdl2_Game_Event;
 	SDL_GameController* sdl2_GameController;
-	Developer debug;
+	
 	enum ButtonValue { UP, DOWN, LEFT, RIGHT, START, SELECT, A_ACTION, B_ACTION, ESCAPE, SPACE, ENTER};
 	// add ENTER
 	std::map<std::string, ButtonValue> sdl2_Input_Map;

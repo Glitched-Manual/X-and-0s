@@ -16,7 +16,7 @@ class TileMarker:public GameObject
 
 	SDL_Rect* tile_marker_rect = NULL;
 	SDL_Rect* texture_crop_rect = NULL;
-	Developer debug;
+	
 
 	SDL_Rect* hash_table_rect = NULL;
 

@@ -18,7 +18,7 @@ Player::Player(const Player& obj)
 
 	match_mark_position = new Position;
 
-	if (debug.is_debug_mode())
+	if (Developer::GetInstance()->is_debug_mode())
 	{
 		std::cout << "Player::Player(const Player& obj) called player type " << std::endl;
 	}

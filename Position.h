@@ -3,8 +3,10 @@
 #include <memory>
 #include "Developer.h"
 #include <memory>
+
 #ifndef POSITION_H
 #define POSITION_H
+
 struct Developer;
 
 class Position{
@@ -14,7 +16,7 @@ Position(int passed_x,int passed_y);
 ~Position();
  const int* GetX(){ return x;}
  const int* GetY(){ return y;}
- Developer debug;
+
 
 void SetX(int passed_x){ *x = passed_x;}
 void SetY(int passed_y){ *y = passed_y;}

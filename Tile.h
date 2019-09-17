@@ -5,6 +5,7 @@
 #ifndef TILE_H
 #define TILE_H
 class Position;
+struct Developer;
 
 class Tile{
 
@@ -18,7 +19,7 @@ public:
 
 Tile();
 ~Tile();
-Developer debug;
+
 // sets mark on tile , sets marked status to true
 void SetTileMark(std::string passed_mark){ *tile_mark = passed_mark; *tile_is_marked = true;}
 

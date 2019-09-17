@@ -41,7 +41,7 @@ class PromptWindow: public GameObject
 	bool prompt_window_colors_altered = false;
 	CSDL* csdl_obj;
 
-	Developer debug;
+	
 public:
 
 	PromptWindow(LoaderParams* pParams, CSDL* passed_csdl_obj);

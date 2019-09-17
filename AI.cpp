@@ -7,7 +7,7 @@ AI::AI(const AI& obj, Grid* passed_grid)
 	ai_mark = new std::string;
 	ImportGrid(passed_grid); //forgot to do this lol
 	player_input_string = new std::string;
-	if (debug.is_debug_mode())
+	if (Developer::GetInstance()->is_debug_mode())
 	{
 		std::cout << "AI::AI(const AI& obj, Grid* passed_grid) constructor called" << std::endl;
 	}
@@ -21,14 +21,14 @@ AI::AI(std::string* passed_input_string, Grid* passed_grid)
 	ai_mark = new std::string;
 	ImportGrid(passed_grid); //forgot to do this lol
 
-	if (debug.is_debug_mode())
+	if (Developer::GetInstance()->is_debug_mode())
 	{
 		std::cout << "AI::AI(std::string* passed_input_string, Grid* passed_grid) constructor called" << std::endl;
 	}
 }
 AI::~AI()
 {
-	if (debug.is_debug_mode())
+	if (Developer::GetInstance()->is_debug_mode())
 	{
 		std::cout << "AI::~AI Destructor called" << std::endl;
 	}
@@ -69,7 +69,7 @@ std::string AI::GetPlayerInput(bool* quit)
 		{
 			random_index_select = available_tile_positions.size() - 1;
 		}
-		if (debug.is_debug_mode())
+		if (Developer::GetInstance()->is_debug_mode())
 		{
 			std::cout << "random_index_select = " << random_index_select << std::endl;
 		}
@@ -78,7 +78,7 @@ std::string AI::GetPlayerInput(bool* quit)
 		std::string ai_x_position_input = std::to_string(static_cast<char>( (*available_tile_positions[random_index_select]->GetX() + int('0') ) ) );
 		std::string ai_y_position_input = std::to_string(static_cast<char>( (*available_tile_positions[random_index_select]->GetY() + int('0') ) ) );
 		*/
-		if (debug.is_debug_mode())
+		if (Developer::GetInstance()->is_debug_mode())
 		{
 			std::cout << "The Tile located at vector " << random_index_select << " was seleceted by the AI." << std::endl;
 			std::cout << "The vector has " << available_tile_positions.size() << " available values" << std::endl;
@@ -98,7 +98,7 @@ std::string AI::GetPlayerInput(bool* quit)
 
 int AI::RandomAIMove()
 {
-	if (debug.is_debug_mode())
+	if (Developer::GetInstance()->is_debug_mode())
 	{
 		std::cout << "Generating random numbber..." << std::endl;
 	}
@@ -109,7 +109,7 @@ int AI::RandomAIMove()
 
 	unsigned short int random_move_random_number = rand() % random_move_index_max_value;
 
-	if (debug.is_debug_mode())
+	if (Developer::GetInstance()->is_debug_mode())
 	{
 		std::cout << "Random numbber "<< random_move_random_number <<" was generated!" << std::endl;
 	}
@@ -139,7 +139,7 @@ void AI::CollectAvailablePositions()
 				if (game_grid->GetGameTilePtr(x_pos, y_pos)->ReturnTileIsMarkedStatus())
 				{
 					//tile is not available
-					if (debug.is_debug_mode())
+					if (Developer::GetInstance()->is_debug_mode())
 					{
 						std::cout << "The Tile located at " << x_pos << " by " << y_pos << " is unvailable." << std::endl;
 					}
@@ -182,7 +182,7 @@ void AI::CollectAvailablePositions()
 
 									available_tile_positions.pop_back(); // changes loop and checks deleted addresses by chance
 
-									if (debug.is_debug_mode())
+									if (Developer::GetInstance()->is_debug_mode())
 									{
 										std::cout << "The Position located in available_tile_positions at [" << erase_at_index << "]  was swtiched back and popped"<< std::endl;
 									}
@@ -202,7 +202,7 @@ void AI::CollectAvailablePositions()
 					//if available tiles are not set, push postions to available tiles vector
 					if (available_tile_positions_collected == false)
 					{
-						if (debug.is_debug_mode())
+						if (Developer::GetInstance()->is_debug_mode())
 						{
 							std::cout << "AI has added to available Positions" << std::endl;
 						}
@@ -222,7 +222,7 @@ void AI::CollectAvailablePositions()
 		
 			available_tile_positions_collected = true;
 
-			if (debug.is_debug_mode())
+			if (Developer::GetInstance()->is_debug_mode())
 			{
 				std::cout << "AI has completed checking for available Positions" << std::endl;
 			}
@@ -263,7 +263,7 @@ void AI::DisplayAvailablePositionsVector()
 			
 				
 
-				if (debug.is_debug_mode())
+				if (Developer::GetInstance()->is_debug_mode())
 				{
 					std::cout << "The Position located in available_tile_positions at [" << available_position_index_counter << "]  is available" << std::endl;
 					std::cout << "The value is "<< *available_tile_positions.at(available_position_index_counter)->GetX() <<" ,"<< *available_tile_positions.at(available_position_index_counter)->GetY() << std::endl;

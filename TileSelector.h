@@ -30,7 +30,7 @@ class TileSelector: public GameObject
 
 	bool tile_selector_content_loaded = false;
 
-	Developer debug;
+	
 
 	 int *mouse_pos_x;
 

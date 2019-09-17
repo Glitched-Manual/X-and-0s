@@ -4,7 +4,7 @@ Grid::Grid()
 {
 	
     SetGameTiles();
-	if (debug.is_debug_mode())
+	if (Developer::GetInstance()->is_debug_mode())
 	{
 		std::cout << "Tiles set" << std::endl;
 	}
@@ -13,7 +13,7 @@ Grid::Grid()
 
 Grid::~Grid()
 {
-	if(debug.is_debug_mode())
+	if(Developer::GetInstance()->is_debug_mode())
 	{
 		std::cout << "Grid Destructor called" << std::endl;
 	}
@@ -23,7 +23,7 @@ Grid::~Grid()
 
 Tile Grid::GetGameTile(int passed_x, int passed_y)
 { 
-	if (debug.is_debug_mode())
+	if (Developer::GetInstance()->is_debug_mode())
 	{
 		std::cout << "GetGameTiles Called" << std::endl;
 	}
@@ -34,7 +34,7 @@ Tile Grid::GetGameTile(int passed_x, int passed_y)
 Tile* Grid::GetGameTilePtr(int passed_x, int passed_y)
 {
 	/*
-	if (debug.is_debug_mode())
+	if (Developer::GetInstance()->is_debug_mode())
 	{
 		std::cout << "GetGameTiles Called" << std::endl; //suuuppperr annoying when called for rendering every 1/100 seconds
 	}
@@ -46,7 +46,7 @@ Tile* Grid::GetGameTilePtr(int passed_x, int passed_y)
 void Grid::SetGameTiles()
 {
 	/*
-	if (debug.is_debug_mode())
+	if (Developer::GetInstance()->is_debug_mode())
 	{
 		std::cout << "SetGameTiles Called" << std::endl; //super annoying when called every 1/100 seconds by renderer
 	}

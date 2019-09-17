@@ -21,14 +21,14 @@ bool HashTable::LoadGameObjectContent(SDL_Renderer* passed_Renderer)
 
 	if (hash_table_texture == NULL)
 	{
-		if (debug.is_debug_mode())
+		if (Developer::GetInstance()->is_debug_mode())
 		{
 			printf("SDL_image could not initialize! SDL_image Error: %s\n", IMG_GetError());
 		}
 		return false;
 	}
 
-	if (debug.is_debug_mode())
+	if (Developer::GetInstance()->is_debug_mode())
 	{
 		printf("HashTable was successfully loaded\n");
 	}
@@ -44,13 +44,14 @@ void HashTable::Draw(SDL_Renderer* passed_Renderer)
 {
 	
 	SDL_RenderCopyEx(passed_Renderer, hash_table_texture,NULL, hash_table_rect,0,NULL,SDL_FLIP_NONE);
-
-	for (std::vector<CCollisionRectangle*>::iterator collider_index = collision_rects_vector.begin(); collider_index != collision_rects_vector.end(); collider_index++)
+	if (Developer::GetInstance()->are_hit_boxes_rendered())
 	{
-		
-		hash_table_hit_box->RenderGameObjectHitBox(passed_Renderer,(*collider_index)->GetCollisionRect());
-	}
+		for (std::vector<CCollisionRectangle*>::iterator collider_index = collision_rects_vector.begin(); collider_index != collision_rects_vector.end(); collider_index++)
+		{
 
+			hash_table_hit_box->RenderGameObjectHitBox(passed_Renderer, (*collider_index)->GetCollisionRect());
+		}
+	}
 }
 void HashTable::Update()
 {

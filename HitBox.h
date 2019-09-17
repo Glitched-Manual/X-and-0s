@@ -14,7 +14,7 @@ class HitBox
 	SDL_Texture* hit_box_texture = NULL;
 	SDL_Rect* hit_box_crop_rect = NULL; //if I want to animate after everything works
 
-	Developer debug;
+	
 public:
 
 	HitBox();

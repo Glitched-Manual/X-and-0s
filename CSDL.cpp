@@ -60,14 +60,14 @@ bool CSDL::Init()
 
 				if (SDL_WasInit(SDL_INIT_AUDIO) != 0)
 				{
-					if (debug.is_debug_mode())
+					if (Developer::GetInstance()->is_debug_mode())
 					{
 						printf("Audio has been initialized.\n");
 					}
 					   //Initialize SDL_mixer - uncomment return later
 					if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
 					{
-						if (debug.is_debug_mode()) 
+						if (Developer::GetInstance()->is_debug_mode()) 
 						{
 							printf("SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError());
 						}
@@ -78,7 +78,7 @@ bool CSDL::Init()
 				}
 				else 
 				{
-					if (debug.is_debug_mode())
+					if (Developer::GetInstance()->is_debug_mode())
 					{
 						printf("Audio was not initialized! SDL_mixer Error: %s\n", Mix_GetError());
 					}
@@ -91,7 +91,7 @@ bool CSDL::Init()
 				//Initialize SDL_ttf
 				if (TTF_Init() == -1)
 				{
-					if (debug.is_debug_mode())
+					if (Developer::GetInstance()->is_debug_mode())
 					{
 						printf("SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError());
 					}
@@ -104,7 +104,7 @@ bool CSDL::Init()
 
 				if (SDL_NumJoysticks() < 1)
 				{
-					if (debug.is_debug_mode())
+					if (Developer::GetInstance()->is_debug_mode())
 					{
 						printf("Warning: No joysticks connected! error %s\n", SDL_GetError());
 					}
@@ -121,7 +121,7 @@ bool CSDL::Init()
 							sdl2_GameController = SDL_GameControllerOpen(i);
 							if (sdl2_GameController)
 							{
-								if (debug.is_debug_mode())
+								if (Developer::GetInstance()->is_debug_mode())
 								{
 									char* gameControllerMapping;
 									std::cout << "The controller was reconized" << std::endl;
@@ -134,7 +134,7 @@ bool CSDL::Init()
 							}
 							else
 							{
-								if (debug.is_debug_mode())
+								if (Developer::GetInstance()->is_debug_mode())
 								{
 									fprintf(stderr, "Could not open gamecontroller %i: %s\n", i, SDL_GetError());
 								}
@@ -158,7 +158,7 @@ bool CSDL::createSDLWindow(unsigned int passed_SCREEN_WIDTH, unsigned int passed
 
 	if (sdl2_GameWindow == NULL)
 	{
-		if (debug.is_debug_mode())
+		if (Developer::GetInstance()->is_debug_mode())
 		{
 			printf("CSDL::createSDLWindow error: SDL2_Window could not be created! SDL Error: %s\n", SDL_GetError());
 		}
@@ -176,7 +176,7 @@ bool CSDL::createSDLRenderer()
 
 	if (sdl2_GameRenderer == NULL)
 	{
-		if(debug.is_debug_mode()) 
+		if(Developer::GetInstance()->is_debug_mode()) 
 		{
 			printf("CSDL::createSDLRenderer() error: Renderer could not be created! SDL Error: %s\n", SDL_GetError());
 		}
@@ -296,7 +296,7 @@ bool CSDL::ButtonInputCheck(std::string input_to_check)
 		*/
 		if ( (sdl2_Game_Event->cbutton.button == SDL_CONTROLLER_BUTTON_B) && (sdl2_Game_Event->cbutton.state == SDL_PRESSED))
 		{
-			if (debug.is_debug_mode())
+			if (Developer::GetInstance()->is_debug_mode())
 			{
 				std::cout << "B pressed" << std::endl;
 			}
@@ -308,7 +308,7 @@ bool CSDL::ButtonInputCheck(std::string input_to_check)
 
 		else if ((sdl2_Game_Event->key.keysym.sym == SDLK_s) && (sdl2_Game_Event->type == SDL_KEYDOWN))
 		{
-			if (debug.is_debug_mode())
+			if (Developer::GetInstance()->is_debug_mode())
 			{
 				std::cout << "S pressed" << std::endl;
 			}
@@ -324,7 +324,7 @@ bool CSDL::ButtonInputCheck(std::string input_to_check)
 		//keyboard only
 		if ((sdl2_Game_Event->key.keysym.sym == SDLK_ESCAPE) && (sdl2_Game_Event->type == SDL_KEYDOWN))
 		{
-			if (debug.is_debug_mode())
+			if (Developer::GetInstance()->is_debug_mode())
 			{
 				std::cout << "ESCAPE pressed" << std::endl;
 			}

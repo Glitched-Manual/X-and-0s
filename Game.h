@@ -12,6 +12,7 @@
 #include "TileMarker.h"
 #include "PromptWindow.h"
 #include "TileSelector.h"
+#include "Developer.h"
 
 #ifndef GAME_H
 #define GAME_H
@@ -85,9 +86,9 @@ GameResult current_game_result = no_result;
 bool menu_activated = false;
 // InputButtonValue;
 
-Developer debug;
 
 
+int time_Check;
 public:
 Game(unsigned int passed_screen_width, unsigned int passed_screen_height);
 ~Game();
@@ -162,5 +163,13 @@ void RevertGameObjectColorList(std::string passed_string_arg, String_args... oth
 
 template<typename... Basic_string_args>
 void RevertGameObjectColorList( char* passed_string_arg, Basic_string_args... other_passed_string_args);
+
+//AI turn
+
+void AITurnEvent();
+
+//Update for event
+void PostEventUpdate();
+
 };
 #endif //GAME_H

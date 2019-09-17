@@ -51,7 +51,7 @@ bool TileSelector::LoadGameObjectContent(SDL_Renderer* passed_Renderer)
 	if (tile_selector_texture == NULL)
 	{
 
-		if (debug.is_debug_mode())
+		if (Developer::GetInstance()->is_debug_mode())
 		{
 			std::cout << "TileSelector::LoadGameObjectContent() error - " << IMG_GetError() << std::endl;
 		}
@@ -316,7 +316,7 @@ void TileSelector::ButtonPressed()
 			right_direction = true;
 						
 		}
-		if (debug.is_debug_mode())
+		if (Developer::GetInstance()->is_debug_mode())
 		{
 
 			
@@ -362,14 +362,14 @@ void TileSelector::ButtonReleased()
 		{
 			right_direction = false;
 
-			/*	if (debug.is_debug_mode())
+			/*	if (Developer::GetInstance()->is_debug_mode())
 				{
 					std::cout << "The selcetor is now located at " << game_tile_selector->GetX() << "," << game_tile_selector->GetY() << std::endl;
 				}
 				*/
 		}
 
-		if (debug.is_debug_mode())
+		if (Developer::GetInstance()->is_debug_mode())
 		{
 			std::cout << "Directional button Released " << std::endl;
 		}
