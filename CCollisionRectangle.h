@@ -1,5 +1,5 @@
 #include "cross_sdl.h"
-#include "GameObject.h"
+
 
 #ifndef CCOLLISIONRECTANGLE_H
 #define CCOLLISIONRECTANGLE_H

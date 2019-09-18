@@ -126,4 +126,104 @@ void HashTable::CreateCollisionRectangle(unsigned int passed_x, unsigned int pas
 	collision_obj->SetCollisionRect(x_value, y_value, w_value, h_value);
 
 	collision_rects_vector.push_back(collision_obj);
+	//add to collider map
+	collider_position_map[collision_obj] = new Position(passed_x, passed_y);
+}
+
+bool HashTable::CheckCollisionPoints(CCollisionRectangle* passed_CollisionRectangle)
+{ 
+	// good if the object only has I collider
+
+	return false; 
+}
+
+bool HashTable::HasObjectCollided(CCollisionRectangle* prime_collider, CCollisionRectangle* alpha_collider)
+{
+
+	//x,y
+	PointCollisionCheck(prime_collider->GetCollisionRect()->x, prime_collider->GetCollisionRect()->y, alpha_collider);
+	//x+w,y
+	PointCollisionCheck(prime_collider->GetCollisionRect()->x + prime_collider->GetCollisionRect()->w, prime_collider->GetCollisionRect()->y, alpha_collider);
+	//x,y+h
+	PointCollisionCheck(prime_collider->GetCollisionRect()->x, prime_collider->GetCollisionRect()->y + prime_collider->GetCollisionRect()->h, alpha_collider);
+	//x+w,y+h
+	PointCollisionCheck(prime_collider->GetCollisionRect()->x + prime_collider->GetCollisionRect()->w, prime_collider->GetCollisionRect()->y + prime_collider->GetCollisionRect()->h, alpha_collider);
+
+
+	return false;
+}
+
+/*
+   1 _ 2
+    |_|
+   3   4
+
+   1(x,y)
+
+   obj 2
+
+   A _ B
+	|_|
+   C   D
+
+   check 1-4
+
+   by checking if each x,y is within
+
+      <-------X--> 
+      ___________
+   ^ |
+   | |
+   Y |
+   | |
+   v
+
+     AND
+
+	      | ^
+		  | |
+		  | Y
+	______| |
+	<--X--> v
+
+*/
+
+
+bool PointCollisionCheck(int x, int y, CCollisionRectangle* alpha_collider)
+{
+
+	if ((x >= alpha_collider->GetCollisionRect()->x) && (y >= alpha_collider->GetCollisionRect()->y))
+	{
+
+		if (x >= (alpha_collider->GetCollisionRect()->x + alpha_collider->GetCollisionRect()->w))
+		{
+
+			if (y >= (alpha_collider->GetCollisionRect()->y + alpha_collider->GetCollisionRect()->h))
+			{
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+Position* HashTable::GetPositionOfSelectedTile(CCollisionRectangle* passed_CollisionRectangle)
+{
+	
+	//vector for loop
+
+	for (auto vec : collision_rects_vector)
+	{
+		if (HasObjectCollided(passed_CollisionRectangle,vec))
+		{
+			if(Developer::GetInstance()->is_debug_mode())
+			{
+				puts("HashTable::GetPositionOfSelectedTile - Collision with Hash table detected");
+			}
+			return collider_position_map[vec];
+		}
+			
+	}
+
+	return NULL;
 }

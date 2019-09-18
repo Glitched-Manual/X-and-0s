@@ -2,13 +2,15 @@
 #include "LoaderParams.h"
 #include "Developer.h"
 #include "Color.h"
-
+#include "CCollisionRectangle.h"
+#include "Position.h"
 
 #include <string>
 
 #ifndef GAMEOBJECT_H
 #define GAMEOBJECT_H
 struct Developer;
+class CCollisionRectangle;
 class GameObject
 {
 	
@@ -42,8 +44,8 @@ public:
 	//Collision methods
 	virtual	SDL_Rect* GetCollisionRect() { return NULL; }
 
-	virtual bool HasObjectCollided() { return false; }
-
+	virtual bool CheckCollisionPoints(CCollisionRectangle* passed_CollisionRectangle) { return false; }
+	virtual bool HasObjectCollided(CCollisionRectangle* passed_first_CollisionRectangle, CCollisionRectangle* passed_second_CollisionRectangle) { return false; }
 	GameObject(){}
 protected:
 

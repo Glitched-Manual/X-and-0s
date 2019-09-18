@@ -2,6 +2,7 @@
 #include "CCollisionRectangle.h"
 #include "HitBox.h"
 #include <vector>
+#include <map>
 #ifndef HASHTABLE_H
 #define HASHTABLE_H
 
@@ -18,7 +19,8 @@ class HashTable: public GameObject
 	
 
 	std::vector< CCollisionRectangle*> collision_rects_vector;
-	HitBox* hash_table_hit_box;
+	std::map<CCollisionRectangle*, Position*> collider_position_map;
+	HitBox* hash_table_hit_box; // make as singleton
 
 public:
 	 HashTable(const LoaderParams* pParams);
@@ -46,6 +48,13 @@ public:
 
 	 void SetCollisionRectVector();
 	 void CreateCollisionRectangle(unsigned int x,unsigned int y);
+
+	 bool CheckCollisionPoints(CCollisionRectangle* passed_CollisionRectangle);
+	 bool HasObjectCollided(CCollisionRectangle* passed_first_CollisionRectangle, CCollisionRectangle* passed_second_CollisionRectangle);
+	 bool PointCollisionCheck(int x,int y, CCollisionRectangle* passed_second_CollisionRectangle);
+
+	 Position* GetPositionOfSelectedTile(CCollisionRectangle* passed_CollisionRectangle);
+	 
 };
 
 #endif //HASHTABLE_H
