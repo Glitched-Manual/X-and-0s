@@ -3,7 +3,7 @@
 TileSelector::TileSelector(LoaderParams* pParams, Grid* passed_grid, SDL_Rect* passed_hash_table_rect, CSDL* passed_csdl_obj, std::string passed_id_name)
 {
 	tile_selector_texture_rect = new SDL_Rect;
-
+	tile_selector_collision_Rect = new CCollisionRectangle;
 	selector_position = new Position;
 	time_Check = SDL_GetTicks();
 	//LoaderParams
@@ -13,6 +13,10 @@ TileSelector::TileSelector(LoaderParams* pParams, Grid* passed_grid, SDL_Rect* p
 	tile_selector_texture_rect->w = pParams->GetWidth();
 	tile_selector_texture_rect->h = pParams->GetHeight();
 
+	//SetCollisionRect
+
+
+	tile_selector_collision_Rect->SetCollisionRect(tile_selector_texture_rect->x, tile_selector_texture_rect->y, tile_selector_texture_rect->w, tile_selector_texture_rect->h);
 	//get grid obj
 	     
 	 game_grid = passed_grid;
@@ -181,6 +185,8 @@ void TileSelector::SetSelectorScreenPosition()
 	tile_selector_texture_rect->x = *mouse_pos_x;
 		
 	tile_selector_texture_rect->y = *mouse_pos_y;
+
+	tile_selector_collision_Rect->MoveCollisionRect(*mouse_pos_x, *mouse_pos_y);
 }
 
 void TileSelector::MoveSelector(int passed_x, int passed_y)

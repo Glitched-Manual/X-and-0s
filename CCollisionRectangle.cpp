@@ -30,3 +30,9 @@ void CCollisionRectangle::SetCollisionRect(int passed_x, int passed_y, int passe
 	CollisionRect->h = passed_h;
 
 }
+
+void CCollisionRectangle::MoveCollisionRect(int passed_x, int passed_y)
+{
+	CollisionRect->x = passed_x;
+	CollisionRect->y = passed_y;
+}

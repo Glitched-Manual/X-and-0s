@@ -2,6 +2,7 @@
 #include "Grid.h"
 #include "CSDL.h"
 #include "Developer.h"
+#include "CCollisionRectangle.h"
 
 #include <vector>
 
@@ -25,6 +26,8 @@ class TileSelector: public GameObject
 	std::vector<SDL_Color*> tile_selector_vector;
 
 	std::string tile_selector_id;
+
+	CCollisionRectangle* tile_selector_collision_Rect;
 
 	bool tile_selector_texture_texture_colors_altered = false;
 
@@ -72,7 +75,11 @@ public:
 	 Color GetOringinalColors() {	 return tile_selector_base_color;	 } //leave empty return white
 	 bool GetAreColorsAltered() { return tile_selector_texture_texture_colors_altered; }
 	 SDL_Rect* GetTextureRect() { return tile_selector_texture_rect; }
+
+	 CCollisionRectangle* GetCollisionRectangle() { return tile_selector_collision_Rect; }
 	 void MoveSelector(int x, int y);
+
+
 
 	 int GetX(){ return *mouse_pos_x;}
 	 int GetY() { return *mouse_pos_y; }

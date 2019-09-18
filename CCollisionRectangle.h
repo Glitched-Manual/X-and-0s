@@ -12,6 +12,7 @@ public:
 	CCollisionRectangle(int x, int y, int w, int h);
 	~CCollisionRectangle();
 	void SetCollisionRect(int x,int y, int w, int h);
+	void MoveCollisionRect(int x , int y);
 	SDL_Rect* GetCollisionRect() { return CollisionRect; }
 };
 

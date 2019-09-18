@@ -58,6 +58,7 @@ Game::Game(unsigned int passed_screen_width, unsigned int passed_screen_height)
 
 	//Load Options menu textures
 	LoadGameOptionsMenu();
+
 	// hash table and marks
 	LoadGameplayObjects();
 
@@ -210,6 +211,10 @@ int Game::PlayerTurn(Player* current_player)
 	Position* position_to_mark_obj;
 	position_to_mark_obj = new Position;
 
+	/*
+	if mouse click and human vs human or human vs cpu P1 turn
+	*/
+
 	//input Player.GetInput # non sdl version
 	// get keyboard input from sdl2 convert numbers and char values
 	std::string p1ayer_input = current_player->GetPlayerInput(&quit_game_from_input);
@@ -235,7 +240,7 @@ int Game::PlayerTurn(Player* current_player)
 			std::cout << "Tile marked" << std::endl;
 			total_turns++; //caused endless loop other comment stuck on other players turn
 		}
-	}
+	}	
 	delete position_to_mark_obj;
 	return 1;
 }
@@ -487,16 +492,93 @@ void Game::TurnPhaseEvent()
 		
 		if (total_turns % 2 == players_turn_order) //make false to change turn order to player_pos_2 starting if 0 p1 first. 1 p2 first
 		{
-			int p1_turn = PlayerTurn(player_pos_1);
+			/*
+	          if mouse click and human vs human or human vs cpu P1 turn
+	        */
+			//P1 always human
+
+			//if enter did not trigger turn
+			if (csdl_obj->ButtonInputCheck("SPACE") == false)
+			{
+				
+				if (game_input_position_ptr != NULL) 
+				{
+					if (CheckIfTileIsAvailable(game_input_position_ptr))
+					{
+						std::cout << "check if available" << std::endl;
+						//mark square if available
+						SetGameTileMark(game_input_position_ptr, *player_pos_1->GetPlayerMark());//triggers segmentation error
+						std::cout << "Tile marked" << std::endl;
+						total_turns++; //caused endless loop other comment stuck on other players turn
+					}
+				}
+				//game_input_position_ptr returned NULL
+				else
+				{
+					if (Developer::GetInstance()->is_debug_mode())
+					{
+						puts("Game::TurnPhaseEvent() Error game_input_position_ptr == NULL");
+					}
+				}
+				
+			}
+			//if enter triggered turn
+			else 
+			{
+				int p1_turn = PlayerTurn(player_pos_1);
+			}
+			
 
 			//if (p1_turn == 0) break;
 		}
 		//turn 2 Player* pos or AI - ai inherits player class
 		else
 		{
-			int p2_turn = PlayerTurn(player_pos_2);
+			/*
+			if not ai and not triggered by space
+			
+			*/
+			if (csdl_obj->ButtonInputCheck("SPACE") == false)
+			{
+				//if pvc == false
 
-			//if (p2_turn == 0) break;
+				if (x_o_gameplay_mode == human_vs_human)
+				{
+
+					if (game_input_position_ptr != NULL)
+					{
+						if (CheckIfTileIsAvailable(game_input_position_ptr))
+						{
+							std::cout << "check if available" << std::endl;
+							//mark square if available
+							SetGameTileMark(game_input_position_ptr, *player_pos_1->GetPlayerMark());//triggers segmentation error
+							std::cout << "Tile marked" << std::endl;
+							total_turns++; //caused endless loop other comment stuck on other players turn
+						}
+					}
+					//game_input_position_ptr returned NULL
+					else
+					{
+						if (Developer::GetInstance()->is_debug_mode())
+						{
+							puts("Game::TurnPhaseEvent() Error game_input_position_ptr == NULL");
+						}
+
+					}
+				}
+				//player vs computer
+				else
+				{
+					int p2_turn = PlayerTurn(player_pos_2);
+				}
+			}
+			else 
+			{
+				int p2_turn = PlayerTurn(player_pos_2);
+			}
+			
+
+			
 		}
 	}
 	//check for win if total_turns > 4
@@ -595,6 +677,8 @@ bool Game::LoadGameplayObjects()
 	game_object_map["Hash Table"] = hash_table;
 	hash_table_game_obj = hash_table;
 
+	//init game.h hash Table
+	game_hash_table = hash_table;
 	allGameObjects.push_back(hash_table_game_obj);
 	
 	//load marks
@@ -1558,6 +1642,7 @@ void Game::GameEventManager()
 			}
 
 		}
+		//Playing and match is not over
 		else
 		{
 			if (csdl_obj->ButtonInputCheck("SPACE"))
@@ -1577,7 +1662,48 @@ void Game::GameEventManager()
 
 			collision returns a position value to check
 			*/
+			if (csdl_obj->GetSDLGameEvent()->button.button == SDL_BUTTON_LEFT)
+			{
+				if (csdl_obj->GetSDLGameEvent()->button.type == SDL_MOUSEBUTTONUP)
+				{
+					/*
+				if selector center is within hashtable
+				*/
+					if (SelectorHoveringOverHashTable())
+					{
 
+						//get position* when clicked position with value or NULL
+						game_input_position_ptr = game_hash_table->GetPositionOfSelectedTile(game_object_map["tile_selector cursor"]->GetCollisionRectangle());
+
+						if (game_input_position_ptr != NULL)
+						{
+							TurnPhaseEvent();
+
+							if (Developer::GetInstance()->is_debug_mode())
+							{
+								puts("TurnPhaseEvent() called\n");
+							}
+						}
+						else
+						{
+							if (Developer::GetInstance()->is_debug_mode())
+							{
+								puts("Match GamePlayer - game_input_position_ptr == NULL\n");
+							}
+						}
+						
+						game_input_position_ptr = nullptr; //reset for next event
+					}
+					else
+					{
+						if (Developer::GetInstance()->is_debug_mode())
+						{
+							puts("Match GamePlayer click event false. for some reason\n");
+						}
+					}
+				}
+				
+			}
 
 		}
 
@@ -1704,6 +1830,38 @@ void Game::GameEventManager()
 
 	
 } //end of Xs an Os game events
+
+/*
+Match events 
+
+*/
+
+bool Game::SelectorHoveringOverHashTable()
+{
+	//if selector x +(w/2), y + (h/2) is within the hashtable rect
+	//game_object_map["Hash Table"]
+	//game_object_map["tile_selector cursor"]
+	int selector_x = game_object_map["tile_selector cursor"]->GetCollisionRectangle()->GetCollisionRect()->x;
+	int selector_y = game_object_map["tile_selector cursor"]->GetCollisionRectangle()->GetCollisionRect()->y;
+
+	if ((selector_x >= game_object_map["Hash Table"]->GetTextureRect()->x) && (selector_y >= game_object_map["Hash Table"]->GetTextureRect()->y))
+	{
+		if (selector_x <= (game_object_map["Hash Table"]->GetTextureRect()->x + game_object_map["Hash Table"]->GetTextureRect()->w))
+		{
+			if (selector_y <= (game_object_map["Hash Table"]->GetTextureRect()->y + game_object_map["Hash Table"]->GetTextureRect()->h))
+			{
+				if (Developer::GetInstance()->is_debug_mode())
+				{
+					puts("Selector is within HashTable object texture\n");
+				}
+
+				return true;
+			}
+		}
+	}
+
+	return false;
+}
 
 
 

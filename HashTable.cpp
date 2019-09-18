@@ -137,17 +137,29 @@ bool HashTable::CheckCollisionPoints(CCollisionRectangle* passed_CollisionRectan
 	return false; 
 }
 
-bool HashTable::HasObjectCollided(CCollisionRectangle* prime_collider, CCollisionRectangle* alpha_collider)
+bool HashTable::HasObjectCollided(CCollisionRectangle* prime_collider, CCollisionRectangle* alpha_collider) // forgot to put bools in if statement
 {
 
 	//x,y
-	PointCollisionCheck(prime_collider->GetCollisionRect()->x, prime_collider->GetCollisionRect()->y, alpha_collider);
+	if (PointCollisionCheck(prime_collider->GetCollisionRect()->x, prime_collider->GetCollisionRect()->y, alpha_collider))
+	{
+		return true;
+	}
 	//x+w,y
-	PointCollisionCheck(prime_collider->GetCollisionRect()->x + prime_collider->GetCollisionRect()->w, prime_collider->GetCollisionRect()->y, alpha_collider);
+	if (PointCollisionCheck(prime_collider->GetCollisionRect()->x + prime_collider->GetCollisionRect()->w, prime_collider->GetCollisionRect()->y, alpha_collider))
+	{
+		return true;
+	}
 	//x,y+h
-	PointCollisionCheck(prime_collider->GetCollisionRect()->x, prime_collider->GetCollisionRect()->y + prime_collider->GetCollisionRect()->h, alpha_collider);
+	if (PointCollisionCheck(prime_collider->GetCollisionRect()->x, prime_collider->GetCollisionRect()->y + prime_collider->GetCollisionRect()->h, alpha_collider))
+	{
+		return true;
+	}
 	//x+w,y+h
-	PointCollisionCheck(prime_collider->GetCollisionRect()->x + prime_collider->GetCollisionRect()->w, prime_collider->GetCollisionRect()->y + prime_collider->GetCollisionRect()->h, alpha_collider);
+	if (PointCollisionCheck(prime_collider->GetCollisionRect()->x + prime_collider->GetCollisionRect()->w, prime_collider->GetCollisionRect()->y + prime_collider->GetCollisionRect()->h, alpha_collider))
+	{
+		return true;
+	}
 
 
 	return false;
@@ -189,7 +201,7 @@ bool HashTable::HasObjectCollided(CCollisionRectangle* prime_collider, CCollisio
 */
 
 
-bool PointCollisionCheck(int x, int y, CCollisionRectangle* alpha_collider)
+bool HashTable::PointCollisionCheck(int x, int y, CCollisionRectangle* alpha_collider)
 {
 
 	if ((x >= alpha_collider->GetCollisionRect()->x) && (y >= alpha_collider->GetCollisionRect()->y))
@@ -218,11 +230,15 @@ Position* HashTable::GetPositionOfSelectedTile(CCollisionRectangle* passed_Colli
 		{
 			if(Developer::GetInstance()->is_debug_mode())
 			{
-				puts("HashTable::GetPositionOfSelectedTile - Collision with Hash table detected");
+				puts("HashTable::GetPositionOfSelectedTile - Collision with Hash table detected\n");
 			}
 			return collider_position_map[vec];
 		}
 			
+	}
+	if (Developer::GetInstance()->is_debug_mode())
+	{
+		puts("HashTable::GetPositionOfSelectedTile - Collision with Hash table Returning NULL\n");
 	}
 
 	return NULL;

@@ -55,6 +55,14 @@ std::map<std::string, GameObject* > game_object_map;
 
 //in game selector
 TileSelector* game_tile_selector = NULL;
+//game hashTable - the graphic grid
+
+HashTable* game_hash_table = NULL;
+
+//Input Position
+
+Position* game_input_position_ptr;
+
 // game mode enum
 
 enum current_game_state {main_menu,game_options,opponent_selection, match_gameplay,credits,pause,quit};
@@ -170,6 +178,9 @@ void AITurnEvent();
 
 //Update for event
 void PostEventUpdate();
+//match methods
+
+bool SelectorHoveringOverHashTable();
 
 };
 #endif //GAME_H

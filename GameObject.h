@@ -42,7 +42,7 @@ public:
 	virtual void AlterTextureAlpha(Uint8 alpha_value, std::string passed_texture_key){}
 
 	//Collision methods
-	virtual	SDL_Rect* GetCollisionRect() { return NULL; }
+	virtual	CCollisionRectangle* GetCollisionRectangle() { return NULL; }
 
 	virtual bool CheckCollisionPoints(CCollisionRectangle* passed_CollisionRectangle) { return false; }
 	virtual bool HasObjectCollided(CCollisionRectangle* passed_first_CollisionRectangle, CCollisionRectangle* passed_second_CollisionRectangle) { return false; }
