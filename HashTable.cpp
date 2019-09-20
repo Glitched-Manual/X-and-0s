@@ -14,6 +14,11 @@ HashTable::HashTable(const LoaderParams* pParams)
 	SetCollisionRectVector();
 }
 
+HashTable::~HashTable()
+{
+	delete hash_table_rect;
+	//empty all collision rects
+}
 
 bool HashTable::LoadGameObjectContent(SDL_Renderer* passed_Renderer)
 {

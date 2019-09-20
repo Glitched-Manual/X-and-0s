@@ -24,6 +24,7 @@ class HashTable: public GameObject
 
 public:
 	 HashTable(const LoaderParams* pParams);
+	 ~HashTable();
 	 bool LoadGameObjectContent(SDL_Renderer* passed_Renderer);
 	 void Draw(SDL_Renderer* passed_Renderer);
 	 void Update();
