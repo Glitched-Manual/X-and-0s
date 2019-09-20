@@ -139,30 +139,83 @@ bool HashTable::CheckCollisionPoints(CCollisionRectangle* passed_CollisionRectan
 
 bool HashTable::HasObjectCollided(CCollisionRectangle* prime_collider, CCollisionRectangle* alpha_collider) // forgot to put bools in if statement
 {
+	/*
+	Collision by lazy foo
 
+	Mine was flawed 
+	
+	*/
+	SDL_Rect a = *prime_collider->GetCollisionRect();
+	SDL_Rect b = *alpha_collider->GetCollisionRect();
+	//The sides of the rectangles
+	int leftA, leftB;
+	int rightA, rightB;
+	int topA, topB;
+	int bottomA, bottomB;
+
+	//Calculate the sides of rect A
+	leftA = a.x;
+	rightA = a.x + a.w;
+	topA = a.y;
+	bottomA = a.y + a.h;
+
+	//Calculate the sides of rect B
+	leftB = b.x;
+	rightB = b.x + b.w;
+	topB = b.y;
+	bottomB = b.y + b.h;
+
+	//If any of the sides from A are outside of B
+
+	if (bottomA <= topB)
+	{
+		return false;
+	}
+	//same comparison
+	if (topA >= bottomB)
+	{
+		return false;
+	}
+	
+
+	if (rightA <= leftB)
+	{
+		return false;
+	}
+
+	if (leftA >= rightB)
+	{
+		return false;
+	}
+
+	//If none of the sides from A are outside B
+	return true;
+
+	/*
 	//x,y
 	if (PointCollisionCheck(prime_collider->GetCollisionRect()->x, prime_collider->GetCollisionRect()->y, alpha_collider))
 	{
-		return true;
+		return false;
 	}
 	//x+w,y
 	if (PointCollisionCheck(prime_collider->GetCollisionRect()->x + prime_collider->GetCollisionRect()->w, prime_collider->GetCollisionRect()->y, alpha_collider))
 	{
-		return true;
+		return false;
 	}
 	//x,y+h
 	if (PointCollisionCheck(prime_collider->GetCollisionRect()->x, prime_collider->GetCollisionRect()->y + prime_collider->GetCollisionRect()->h, alpha_collider))
 	{
-		return true;
+		return false;
 	}
-	//x+w,y+h
+	//x+w,y+h not needed
 	if (PointCollisionCheck(prime_collider->GetCollisionRect()->x + prime_collider->GetCollisionRect()->w, prime_collider->GetCollisionRect()->y + prime_collider->GetCollisionRect()->h, alpha_collider))
 	{
-		return true;
+		return false;
 	}
 
 
-	return false;
+	return true;
+	*/
 }
 
 /*
