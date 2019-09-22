@@ -2,6 +2,8 @@
 
 GameText::GameText(LoaderParams* pParams)
 {
+	//make a set rect method so I do not see three of the same thing, inside this file
+
 	game_text_rect = new SDL_Rect;
 	game_text_rect->x = pParams->GetX();
 	game_text_rect->y = pParams->GetY();
@@ -14,6 +16,8 @@ GameText::GameText(LoaderParams* pParams)
 
 GameText::GameText(LoaderParams* pParams, unsigned int passed_text_size)
 {
+	game_text_collider = new CCollisionRectangle;
+
 	game_text_rect = new SDL_Rect;
 	game_text_rect->x = pParams->GetX();
 	game_text_rect->y = pParams->GetY();
@@ -22,6 +26,8 @@ GameText::GameText(LoaderParams* pParams, unsigned int passed_text_size)
 	game_text_id = pParams->GetTextureID();
 
 	game_text_size = passed_text_size;
+
+	game_text_collider->SetCollisionRect(game_text_rect->x, game_text_rect->y, game_text_rect->w, game_text_rect->h);
 }
 
 GameText::GameText(LoaderParams* pParams, std::string passed_message, unsigned int passed_text_size)
@@ -36,6 +42,13 @@ GameText::GameText(LoaderParams* pParams, std::string passed_message, unsigned i
 	game_text_size = passed_text_size;
 
 	SetGameTextMessage(passed_message);
+}
+
+
+GameText::~GameText()
+{
+
+	delete game_text_rect;
 }
 
 void GameText::AlterTextureColor(Uint8 passed_r_value, Uint8 passed_g_value, Uint8 passed_b_value)
@@ -218,8 +231,56 @@ void GameText::SetGameTextMessage(char* passed_message)
 	game_text_message = passed_message;
 }
 
-GameText::~GameText()
-{
-	
 
+bool GameText::CheckForSingleCollision(CCollisionRectangle* passed_CollisionRectangle)
+{
+	//Get rect of this GameText
+
+	SDL_Rect alpha = *game_text_collider->GetCollisionRect();
+
+	SDL_Rect beta = *passed_CollisionRectangle->GetCollisionRect();
+
+
+	//The sides of the rectangles
+	int leftA, leftB;
+	int rightA, rightB;
+	int topA, topB;
+	int bottomA, bottomB;
+
+	//Calculate the sides of rect A
+	leftA = alpha.x;
+	rightA = alpha.x + alpha.w;
+	topA = alpha.y;
+	bottomA = alpha.y + alpha.h;
+
+	//Calculate the sides of rect B
+	leftB = beta.x;
+	rightB = beta.x + beta.w;
+	topB = beta.y;
+	bottomB = beta.y + beta.h;
+
+	//If any of the sides from A are outside of B
+
+	if (bottomA <= topB)
+	{
+		return false;
+	}
+	//same comparison
+	if (topA >= bottomB)
+	{
+		return false;
+	}
+
+
+	if (rightA <= leftB)
+	{
+		return false;
+	}
+
+	if (leftA >= rightB)
+	{
+		return false;
+	}
+
+	return true; 
 }

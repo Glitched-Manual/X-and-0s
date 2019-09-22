@@ -44,7 +44,9 @@ public:
 	//Collision methods
 	virtual	CCollisionRectangle* GetCollisionRectangle() { return NULL; }
 
-	virtual bool CheckCollisionPoints(CCollisionRectangle* passed_CollisionRectangle) { return false; }
+	virtual bool CheckForSingleCollision(CCollisionRectangle* passed_CollisionRectangle) { return false; }
+
+	//multi collider check
 	virtual bool HasObjectCollided(CCollisionRectangle* passed_first_CollisionRectangle, CCollisionRectangle* passed_second_CollisionRectangle) { return false; }
 	GameObject(){}
 protected:

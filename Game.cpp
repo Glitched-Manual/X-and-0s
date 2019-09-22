@@ -999,6 +999,9 @@ void Game::RenderGameTextures()
 			}
 
 		}
+		/*
+		render tile selector always if mouse and keyboard controls
+		*/
 		//will always be rendered last here
 		game_object_map["tile_selector cursor"]->Draw(csdl_obj->GetSDLRenderer());
 	}

@@ -1,5 +1,5 @@
 #include "GameObject.h"
-
+#include "CCollisionRectangle.h"
 #ifndef GAMETEXT_H
 #define GAMETEXT_H
 class GameObject;
@@ -21,6 +21,8 @@ class GameText:public GameObject
 	unsigned int game_text_box_height;
 
 	Color game_text_original_color;
+
+	CCollisionRectangle* game_text_collider;
 
 public:
 	GameText(LoaderParams* pParams);
@@ -51,6 +53,12 @@ public:
 	  void ToggleTextureColor(Uint8 passed_r_value, Uint8 passed_g_value, Uint8 passed_b_value);
 	  bool GetAreColorsAltered() { return game_text_message_highlighted; } //if hightlighted true 
 	  SDL_Rect* GetTextureRect() { return game_text_rect; }
+
+	  // Collision methods
+
+
+	  //This object should only have a single collider
+	  bool CheckForSingleCollision(CCollisionRectangle* passed_CollisionRectangle);
 };
 
 

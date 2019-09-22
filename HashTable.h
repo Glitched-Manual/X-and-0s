@@ -50,7 +50,7 @@ public:
 	 void SetCollisionRectVector();
 	 void CreateCollisionRectangle(unsigned int x,unsigned int y);
 
-	 bool CheckCollisionPoints(CCollisionRectangle* passed_CollisionRectangle);
+	 bool CheckForSingleCollision(CCollisionRectangle* passed_CollisionRectangle);
 	 bool HasObjectCollided(CCollisionRectangle* passed_first_CollisionRectangle, CCollisionRectangle* passed_second_CollisionRectangle);
 	 bool PointCollisionCheck(int x,int y, CCollisionRectangle* passed_second_CollisionRectangle);
 

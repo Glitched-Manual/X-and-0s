@@ -137,7 +137,7 @@ void HashTable::CreateCollisionRectangle(unsigned int passed_x, unsigned int pas
 
 bool HashTable::CheckCollisionPoints(CCollisionRectangle* passed_CollisionRectangle)
 { 
-	// good if the object only has I collider
+	// good if the object only has 1 collider
 
 	return false; 
 }
@@ -258,7 +258,7 @@ bool HashTable::HasObjectCollided(CCollisionRectangle* prime_collider, CCollisio
 
 */
 
-
+//no longer used
 bool HashTable::PointCollisionCheck(int x, int y, CCollisionRectangle* alpha_collider)
 {
 
@@ -276,7 +276,7 @@ bool HashTable::PointCollisionCheck(int x, int y, CCollisionRectangle* alpha_col
 	}
 	return false;
 }
-
+//custom collision call, because hashtable has multiple colliders
 Position* HashTable::GetPositionOfSelectedTile(CCollisionRectangle* passed_CollisionRectangle)
 {
 	
