@@ -346,16 +346,16 @@ bool CSDL::ButtonInputCheck(std::string input_to_check)
 		break;
 
 	case LEFT_CLICK:
-		//keyboard only
-		if ( (sdl2_Game_Event->key.keysym.sym == SDL_BUTTON_X1) ) return true;
+		//mouse only
+		if ( (sdl2_Game_Event->	button.button == SDL_BUTTON_LEFT) ) return true;
 
 		else return false;
 
 		break;
 
 	case RIGHT_CLICK:
-		//keyboard only
-		if ( (sdl2_Game_Event->key.keysym.sym == SDL_BUTTON_RIGHT) ) return true;
+		//mouse only
+		if ( (sdl2_Game_Event->button.button == SDL_BUTTON_RIGHT) ) return true;
 
 		else return false;
 
@@ -375,15 +375,19 @@ bool CSDL::ButtonPressedCheck()
 {//SDL_JOYBUTTONDOWN or SDL_CONTROLLERBUTTONDOWN
 
 	//SDL_PRESSED
-	if (sdl2_Game_Event->cbutton.state == SDL_PRESSED)
+	if (sdl2_Game_Event->button.type == SDL_MOUSEBUTTONDOWN)
 	{
 		return true;
 	}
-	else if (sdl2_Game_Event->jbutton.state == SDL_PRESSED)
+	else if (sdl2_Game_Event->cbutton.type == SDL_CONTROLLERBUTTONDOWN)
 	{
 		return true;
 	}
-	else if (sdl2_Game_Event->key.state == SDL_PRESSED)
+	else if (sdl2_Game_Event->jbutton.type == SDL_JOYBUTTONDOWN)
+	{
+		return true;
+	}
+	else if (sdl2_Game_Event->key.type == SDL_KEYDOWN)
 	{
 		return true;
 	}
@@ -394,15 +398,19 @@ bool CSDL::ButtonPressedCheck()
 bool CSDL::ButtonReleasedCheck()
 {
 	//SDL_RELEASED
-	if (sdl2_Game_Event->cbutton.state == SDL_RELEASED)
+	if (sdl2_Game_Event->button.type == SDL_MOUSEBUTTONUP)
 	{
 		return true;
 	}
-	else if (sdl2_Game_Event->jbutton.state == SDL_RELEASED)
+	else if (sdl2_Game_Event->cbutton.type == SDL_CONTROLLERBUTTONUP)
 	{
 		return true;
 	}
-	else if (sdl2_Game_Event->key.state == SDL_RELEASED)
+	else if (sdl2_Game_Event->jbutton.type == SDL_JOYBUTTONUP)
+	{
+		return true;
+	}
+	else if (sdl2_Game_Event->key.type == SDL_KEYDOWN)
 	{
 		return true;
 	}

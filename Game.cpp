@@ -1072,6 +1072,22 @@ void Game::GameEventManager()
 				//trigger on release
 				if (csdl_obj->ButtonReleasedCheck())
 				{
+					//Left click event here
+
+					if (game_object_map["Start Game"]->CheckForSingleCollision(game_object_map["tile_selector cursor"]->GetCollisionRectangle()))
+					{
+						//create a change state to put values back to starting position
+						x_o_game_state = game_options;
+
+						RevertGameObjectColorList("Start Game");
+
+						if (Developer::GetInstance()->is_debug_mode())
+						{
+							puts("You clicked on the start game button. :>\n");
+						}
+
+					}
+
 					if (Developer::GetInstance()->is_debug_mode())
 					{
 						puts("You clicked the left mouse button. :>\n");
@@ -1383,7 +1399,45 @@ void Game::GameEventManager()
 				break;
 			}
 
+			/*
+			0.5 Update total mouse controls
+			*/
 
+			if (csdl_obj->ButtonInputCheck("LEFT_CLICK"))
+			{
+				//trigger on release
+				if (csdl_obj->ButtonReleasedCheck())
+				{
+					//Left click events here
+
+
+					//Play Button Pressed
+					if (game_object_map["Play Button"]->CheckForSingleCollision(game_object_map["tile_selector cursor"]->GetCollisionRectangle()))
+					{
+						//play button clicked response
+
+						x_o_game_state = opponent_selection;
+
+						game_object_map["Play Button"]->RevertAlteredTextureColor();
+						game_object_map["Options Button"]->RevertAlteredTextureColor();
+						game_object_map["Credits Button"]->RevertAlteredTextureColor();
+
+						if (Developer::GetInstance()->is_debug_mode())
+						{
+							puts("You clicked on the start game button. :>\n");
+						}
+
+					}
+
+					if (Developer::GetInstance()->is_debug_mode())
+					{
+						puts("You clicked the left mouse button. :>\n");
+					}
+				}
+
+
+
+			}
 
 		} // end of game_options events
 
@@ -1569,7 +1623,53 @@ void Game::GameEventManager()
 				}
 			}
 
-			//
+			/*
+			0.5 Update total mouse controls
+			*/
+
+			if (csdl_obj->ButtonInputCheck("LEFT_CLICK"))
+			{
+				//trigger on release
+				if (csdl_obj->ButtonReleasedCheck())
+				{
+					//Left click events here
+
+
+					//Play Button Pressed
+					if (game_object_map["Player VS Comp"]->CheckForSingleCollision(game_object_map["tile_selector cursor"]->GetCollisionRectangle()))
+					{
+						//Player VS Computer button clicked response
+
+						
+
+						if (Developer::GetInstance()->is_debug_mode())
+						{
+							puts("You clicked on the start game button. :>\n");
+						}
+
+					}
+					else if (game_object_map["Player VS Player"]->CheckForSingleCollision(game_object_map["tile_selector cursor"]->GetCollisionRectangle()))
+					{
+						//Player VS Computer button clicked response
+
+
+
+						if (Developer::GetInstance()->is_debug_mode())
+						{
+							puts("You clicked on the start game button. :>\n");
+						}
+
+					}
+
+					if (Developer::GetInstance()->is_debug_mode())
+					{
+						puts("You clicked the left mouse button. :>\n");
+					}
+				}
+
+
+
+			}
 
 		}
 

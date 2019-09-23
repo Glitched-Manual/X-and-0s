@@ -3,6 +3,7 @@
 GameText::GameText(LoaderParams* pParams)
 {
 	//make a set rect method so I do not see three of the same thing, inside this file
+	game_text_collider = new CCollisionRectangle;
 
 	game_text_rect = new SDL_Rect;
 	game_text_rect->x = pParams->GetX();
@@ -11,7 +12,7 @@ GameText::GameText(LoaderParams* pParams)
 	game_text_rect->h = pParams->GetHeight();
 	game_text_id = pParams->GetTextureID();
 
-	
+	game_text_collider->SetCollisionRect(game_text_rect->x, game_text_rect->y, game_text_rect->w, game_text_rect->h);
 }
 
 GameText::GameText(LoaderParams* pParams, unsigned int passed_text_size)
@@ -32,6 +33,7 @@ GameText::GameText(LoaderParams* pParams, unsigned int passed_text_size)
 
 GameText::GameText(LoaderParams* pParams, std::string passed_message, unsigned int passed_text_size)
 {
+	game_text_collider = new CCollisionRectangle;
 	game_text_rect = new SDL_Rect;
 	game_text_rect->x = pParams->GetX();
 	game_text_rect->y = pParams->GetY();
@@ -42,6 +44,8 @@ GameText::GameText(LoaderParams* pParams, std::string passed_message, unsigned i
 	game_text_size = passed_text_size;
 
 	SetGameTextMessage(passed_message);
+
+	game_text_collider->SetCollisionRect(game_text_rect->x, game_text_rect->y, game_text_rect->w, game_text_rect->h);
 }
 
 
@@ -164,10 +168,14 @@ bool GameText::LoadGameObjectContent(SDL_Renderer* passed_Renderer)
 	//game_text_rect->x center x pos on screen
 	game_text_rect->x = game_text_rect->x - (game_text_box_width / 2);
 
+	if (game_text_collider!= NULL)
+	{
+		game_text_collider->SetCollisionRect(game_text_rect->x, game_text_rect->y, game_text_rect->w, game_text_rect->h);
 
-	game_text_texture = NULL;
-
+	}
+	
 	game_text_texture = SDL_CreateTextureFromSurface(passed_Renderer, textSurface);
+
 	if (game_text_texture == NULL)
 	{
 		if (Developer::GetInstance()->is_debug_mode())
