@@ -135,7 +135,7 @@ void HashTable::CreateCollisionRectangle(unsigned int passed_x, unsigned int pas
 	collider_position_map[collision_obj] = new Position(passed_x, passed_y);
 }
 
-bool HashTable::CheckCollisionPoints(CCollisionRectangle* passed_CollisionRectangle)
+bool HashTable::CheckForSingleCollision(CCollisionRectangle* passed_CollisionRectangle)
 { 
 	// good if the object only has 1 collider
 

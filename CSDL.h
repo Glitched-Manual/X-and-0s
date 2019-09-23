@@ -18,7 +18,7 @@ class CSDL
 	SDL_Event* sdl2_Game_Event;
 	SDL_GameController* sdl2_GameController;
 	
-	enum ButtonValue { UP, DOWN, LEFT, RIGHT, START, SELECT, A_ACTION, B_ACTION, ESCAPE, SPACE, ENTER};
+	enum ButtonValue { UP, DOWN, LEFT, RIGHT, START, SELECT, A_ACTION, B_ACTION, ESCAPE, SPACE, ENTER, LEFT_CLICK,RIGHT_CLICK};
 	// add ENTER
 	std::map<std::string, ButtonValue> sdl2_Input_Map;
 
@@ -30,6 +30,19 @@ public:
 	bool Init();
 	bool createSDLWindow(unsigned int SCREEN_WIDTH, unsigned int SCREEN_HEIGHT);
 	bool createSDLRenderer();
+
+	/*
+	for setting common player button input. Such as:
+
+	Mouse Clicks
+
+	Keyboard Arrow Keys
+
+	Controller Buttons
+
+	My developer input proceded this.
+	
+	*/
 	void LoadInputMap();
 
 	 SDL_Window* GetSDLWindow() { return sdl2_GameWindow; }

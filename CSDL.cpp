@@ -199,7 +199,8 @@ void CSDL::LoadInputMap()
 	sdl2_Input_Map["B_ACTION"] = B_ACTION;
 	sdl2_Input_Map["ESCAPE"] = ESCAPE;
 	sdl2_Input_Map["SPACE"] = SPACE;
-	
+	sdl2_Input_Map["LEFT_CLICK"] = LEFT_CLICK;
+	sdl2_Input_Map["RIGHT_CLICK"] = RIGHT_CLICK;
 }
 
 /*
@@ -220,7 +221,7 @@ bool CSDL::ButtonInputCheck(std::string input_to_check)
 
 		else if (sdl2_Game_Event->cbutton.button == SDL_CONTROLLER_BUTTON_DPAD_UP) return true;
 
-		else if ( (sdl2_Game_Event->key.keysym.sym == SDLK_UP) && (sdl2_Game_Event->type == SDL_KEYDOWN) ) return true;
+		else if ( (sdl2_Game_Event->key.keysym.sym == SDLK_UP) ) return true;
 
 		else return false;
 
@@ -230,7 +231,7 @@ bool CSDL::ButtonInputCheck(std::string input_to_check)
 
 		if (sdl2_Game_Event->cbutton.button == SDL_CONTROLLER_BUTTON_DPAD_DOWN) return true;
 
-		else if ((sdl2_Game_Event->key.keysym.sym == SDLK_DOWN ) && (sdl2_Game_Event->type == SDL_KEYDOWN)) return true;
+		else if ((sdl2_Game_Event->key.keysym.sym == SDLK_DOWN ) ) return true;
 
 		else return false;
 
@@ -240,7 +241,7 @@ bool CSDL::ButtonInputCheck(std::string input_to_check)
 
 		if (sdl2_Game_Event->cbutton.button == SDL_CONTROLLER_BUTTON_DPAD_LEFT) return true;
 
-		else if ((sdl2_Game_Event->key.keysym.sym == SDLK_LEFT ) && (sdl2_Game_Event->type == SDL_KEYDOWN)) return true;
+		else if ((sdl2_Game_Event->key.keysym.sym == SDLK_LEFT ) ) return true;
 
 		else return false;
 
@@ -250,7 +251,7 @@ bool CSDL::ButtonInputCheck(std::string input_to_check)
 
 		if (sdl2_Game_Event->cbutton.button == SDL_CONTROLLER_BUTTON_DPAD_RIGHT ) return true;
 
-		else if ((sdl2_Game_Event->key.keysym.sym == SDLK_RIGHT) && (sdl2_Game_Event->type == SDL_KEYDOWN)) return true;
+		else if ((sdl2_Game_Event->key.keysym.sym == SDLK_RIGHT)) return true;
 
 		else return false;
 
@@ -259,7 +260,7 @@ bool CSDL::ButtonInputCheck(std::string input_to_check)
 
 		if (sdl2_Game_Event->cbutton.button == SDL_CONTROLLER_BUTTON_START ) return true;
 
-		else if ((sdl2_Game_Event->key.keysym.sym == SDLK_RETURN ) && (sdl2_Game_Event->type == SDL_KEYDOWN)) return true;
+		else if ((sdl2_Game_Event->key.keysym.sym == SDLK_RETURN )) return true;
 
 		else return false;
 
@@ -269,7 +270,7 @@ bool CSDL::ButtonInputCheck(std::string input_to_check)
 
 		if (sdl2_Game_Event->cbutton.button == SDL_CONTROLLER_BUTTON_GUIDE ) return true;
 
-		else if ((sdl2_Game_Event->key.keysym.sym == SDLK_TAB) && (sdl2_Game_Event->type == SDL_KEYDOWN)) return true;
+		else if ((sdl2_Game_Event->key.keysym.sym == SDLK_TAB) ) return true;
 
 		else return false;
 
@@ -279,7 +280,7 @@ bool CSDL::ButtonInputCheck(std::string input_to_check)
 
 		if (sdl2_Game_Event->cbutton.button == SDL_CONTROLLER_BUTTON_A ) return true;
 
-		else if ((sdl2_Game_Event->key.keysym.sym == SDLK_a ) && (sdl2_Game_Event->type == SDL_KEYDOWN)) return true;
+		else if ((sdl2_Game_Event->key.keysym.sym == SDLK_a ) ) return true;
 
 		else return false;
 
@@ -294,7 +295,7 @@ bool CSDL::ButtonInputCheck(std::string input_to_check)
 
 			sdl2_Game_Event->cbutton.button == SDL_CONTROLLERBUTTONDOWN used
 		*/
-		if ( (sdl2_Game_Event->cbutton.button == SDL_CONTROLLER_BUTTON_B) && (sdl2_Game_Event->cbutton.state == SDL_PRESSED))
+		if ( (sdl2_Game_Event->cbutton.button == SDL_CONTROLLER_BUTTON_B) )
 		{
 			if (Developer::GetInstance()->is_debug_mode())
 			{
@@ -306,7 +307,7 @@ bool CSDL::ButtonInputCheck(std::string input_to_check)
 		}
 				
 
-		else if ((sdl2_Game_Event->key.keysym.sym == SDLK_s) && (sdl2_Game_Event->type == SDL_KEYDOWN))
+		else if ((sdl2_Game_Event->key.keysym.sym == SDLK_s) )
 		{
 			if (Developer::GetInstance()->is_debug_mode())
 			{
@@ -322,7 +323,7 @@ bool CSDL::ButtonInputCheck(std::string input_to_check)
 
 	case ESCAPE:
 		//keyboard only
-		if ((sdl2_Game_Event->key.keysym.sym == SDLK_ESCAPE) && (sdl2_Game_Event->type == SDL_KEYDOWN))
+		if ((sdl2_Game_Event->key.keysym.sym == SDLK_ESCAPE))
 		{
 			if (Developer::GetInstance()->is_debug_mode())
 			{
@@ -338,7 +339,23 @@ bool CSDL::ButtonInputCheck(std::string input_to_check)
 
 	case SPACE:
 		//keyboard only
-		if ((sdl2_Game_Event->key.keysym.sym == SDLK_SPACE) && (sdl2_Game_Event->type == SDL_KEYDOWN)) return true;
+		if ((sdl2_Game_Event->key.keysym.sym == SDLK_SPACE) ) return true;
+
+		else return false;
+
+		break;
+
+	case LEFT_CLICK:
+		//keyboard only
+		if ( (sdl2_Game_Event->key.keysym.sym == SDL_BUTTON_X1) ) return true;
+
+		else return false;
+
+		break;
+
+	case RIGHT_CLICK:
+		//keyboard only
+		if ( (sdl2_Game_Event->key.keysym.sym == SDL_BUTTON_RIGHT) ) return true;
 
 		else return false;
 

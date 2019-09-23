@@ -1047,7 +1047,7 @@ void Game::GameEventManager()
 
 
 				//if start button or enter key pressed
-			if ((csdl_obj->ButtonInputCheck("START")) || ((csdl_obj->GetSDLGameEvent()->key.keysym.sym == SDLK_RETURN && csdl_obj->GetSDLGameEvent()->type == SDL_KEYDOWN)))
+			if ( (csdl_obj->ButtonInputCheck("START")) )
 			{
 				if (Developer::GetInstance()->is_debug_mode())
 				{
@@ -1062,6 +1062,24 @@ void Game::GameEventManager()
 
 				RevertGameObjectColorList("Start Game");
 				//game_object_map["Start Game"]->AlterTextureColor( 38, 64, 139);
+			}
+			/*
+			0.5 Update total mouse controls
+			*/
+
+			if (csdl_obj->ButtonInputCheck("LEFT_CLICK"))
+			{
+				//trigger on release
+				if (csdl_obj->ButtonReleasedCheck())
+				{
+					if (Developer::GetInstance()->is_debug_mode())
+					{
+						puts("You clicked the left mouse button. :>\n");
+					}
+				}
+				
+
+
 			}
 		}
 
