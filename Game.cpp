@@ -869,18 +869,18 @@ bool Game::LoadPlayAgainPrompt()
 {
 	GameObject* prompt_window_game_object = NULL;
 	//create promptWindow
-	PromptWindow* rematch_prompt = new PromptWindow(new LoaderParams(SCREEN_WIDTH/2, SCREEN_HEIGHT/2, 400, 200, "rematch prompt"),csdl_obj);
+	prompt_window_map["rematch prompt"] = new PromptWindow(new LoaderParams(SCREEN_WIDTH/2, SCREEN_HEIGHT/2, 400, 200, "rematch prompt"),csdl_obj);
 	//add more text
 	/*
 	
 	rematch_prompt->CreatePromptText(x percentage of prompt window,y percentage of prompt window,"text id","text message",text size);
 
 	*/
-	rematch_prompt->CreatePromptText(50,25,"play again rematch text","Play Again?",20);
-	rematch_prompt->CreatePromptText(25, 50, "yes rematch text", "YES", 20);
-	rematch_prompt->CreatePromptText(75, 50, "no rematch text", "NO", 20);
+	prompt_window_map["rematch prompt"]->CreatePromptText(50,25,"play again rematch text","Play Again?",20);
+	prompt_window_map["rematch prompt"]->CreatePromptText(25, 50, "yes rematch text", "YES", 20);
+	prompt_window_map["rematch prompt"]->CreatePromptText(75, 50, "no rematch text", "NO", 20);
 	//pin to game object
-	prompt_window_game_object = rematch_prompt;
+	prompt_window_game_object = prompt_window_map["rematch prompt"];
 	// add map and vector
 
 	game_object_map["rematch prompt"] = prompt_window_game_object;
@@ -1685,17 +1685,66 @@ void Game::GameEventManager()
 		{
 			//do something with rematch prompt
 
+
 			/*
 			rematch_prompt->CreatePromptText(25, 50, "yes rematch text", "YES", 20);
 	rematch_prompt->CreatePromptText(75, 50, "no rematch text", "NO", 20);
 			*/
 
+			//do click here first
+			if (csdl_obj->ButtonInputCheck("LEFT_CLICK"))
+			{
+				
+
+				//trigger on release
+				if (csdl_obj->ButtonReleasedCheck())
+				{
+
+					//check is YES selected
+					if (prompt_window_map["rematch prompt"]->PromptButtonSelected("yes rematch text", game_object_map["tile_selector cursor"]->GetCollisionRectangle()))
+					{
+
+						GameRematchReset();
+
+						if (Developer::GetInstance()->is_debug_mode())
+						{
+							puts("Rematch Yes Selected\n");
+						}
+
+					}
+
+					//check if no was Selected
+					if (prompt_window_map["rematch prompt"]->PromptButtonSelected("no rematch text", game_object_map["tile_selector cursor"]->GetCollisionRectangle()))
+					{
+						
+						//reset  
+						GameRematchReset();
+
+						//return to options menu
+
+						x_o_game_state = game_options;
+
+						if (Developer::GetInstance()->is_debug_mode())
+						{
+							puts("Rematch No Selected\n");
+						}
+					}
+
+					if (Developer::GetInstance()->is_debug_mode())
+					{
+						puts("Rematch LEFT_CLICK triggered\n");
+					}
+				}
+			}
 			//both options highlighted
 			if(game_object_map["rematch prompt"]->GetAreColorsAltered("yes rematch text")&&(game_object_map["rematch prompt"]->GetAreColorsAltered("no rematch text")))
 			{
 				game_object_map["rematch prompt"]->RevertAlteredTextureColor("yes rematch text");
 				game_object_map["rematch prompt"]->RevertAlteredTextureColor("no rematch text");
 			}
+
+			
+
 
 			//YES highlighted
 			else if (game_object_map["rematch prompt"]->GetAreColorsAltered("yes rematch text"))
@@ -1729,15 +1778,19 @@ void Game::GameEventManager()
 				//Left or Right pressed
 				if (csdl_obj->ButtonInputCheck("LEFT") || csdl_obj->ButtonInputCheck("RIGHT"))
 				{
-					game_object_map["rematch prompt"]->RevertAlteredTextureColor("no rematch text");
-					game_object_map["rematch prompt"]->AlterTextureColor("yes rematch text", 38, 64, 139);
+					if (csdl_obj->ButtonReleasedCheck())
+					{
+						game_object_map["rematch prompt"]->RevertAlteredTextureColor("no rematch text");
+						game_object_map["rematch prompt"]->AlterTextureColor("yes rematch text", 38, 64, 139);
+					}
+					
 
 				}
 
 				//if A or Start Pressed
 				else if (csdl_obj->ButtonInputCheck("A_ACTION") || csdl_obj->ButtonInputCheck("START"))
 				{
-					if (csdl_obj->ButtonPressedCheck())
+					if (csdl_obj->ButtonReleasedCheck())
 					{
 						//reset  
 						GameRematchReset();
@@ -1749,18 +1802,21 @@ void Game::GameEventManager()
 				}
 			}
 			//none highlighted
-			else //not the best it any none action pressed it keeps calling add if "Yes" not highlighted
+			else if(game_object_map["rematch prompt"]->GetAreColorsAltered("yes rematch text") == false) //not the best it any none action pressed it keeps calling add if "Yes" not highlighted
 			{
+				if(game_object_map["rematch prompt"]->GetAreColorsAltered("no rematch text") == false)
 				//any button highlight YES
-				if(csdl_obj->ButtonPressedCheck())
+				if(csdl_obj->ButtonReleasedCheck())
 				{
-					if (game_object_map["rematch prompt"]->GetAreColorsAltered("yes rematch text") == false)
+					if (csdl_obj->ButtonInputCheck("LEFT") || csdl_obj->ButtonInputCheck("RIGHT"))
 					{
 						game_object_map["rematch prompt"]->AlterTextureColor("yes rematch text", 38, 64, 139);
 					}
 					
 				}
 			}
+
+
 
 		}
 		//Playing and match is not over

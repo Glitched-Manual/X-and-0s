@@ -79,6 +79,13 @@ public:
 
 	 bool CreatePromptText(unsigned int passed_percent_x, unsigned int passed_percent_y, std::string passed_text_id, std::string passed_message, unsigned int text_size);
 
+	 /*
+	 To check if a GameText was pressed
+
+	 bool PromptButtonSelected(std::string passed_btn_key)
+
+	 */
+	bool PromptButtonSelected(std::string passed_btn_key, CCollisionRectangle* passed_collider);
 };
 
 

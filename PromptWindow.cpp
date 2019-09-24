@@ -224,22 +224,26 @@ bool PromptWindow::GetAreColorsAltered(std::string passed_string)
 		return game_texts_map[passed_string]->GetAreColorsAltered();
 	}
 
-	if (Developer::GetInstance()->is_debug_mode())
+	else
 	{
-		std::cout << "map key not found" << std::endl;
-		if (!game_texts_vector.empty())
+		if (Developer::GetInstance()->is_debug_mode())
 		{
+			std::cout << "map key not found" << std::endl;
 
-			for (std::vector<GameText*>::iterator game_text_object_index = game_texts_vector.begin(); game_text_object_index != game_texts_vector.end(); game_text_object_index++)
+		}
+	}
+
+	if (!game_texts_vector.empty())
+	{
+
+		for (std::vector<GameText*>::iterator game_text_object_index = game_texts_vector.begin(); game_text_object_index != game_texts_vector.end(); game_text_object_index++)
+		{
+			if ((*game_text_object_index)->GetGameObjectID() == passed_string)
 			{
-				if ((*game_text_object_index)->GetGameObjectID() == passed_string)
-				{
-					
-					std::cout << "map key found in vector" << std::endl;
-					return (*game_text_object_index)->GetAreColorsAltered();
-				}
-
+				(*game_text_object_index)->RevertAlteredTextureColor();
+				std::cout << "map key found in vector" << std::endl;
 			}
+
 		}
 	}
 
@@ -377,4 +381,35 @@ bool PromptWindow::CreatePromptText(unsigned int passed_percent_x, unsigned int 
 
 	
 	return true;
+}
+
+bool PromptWindow::PromptButtonSelected(std::string passed_btn_key,CCollisionRectangle* passed_collider)
+{
+
+	//bool CheckForSingleCollision(CCollisionRectangle* passed_CollisionRectangle);
+
+	//scan through Game Text Map
+
+	if (!game_texts_vector.empty())
+	{
+
+		for (std::vector<GameText*>::iterator game_text_object_index = game_texts_vector.begin(); game_text_object_index != game_texts_vector.end(); game_text_object_index++)
+		{
+			if ((*game_text_object_index)->GetGameObjectID() == passed_btn_key)
+			{
+				if (Developer::GetInstance()->is_debug_mode())
+				{
+					puts("map key found in vector\n");
+				}
+
+				//check for collision
+
+				return  (*game_text_object_index)->CheckForSingleCollision(passed_collider);				
+				
+			}
+
+		}
+	}
+
+	return false;
 }

@@ -92,6 +92,11 @@ enum GameResult {no_result,player1_wins,player2_wins,match_draw};
 GameResult current_game_result = no_result;
 
 bool menu_activated = false;
+
+//Prompts map menus and such
+
+std::map<std::string, PromptWindow*> prompt_window_map;
+
 // InputButtonValue;
 
 
