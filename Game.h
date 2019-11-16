@@ -65,7 +65,7 @@ Position* game_input_position_ptr;
 
 // game mode enum
 
-enum current_game_state {main_menu,game_options,opponent_selection, match_gameplay,credits,pause,quit};
+enum current_game_state {main_menu,game_options,opponent_selection, match_gameplay,Settings_Menu,Credits_Menu,pause,quit};
 
 enum current_gameplay_mode {human_vs_human,human_vs_computer};
 
@@ -139,6 +139,10 @@ bool loadPlayerTextureMarks();
 bool LoadPlayAgainPrompt();
 
 bool LoadTileSelector();
+
+bool LoadSettingsMenu();
+
+bool LoadCreditsMenu();
 
 void GameEventManager();
 

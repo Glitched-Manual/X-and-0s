@@ -59,6 +59,15 @@ Game::Game(unsigned int passed_screen_width, unsigned int passed_screen_height)
 	//Load Options menu textures
 	LoadGameOptionsMenu();
 
+	//Load Settings Menu
+
+	LoadSettingsMenu();
+
+	//Load Credits section
+
+	
+	LoadCreditsMenu();
+
 	// hash table and marks
 	LoadGameplayObjects();
 
@@ -747,6 +756,56 @@ bool Game::LoadGameOpeningMenu()
 	{
 		std::cout << "Game::LoadGameOpeningMenu() was pushed to the allGameObjects vector" << std::endl;
 	}
+
+	return true;
+}
+
+bool Game::LoadSettingsMenu()
+{
+	//Load "Settings" Text
+
+	GameObject* Settings_menu_text = NULL;
+
+	Settings_menu_text = new GameText(new LoaderParams(SCREEN_WIDTH / 2, (SCREEN_HEIGHT / 4) * 3, 100, 100, "Settings Menu Text"),"Settings", 60);
+
+	if (Settings_menu_text == NULL)
+	{
+		if (Developer::GetInstance()->is_debug_mode())
+		{
+
+			printf("Game::LoadSettingsMenu() SDL Error: %s\n", SDL_GetError());
+		}
+
+		return false;
+	}
+
+	game_object_map["Settings Menu Text"] = Settings_menu_text;
+	allGameObjects.push_back(Settings_menu_text);
+
+	return true;
+}
+
+bool Game::LoadCreditsMenu()
+{
+	//Load "Credits" Text
+
+	GameObject* Credits_title_text = NULL;
+
+	Credits_title_text = new GameText(new LoaderParams(SCREEN_WIDTH / 2, (SCREEN_HEIGHT / 4) * 3, 100, 100, "Credits Title"),"Credits", 60);
+
+	if (Credits_title_text == NULL)
+	{
+		if (Developer::GetInstance()->is_debug_mode())
+		{
+
+			printf("Game::LoadSettingsMenu() SDL Error: %s\n", SDL_GetError());
+		}
+
+		return false;
+	}
+
+	game_object_map["Credits Title"] = Credits_title_text;
+	allGameObjects.push_back(Credits_title_text);
 
 	return true;
 }

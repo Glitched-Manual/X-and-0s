@@ -16,9 +16,9 @@ private:
 	Developer& operator=(const Developer&) {};
 	~Developer() {};
 	
-	static const bool debug_mode = true;
+	static const bool debug_mode = false;
 	static const bool text_based_game_mode = true;
-	static const bool hit_boxes_rendered = true;
+	static const bool hit_boxes_rendered = false;
 
 public:
 
